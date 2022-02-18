@@ -1,0 +1,122 @@
+.lc-setter-list {
+  [draggable] {
+    cursor: move;
+  }
+
+  .next-btn {
+    display: inline-flex;
+    align-items: center;
+    line-height: 1 !important;
+    max-width: 100%;
+    text-overflow: ellipsis;
+  }
+
+  .next-btn.next-btn-primary {
+    .lc-title {
+      color: var(--btn-pure-primary-color) !important;
+    }
+  }
+
+  .lc-setter-list-add {
+    display: block;
+    width: 100%;
+    padding: 12px 8px 0 0;
+  }
+
+  .lc-setter-list-columns {
+    display: flex;
+    > .lc-title {
+      flex: 1;
+      justify-content: flex-start;
+    }
+    margin-left: 0;
+    margin-right: 0;
+    padding: 0 72px 4px 36px;
+    gap: 8px;
+  }
+
+  .lc-setter-list-scroll-body {
+    margin: -8px -16px;
+    padding: 8px 16px;
+    overflow-y: auto;
+    max-height: 300px;
+  }
+
+  .lc-setter-list-notice {
+    height: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .lc-setter-list-card {
+    border: none;
+    background-color: transparent;
+    border-radius: 0;
+    &:not(:last-child) {
+      margin-bottom: 8px;
+    }
+
+    .lc-listitem {
+      position: relative;
+      outline: none;
+      display: flex;
+      align-items: stretch;
+      height: 28px;
+
+      .lc-listitem-actions {
+        margin: 0 4px;
+        gap: var(--s-1);
+        display: inline-flex;
+        align-items: center;
+        justify-content: flex-end;
+        .lc-listitem-action {
+          width: var(--s-7, 28px) !important;
+          height: var(--s-7, 28px) !important;
+          display: flex !important;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+        }
+      }
+      .lc-listitem-body {
+        flex: 1;
+        display: flex;
+        align-items: stretch;
+        overflow: hidden;
+        min-width: 0;
+        text-overflow: ellipsis;
+        .lc-field {
+          padding: 0 !important;
+          display: flex;
+          align-items: center;
+          > .lc-field-body {
+            width: 100%;
+            justify-content: center;
+          }
+        }
+        > * {
+          width: 100%;
+        }
+        .next-btn {
+          display: block;
+          width: 100%;
+        }
+      }
+      .lc-listitem-handler {
+        margin-left: 0;
+        width: var(--s-7, 28px) !important;
+        height: var(--s-7, 28px) !important;
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+      }
+    }
+  }
+}
+
+.lc-setter-list .lc-setter-list-card .lc-listitem .lc-listitem-handler,
+.lc-setter-list .lc-setter-list-card .lc-listitem .lc-listitem-actions .lc-listitem-action {
+  opacity: 1;
+}

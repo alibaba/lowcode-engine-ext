@@ -1,0 +1,102 @@
+{
+  "position": {
+    "title": "定位类型",
+    "dataList": [
+      {
+        "value": "static",
+        "tips": "无定位 static",
+        "icon": "icon-position"
+      },
+      {
+        "value": "relative",
+        "tips": "相对定位 relative",
+        "icon": "icon-relative"
+      },
+      {
+        "value": "absolute",
+        "tips": "绝对定位 absolute",
+        "icon": "icon-absolute"
+      },
+      {
+        "value": "fixed",
+        "tips": "固定定位 fixed",
+        "icon": "icon-fixed"
+      },
+      {
+        "value": "sticky",
+        "tips": "粘性定位 sticky",
+        "icon": "icon-Objectpositioninterface"
+      }
+    ]
+  },
+  "float": {
+    "title": "浮动方向",
+    "dataList": [
+      {
+        "value": "none",
+        "tips": "不浮动 none",
+        "icon": "icon-close"
+      },
+      {
+        "value": "left",
+        "tips": "左浮动 left",
+        "icon": "icon-formatfloatleft"
+      },
+      {
+        "value": "right",
+        "tips": "右浮动 right",
+        "icon": "icon-formatfloatright"
+      }
+    ]
+  },
+  "clear": {
+    "title": "清除",
+    "dataList": [
+      {
+        "value": "none",
+        "tips": "不清除 none",
+        "icon": "icon-close"
+      },
+      {
+        "value": "left",
+        "tips": "左清除 left",
+        "icon": "icon-qingchuzuoce"
+      },
+      {
+        "value": "right",
+        "tips": "右清除 right",
+        "icon": "icon-qingchuyouce"
+      },
+      {
+        "value": "both",
+        "tips": "两边清除 both",
+        "icon": "icon-qingchuliangce"
+      }
+    ]
+  },
+
+  "positionTemplete": {
+    "dataList": [
+      {
+        "value": "topLeft",
+        "tips": "左上角",
+        "icon": "icon-zuoshangcopy"
+      },
+      {
+        "value": "topRight",
+        "tips": "右上角",
+        "icon": "icon-youshangcopy"
+      },
+      {
+        "value": "bottomLeft",
+        "tips": "左下角",
+        "icon": "icon-zuoxiacopy"
+      },
+      {
+        "value": "bottomRight",
+        "tips": "右下角",
+        "icon": "icon-youxiacopy"
+      }
+    ]
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "borderType": {
+    "title": "圆角",
+    "dataList": [
+      {
+        "value": "fixedBorder",
+        "tips": "固定圆角",
+        "icon": "icon-yuanjiaofangkuang"
+      },
+      {
+        "value": "partBorder",
+        "tips": "分别定义",
+        "icon": "icon-yuanjiao"
+      }
+    ]
+  },
+
+  "borderStyle": {
+    "title": "边框样式",
+    "dataList": [
+      {
+        "value": "none",
+        "tips": "无样式 none",
+        "icon": "icon-close"
+      },
+      {
+        "value": "solid",
+        "tips": "实线 solid",
+        "icon": "icon-shixian"
+      },
+      {
+        "value": "dashed",
+        "tips": "虚线 dashed",
+        "icon": "icon-xuxian"
+      },
+      {
+        "value": "dotted",
+        "tips": "点线 dotted",
+        "icon": "icon-dianxian"
+      }
+    ]
+  }
+}

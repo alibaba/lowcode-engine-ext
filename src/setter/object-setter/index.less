@@ -1,0 +1,49 @@
+.lc-setter-object-row {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  .lc-setter-object-row-edit {
+    width: var(--s-7, 28px) !important;
+    height: var(--s-7, 28px) !important;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+  .lc-setter-object-row-body {
+    display: flex;
+    margin-left: var(--s-1);
+    gap: var(--s-1);
+    color: var(--color-text1-2);
+    flex: 1;
+    min-width: 0;
+    align-items: center;
+    .lc-field {
+      padding: 0 !important;
+      .lc-field-body {
+        width: 100%;
+        padding: 0 !important;
+        margin: 0 !important;
+        .next-select {
+          min-width: 0;
+          width: 100%;
+          .next-input {
+            min-width: 0;
+            width: 100%;
+          }
+        }
+        .next-input {
+          min-width: 0;
+          width: 100%;
+        }
+      }
+    }
+    > * {
+      flex: 1;
+      flex-shrink: 1;
+      margin-left: 2px;
+      min-width: 0;
+      overflow: hidden;
+    }
+  }
+}

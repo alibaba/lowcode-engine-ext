@@ -1,0 +1,160 @@
+.postion-icon-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.position-box-container {
+  position: relative;
+  width: 100%;
+  height: 150px;
+  margin-bottom: 10px;
+
+  .next-input.next-noborder {
+    border: none;
+  }
+
+  .top-div {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 0;
+    border-left: 30px solid transparent;
+    border-right: 30px solid transparent;
+    border-top: 30px solid #d6e4ff;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+
+    .next-input.next-medium {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: -30px;
+      height: 30px !important;
+      background: transparent;
+      width: 100%;
+    }
+    .next-input.next-medium input {
+      text-align: center;
+      line-height: 30px;
+      height: 30px;
+      padding: 0;
+    }
+  }
+
+  .top-div:hover {
+    border-top: 30px solid #bfd4fb;
+  }
+
+  .right-div {
+    position: absolute;
+    top: 5px;
+    bottom: 5px;
+    right: 0;
+    width: 0;
+    border-top: 30px solid transparent;
+    border-bottom: 30px solid transparent;
+    border-right: 30px solid #d6e4ff;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+
+    .next-input.next-medium {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      right: -30px;
+      width: 30px;
+      margin: auto;
+      background: transparent;
+    }
+    .next-input.next-medium input {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      right: -15px;
+      margin: auto;
+      width: 60px;
+      height: 30px;
+      line-height: 30px;
+      text-align: center;
+      padding: 0 13px;
+    }
+  }
+
+  .right-div:hover {
+    border-right: 30px solid #bfd4fb;
+  }
+
+  .bottom-div {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 0;
+    border-left: 30px solid transparent;
+    border-right: 30px solid transparent;
+    border-bottom: 30px solid #d6e4ff;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+    .next-input.next-medium {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -30px;
+      height: 30px !important;
+      background: transparent;
+      width: 100%;
+    }
+
+    .next-input.next-medium input {
+      text-align: center;
+      line-height: 30px;
+      height: 30px;
+      padding: 0;
+    }
+  }
+
+  .bottom-div:hover {
+    border-bottom: 30px solid #bfd4fb;
+  }
+
+  .left-div {
+    position: absolute;
+    top: 5px;
+    bottom: 5px;
+    left: 0;
+    width: 0;
+    border-top: 30px solid transparent;
+    border-bottom: 30px solid transparent;
+    border-left: 30px solid #d6e4ff;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+
+    .next-input.next-medium {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: -30px;
+      width: 30px;
+      margin: auto;
+      background: transparent;
+    }
+
+    .next-input.next-medium input {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: -15px;
+      margin: auto;
+      width: 60px;
+      height: 30px;
+      line-height: 30px;
+      text-align: center;
+      padding: 0 13px;
+    }
+  }
+
+  .left-div:hover {
+    border-left: 30px solid #bfd4fb;
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "name": "lowcode-engine-ext",
+  "assets": {
+    "type": "command",
+    "command": {
+      "cmd": [
+        "tnpm install",
+        "tnpm run cloud-build",
+        "mkdir $BUILD_DEST",
+        "mv dist/js/* $BUILD_DEST",
+        "mv dist/css/* $BUILD_DEST"
+      ]
+    }
+  }
+}

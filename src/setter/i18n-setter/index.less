@@ -1,0 +1,91 @@
+/* write style here */
+.lowcode-setter-i18n {
+  .i18n-icon {
+    position: absolute;
+    right: 1px;
+    top: 1px;
+    width: 26px;
+    height: 26px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    img {
+      width: 20px;
+      height: 20px;
+    }
+  }
+  .i18n-icon-selected {
+    background-color: #77a7ff;
+  }
+
+  .popup-container {
+    border: 1px solid rgba(31, 56, 88, 0.1);
+    box-shadow: 0 1px 4px 0 rgba(31, 56, 88, 0.15);
+    position: absolute;
+    top: 28px;
+    background-color: #fff;
+    z-index: 100;
+    padding: 5px;
+    .new-i18n-button {
+      margin-top: 10px;
+    }
+  }
+
+  .binddata-popup-container {
+    border: 1px solid rgba(31, 56, 88, 0.1);
+    box-shadow: 0 1px 4px 0 rgba(31, 56, 88, 0.15);
+    position: absolute;
+    top: 28px;
+    background-color: #fff;
+    z-index: 100;
+    padding: 5px;
+    .bind-item {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    p {
+      width: 50px;
+    }
+
+    .clear-i18n {
+      cursor: pointer;
+    }
+  }
+}
+
+.lowcode-setter-i18n-list {
+  border: 1px solid rgba(31, 56, 88, 0.1);
+  box-shadow: 0 1px 4px 0 rgba(31, 56, 88, 0.15);
+  .lowcode-setter-i18n-search-box-container {
+    background-color: #fff;
+    padding: 6px 0;
+    margin: 3px;
+    border-radius: 2px;
+    cursor: pointer;
+    .i18n-lang-item {
+      display: flex;
+      padding: 5px;
+      font-size: 12px;
+      line-height: 15px;
+      .i18n-item-lang-type {
+        width: 40px;
+        margin-right: 10px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+      .item-lang-content {
+        width: 170px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+    }
+  }
+
+  .lowcode-setter-i18n-search-box-container:hover {
+    background-color: #f6f7f9;
+  }
+}

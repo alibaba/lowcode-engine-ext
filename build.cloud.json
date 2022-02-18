@@ -1,0 +1,33 @@
+{
+  "entry": {
+    "engine-ext": "./src/index.tsx"
+  },
+  "library": "___AliLowCodeEngineExt___",
+  "libraryTarget": "umd",
+  "externals": {
+    "react": "var window.React",
+    "react-dom": "var window.ReactDOM",
+    "prop-types": "var window.PropTypes",
+    "rax": "var window.Rax",
+    "@alilc/lowcode-engine": "var window.AliLowCodeEngine",
+    "@alilc/lowcode-engine-ext": "var window.AliLowCodeEngineExt",
+    "moment": "var moment",
+    "lodash": "var _",
+    "@alifd/next": "var Next"
+  },
+  "polyfill": false,
+  "outputDir": "dist",
+  "vendor": false,
+  "ignoreHtmlTemplate": true,
+  "sourceMap": true,
+  "plugins": [
+    "build-plugin-react-app",
+    ["build-plugin-fusion", {
+      "externalNext": "umd"
+    }],
+    ["build-plugin-moment-locales", {
+      "locales": ["zh-cn"]
+    }],
+    "./build.plugin.js"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+    "en-US":{
+        "i18nLangCN":"英语",
+        "i18nLangEN":"english"
+    },
+    "zh-CN":{
+        "i18nLangCN":"中文",
+        "i18nLangEN":"Simplified Chinese"
+    },
+    "zh-TW":{
+        "i18nLangCN":"繁体中文(台湾)",
+        "i18nLangEN":"Traditional Chinese(TW)"
+    },
+    "ja-JP":{
+        "i18nLangCN":"日语",
+        "i18nLangEN":"japanese"
+    }
+
+}
