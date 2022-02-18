@@ -1,9 +1,6 @@
-#
+#### @alilc/lowcode-engine-ext
 
-@ali/lowcode-engine-ext
+#### 简介
+lowcode-engine-ext 是阿里低代码引擎官方提供的setter和setter必须依赖的插件集合
 
-## API
-
-| 参数名 | 说明 | 必填 | 类型 | 默认值 | 备注 |
-| ------ | ---- | ---- | ---- | ------ | ---- |
-|        |      |      |      |        |      |
+setter(设置器)是用来展示每个物料的属性，[setter使用说明手册](https://www.yuque.com/lce/doc/eiegwf) [官方setter列表说明](https://www.yuque.com/lce/doc/oc220p#fl46)
