@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { isJSExpression, isJSFunction, isJSSlot } from '@alilc/lowcode-types';
 import { isPlainObject } from './utils';
 import { DatePicker, TimePicker } from '@alifd/next';
+import moment from 'moment';
 import ExpressionSetter from './setter/expression-setter';
 import ColorSetter from './setter/color-setter';
 import JsonSetter from './setter/json-setter';
@@ -26,7 +27,6 @@ import EventBindDialog from './plugin/plugin-event-bind-dialog';
 import VariableBindDialog from './plugin/plugin-variable-bind-dialog';
 import './index.less';
 import packagesInfo from '../package.json';
-
 // suggest: 做成 StringSetter 的一个参数，
 // export const TextAreaSetter = {
 //   component: TextAreaSetter,
@@ -48,9 +48,11 @@ export { ExpressionSetter, EventsSetter, JsonSetter, IconSetter };
 // eslint-disable-next-line react/no-multi-comp
 class StringDateSetter extends Component {
   render() {
-    const { onChange } = this.props;
+    const { onChange, value, showTime } = this.props;
     return (
       <DatePicker
+        value={moment(value)}
+        showTime={showTime}
         onChange={(val) => {
           onChange(val.format());
         }}
@@ -62,9 +64,10 @@ class StringDateSetter extends Component {
 // eslint-disable-next-line react/no-multi-comp
 class StringTimePicker extends Component {
   render() {
-    const { onChange } = this.props;
+    const { onChange, value } = this.props;
     return (
       <TimePicker
+        value={moment(value)}
         onChange={(val) => {
           onChange(val.format('HH:mm:ss'));
         }}
