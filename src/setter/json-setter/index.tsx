@@ -2,10 +2,12 @@ import React, { PureComponent } from 'react';
 // import PropTypes from 'prop-types';
 import { Button, Icon, Dialog } from '@alifd/next';
 import MonacoEditor from '@alilc/lowcode-plugin-base-monaco-editor';
+import CustomIcon from '../../components/custom-icon';
 import { js_beautify } from 'js-beautify';
 
 const defaultEditorOption = {
-  style: { width: '100%', height: '100%' },
+  width: '100%',
+  height: 400,
   readOnly: false,
   automaticLayout: true,
   folding: true, // 默认开启折叠代码功能
@@ -115,7 +117,7 @@ export default class JsonSetter extends PureComponent<JsonSetterProps> {
     return (
       <div>
         <Button size="small" type="primary" onClick={this.openDialog}>
-          <Icon type="edit" />
+          <CustomIcon type="icon-ic_edit" />
           编辑数据
         </Button>
       </div>
