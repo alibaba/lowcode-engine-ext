@@ -23,6 +23,7 @@ import TextAreaSetter from './setter/textarea-setter';
 import ArraySetter from './setter/array-setter';
 import ObjectSetter from './setter/object-setter';
 import VariableSetter from './setter/variable-setter';
+import TitleSetter from './setter/title-setter';
 import EventBindDialog from './plugin/plugin-event-bind-dialog';
 import VariableBindDialog from './plugin/plugin-variable-bind-dialog';
 import './index.less';
@@ -191,6 +192,7 @@ const engineExt = {
     SlotSetter: DataSlotSetter,
     ArraySetter: DataArraySetter,
     ObjectSetter: DataObjectSetter,
+    TitleSetter,
   },
 
   setterMap: {
@@ -219,6 +221,7 @@ const engineExt = {
     SlotSetter: DataSlotSetter,
     ArraySetter: DataArraySetter,
     ObjectSetter: DataObjectSetter,
+    TitleSetter,
   },
 
   pluginMap: {
