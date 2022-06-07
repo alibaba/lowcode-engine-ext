@@ -132,8 +132,17 @@ export default class ExpressionView extends PureComponent {
     const stateMap = schema.componentsTree[0].state;
     const dataSource = [];
 
+    const datasourceMap = schema.componentsTree[0]?.dataSource;
+    const list = datasourceMap?.list || [];
+
     for (const key in stateMap) {
       dataSource.push(`this.state.${key}`);
+    }
+
+    for (const item of list) {
+      if (item && item.id) {
+        dataSource.push(`this.state.${item.id}`);
+      }
     }
 
     return dataSource;
