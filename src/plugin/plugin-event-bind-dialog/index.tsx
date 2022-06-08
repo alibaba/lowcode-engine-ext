@@ -9,6 +9,8 @@ import './index.less';
 const defaultParams = '{\n \t "testKey":123 \n}';
 // 模板变量占位
 const tempPlaceHolder = '${extParams}';
+const tempPlaceHolderReg = /\$\{extParams\}/g;
+
 const defaultEditorOption = {
   style: { width: '100%', height: '319px' },
   readOnly: false,
@@ -179,7 +181,7 @@ export default class EventBindDialog extends Component<PluginProps> {
 
   onSearchEvent = () => {};
 
-  onChange = (checked) => {
+  onChange = (checked: boolean) => {
     this.setState({
       useParams: checked,
     });
@@ -196,22 +198,23 @@ export default class EventBindDialog extends Component<PluginProps> {
     }
   };
 
-  pickupFunctionName = (codeStr) => {
+  pickupFunctionName = (codeStr: string) => {
     return codeStr.substr(0, codeStr.indexOf('('));
   };
 
-  removeSpace = (str) => {
+  removeSpace = (str: string) => {
     return str.replace(/\s*/g, '');
   };
 
-  formatTemplate = (template, eventName, useParams) => {
+  formatTemplate = (template: string, eventName: string, useParams: boolean) => {
     let formatTemp;
     if (template) {
       const functionName = this.pickupFunctionName(template);
 
       formatTemp = template.replace(new RegExp('^s*' + functionName), eventName);
       if (useParams) {
-        formatTemp = formatTemp.replace(/tempPlaceHolder/g, 'extParams');
+        formatTemp = formatTemp.replace(tempPlaceHolderReg, 'extParams');
+
       } else {
         const leftIndex = formatTemp.indexOf('(');
         const rightIndex = formatTemp.indexOf(')');
@@ -240,7 +243,7 @@ export default class EventBindDialog extends Component<PluginProps> {
     return formatTemp;
   };
 
-  formatEventName = (eventName) => {
+  formatEventName = (eventName: string) => {
     const newEventNameArr = eventName.split('');
     const index = eventName.indexOf('.');
     if (index >= 0) {
@@ -283,7 +286,7 @@ export default class EventBindDialog extends Component<PluginProps> {
     this.closeDialog();
   };
 
-  onChangeEditor = (paramStr) => {
+  onChangeEditor = (paramStr: string) => {
     this.setState({
       paramStr,
     });
@@ -370,7 +373,7 @@ export default class EventBindDialog extends Component<PluginProps> {
                 value={paramStr}
                 {...defaultEditorOption}
                 {...{ language: 'json' }}
-                onChange={(newCode) => this.onChangeEditor(newCode)}
+                onChange={(newCode: string) => this.onChangeEditor(newCode)}
               />
               {!useParams && <div className="mask" />}
             </div>
