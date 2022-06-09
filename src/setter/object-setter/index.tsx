@@ -123,12 +123,12 @@ class RowSetter extends Component<RowSetterProps, RowSetterState> {
     });
   }
 
-  shouldComponentUpdate(_: any, nextState: any) {
-    if (this.state.descriptor !== nextState.descriptor) {
-      return true;
-    }
-    return false;
-  }
+  // shouldComponentUpdate(_: any, nextState: any) {
+  //   if (this.state.descriptor !== nextState.descriptor) {
+  //     return true;
+  //   }
+  //   return false;
+  // }
   private pipe: any;
 
   render() {
