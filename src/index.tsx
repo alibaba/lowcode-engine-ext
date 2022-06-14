@@ -24,6 +24,7 @@ import ArraySetter from './setter/array-setter';
 import ObjectSetter from './setter/object-setter';
 import VariableSetter from './setter/variable-setter';
 import TitleSetter from './setter/title-setter';
+import DataSourceSetter from './setter/datasource-setter';
 import EventBindDialog from './plugin/plugin-event-bind-dialog';
 import VariableBindDialog from './plugin/plugin-variable-bind-dialog';
 import './index.less';
@@ -193,6 +194,7 @@ const engineExt = {
     ArraySetter: DataArraySetter,
     ObjectSetter: DataObjectSetter,
     TitleSetter,
+    DataSourceSetter,
   },
 
   setterMap: {
@@ -222,6 +224,7 @@ const engineExt = {
     ArraySetter: DataArraySetter,
     ObjectSetter: DataObjectSetter,
     TitleSetter,
+    DataSourceSetter,
   },
 
   pluginMap: {
