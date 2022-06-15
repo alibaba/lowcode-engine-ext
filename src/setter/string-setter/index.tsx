@@ -13,7 +13,9 @@ export default class StringSetter extends React.PureComponent<StringSetterProps,
   static displayName = 'StringSetter';
 
   render() {
+
     const { onChange, placeholder, value } = this.props;
+    console.log(2222);
     return (
       <Input
         size="small"

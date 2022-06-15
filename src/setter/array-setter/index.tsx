@@ -8,7 +8,7 @@ import Sortable from './sortable';
 import './style.less';
 const { editorCabin, skeletonCabin } = common;
 const { Title } = editorCabin;
-const { createSettingFieldView, PopupContext } = skeletonCabin;
+const { createSettingFieldViewNoReaction, PopupContext } = skeletonCabin;
 
 interface ArraySetterState {
   items: SettingField[];
@@ -87,7 +87,7 @@ export class ListSetter extends Component<ArraySetterProps, ArraySetterState> {
     try {
       const index = +targetPath[1];
       fieldValue[index] = items[index].getValue();
-      field?.extraProps?.setValue?.call(field, field, fieldValue);
+      //field?.extraProps?.setValue?.call(field, field, fieldValue);
     } catch (e) {
       console.warn('[ArraySetter] extraProps.setValue failed :', e);
     }
@@ -227,6 +227,9 @@ class ArrayItem extends Component<{
 
   render() {
     const { onRemove, field } = this.props;
+
+    console.log('array 222')
+
     return (
       <div
         className="lc-listitem"
@@ -234,7 +237,7 @@ class ArrayItem extends Component<{
           this.shell = ref;
         }}
       >
-        <div className="lc-listitem-body">{createSettingFieldView(field, field.parent)}</div>
+        <div className="lc-listitem-body">{createSettingFieldViewNoReaction(field, field.parent)}</div>
         <div className="lc-listitem-actions">
           <Button size="small" ghost="light" onClick={onRemove} className="lc-listitem-action">
             <CustomIcon type="icon-ic_delete" />
@@ -267,6 +270,7 @@ export default class ArraySetter extends Component<{
   private pipe: any;
 
   render() {
+    console.log('Array render',this.props.value)
     const { mode, forceInline, ...props } = this.props;
     const { field, itemSetter } = props;
     let columns: FieldConfig[] | undefined;
@@ -302,6 +306,10 @@ export default class ArraySetter extends Component<{
       }
 
       this.pipe.send(<TableSetter key={field.id} {...props} columns={columns} />, title);
+
+
+
+
       return (
         <Button
           type={forceInline ? 'normal' : 'primary'}

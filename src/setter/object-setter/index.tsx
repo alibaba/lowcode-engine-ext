@@ -9,7 +9,7 @@ import './index.less';
 const { editorCabin, skeletonCabin, designerCabin } = common;
 const { Title } = editorCabin;
 const { isSettingField } = designerCabin;
-const { createSettingFieldView, PopupContext } = skeletonCabin;
+const { createSettingFieldViewNoReaction, PopupContext } = skeletonCabin;
 
 export default class ObjectSetter extends Component<{
   field: SettingField;
@@ -123,12 +123,13 @@ class RowSetter extends Component<RowSetterProps, RowSetterState> {
     });
   }
 
-  // shouldComponentUpdate(_: any, nextState: any) {
-  //   if (this.state.descriptor !== nextState.descriptor) {
-  //     return true;
-  //   }
-  //   return false;
-  // }
+  shouldComponentUpdate(_: any, nextState: any) {
+    if (this.state.descriptor !== nextState.descriptor) {
+      return true;
+    }
+    return false;
+  }
+  
   private pipe: any;
 
   render() {
@@ -161,7 +162,7 @@ class RowSetter extends Component<RowSetterProps, RowSetterState> {
             <CustomIcon type="icon-ic_edit" />
           </Button>
           <div className="lc-setter-object-row-body">
-            {items.map((item) => createSettingFieldView(item, field))}
+            {items.map((item) => createSettingFieldViewNoReaction(item, field))}
           </div>
         </div>
       );
@@ -225,7 +226,7 @@ class FormSetter extends Component<FormSetterProps> {
     const { field } = this.props;
     return (
       <div className="lc-setter-object lc-block-setter">
-        {this.items.map((item, index) => createSettingFieldView(item, field, index))}
+        {this.items.map((item, index) => createSettingFieldViewNoReaction(item, field, index))}
       </div>
     );
   }
