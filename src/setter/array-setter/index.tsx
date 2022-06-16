@@ -22,6 +22,7 @@ interface ArraySetterProps {
   multiValue?: boolean;
   hideDescription?: boolean;
   onChange?: Function;
+  extraProps: {renderFooter?: (options: ArraySetterProps & {onAdd: (val?: {}) => any}) => any}
 }
 
 export class ListSetter extends Component<ArraySetterProps, ArraySetterState> {
@@ -110,12 +111,12 @@ export class ListSetter extends Component<ArraySetterProps, ArraySetterState> {
     this.setState({ items: newItems });
   }
 
-  onAdd() {
+  onAdd(newValue?: {[key: string]: any}) {
     const { items = [] } = this.state;
     const { itemSetter, field } = this.props;
     const values = field.getValue() || [];
     const { initialValue } = itemSetter;
-    const defaultValue = typeof initialValue === 'function' ? initialValue(field) : initialValue;
+    const defaultValue = newValue ? newValue : (typeof initialValue === 'function' ? initialValue(field) : initialValue);
     const item = field.createField({
       name: items.length,
       setter: itemSetter,
@@ -158,7 +159,8 @@ export class ListSetter extends Component<ArraySetterProps, ArraySetterState> {
   }
 
   render() {
-    const { hideDescription } = this.props;
+    const { hideDescription, extraProps = {} } = this.props;
+    const { renderFooter } = extraProps;
     let columns: any = null;
     const { items } = this.state;
     const { scrollToLast } = this;
@@ -204,9 +206,15 @@ export class ListSetter extends Component<ArraySetterProps, ArraySetterState> {
         ) : null}
         {content}
         <div className="lc-setter-list-add">
-          <Button text type="primary" onClick={this.onAdd.bind(this)}>
-            <span>添加一项 +</span>
-          </Button>
+          {
+            !renderFooter ? (
+              <Button text type="primary" onClick={() => {
+                this.onAdd()
+              }}>
+                <span>添加一项 +</span>
+              </Button>
+            ) : renderFooter({...this.props, onAdd: this.onAdd.bind(this),})
+          }
         </div>
       </div>
     );
