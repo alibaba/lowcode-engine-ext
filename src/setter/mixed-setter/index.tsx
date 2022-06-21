@@ -31,6 +31,12 @@ export interface SetterItem {
   valueType: string[];
 }
 
+const dash = '_';
+function getMixedSelect(field) {
+  const path = field.path || [];
+  return `_unsafe_MixedSetter${dash}${path.join(dash)}${dash}select`;
+}
+
 function nomalizeSetters(
   setters?: Array<string | SetterConfig | CustomView | DynamicSetter>,
 ): SetterItem[] {
@@ -154,6 +160,15 @@ export default class MixedSetter extends Component<{
     }
     return firstMatched || firstDefault || this.setters[0];
   }
+  constructor(props) {
+    super(props);
+    // TODO: use engine ext.props
+    const mixedKey = getMixedSelect(this.props.field);
+    const usedSetter = this.props.field.node.getPropValue(mixedKey);
+    if(usedSetter) {
+      this.used = usedSetter
+    }
+  }
 
   // dirty fix vision variable setter logic
   private hasVariableSetter = this.setters.some((item) => item.name === 'VariableSetter');
@@ -164,7 +179,7 @@ export default class MixedSetter extends Component<{
       const setterComponent = getSetter('VariableSetter')?.component as any;
       if (setterComponent && setterComponent.isPopup) {
         setterComponent.show({ prop: field });
-        this.used = name;
+        this.syncSelectSetter(name);
         return;
       }
     }
@@ -193,11 +208,20 @@ export default class MixedSetter extends Component<{
 
     // reset value
     field.setValue(undefined);
-    this.used = name;
+    this.syncSelectSetter(name);
+
     if (setter) {
       this.handleInitial(setter, fieldValue);
     }
   };
+
+  private syncSelectSetter(name) {
+    // TODO: sync into engine ext.props
+    const { field } = this.props;
+    this.used = name;
+    const mixedKey = getMixedSelect(field);
+    field.node.setPropValue(mixedKey, name);
+  }
 
   private handleInitial({ initialValue }: SetterItem, fieldValue: string) {
     const { field, onChange } = this.props;

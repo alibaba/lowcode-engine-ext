@@ -11,7 +11,7 @@
   "module": "es/index.js",
   "stylePath": "style.js",
   "scripts": {
-    "start": "build-scripts start --config build.cloud.json",
+    "start": "build-scripts start --config build.cloud.json --port 4008",
     "build": "build-scripts build && build-scripts build --config build.cloud.json",
     "cloud-build": "build-scripts build --config build.cloud.json",
     "test": "build-scripts test",
@@ -70,5 +70,5 @@
     "registry": "https://registry.npmjs.org/"
   },
   "license": "MIT",
-  "homepage": "https://unpkg.com/@alilc/lowcode-engine-ext@1.0.2-beta.1/build/index.html"
+  "homepage": "https://unpkg.com/@alilc/lowcode-engine-ext@1.0.2-beta.2/build/index.html"
 }
