@@ -133,6 +133,8 @@ export default class MixedSetter extends Component<{
   value?: any;
   className?: string;
 }> {
+  private fromMixedSetterSelect = false;
+
   private setters = nomalizeSetters(this.props.setters);
 
   // set name ,used in setting Transducer
@@ -160,13 +162,14 @@ export default class MixedSetter extends Component<{
     }
     return firstMatched || firstDefault || this.setters[0];
   }
+
   constructor(props) {
     super(props);
     // TODO: use engine ext.props
     const mixedKey = getMixedSelect(this.props.field);
     const usedSetter = this.props.field.node.getPropValue(mixedKey);
-    if(usedSetter) {
-      this.used = usedSetter
+    if (usedSetter) {
+      this.used = usedSetter;
     }
   }
 
@@ -174,6 +177,7 @@ export default class MixedSetter extends Component<{
   private hasVariableSetter = this.setters.some((item) => item.name === 'VariableSetter');
 
   private useSetter = (name: string, usedName: string) => {
+    this.fromMixedSetterSelect = true;
     const { field } = this.props;
     if (name === 'VariableSetter') {
       const setterComponent = getSetter('VariableSetter')?.component as any;
@@ -288,6 +292,7 @@ export default class MixedSetter extends Component<{
     }
 
     return createSetterContent(setterType, {
+      fromMixedSetterSelect: this.fromMixedSetterSelect,
       ...shallowIntl(setterProps),
       field,
       ...restProps,
