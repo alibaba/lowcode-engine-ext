@@ -60,13 +60,13 @@ export class ListSetter extends Component<ArraySetterProps, ArraySetterState> {
 
   /**
    * onItemChange 用于 ArraySetter 的单个 index 下的数据发生变化，
-   * 因此 target.path 的数据格式必定为 [propName, arrayIndex, key?]。
+   * 因此 target.path 的数据格式必定为 [propName1, propName2, arrayIndex, key?]。
    *
    * @param target
    * @param value
    */
   onItemChange = (target: SettingField) => {
-    const targetPath: (string | number)[] = target?.path;
+    const targetPath: Array<string | number> = target?.path;
     if (!targetPath || targetPath.length < 2) {
       console.warn(
         `[ArraySetter] onItemChange 接收的 target.path <${
@@ -77,7 +77,7 @@ export class ListSetter extends Component<ArraySetterProps, ArraySetterState> {
     }
     const { field } = this.props;
     const { items } = this.state;
-    const path = field.path;
+    const { path } = field;
     if (path[0] !== targetPath[0]) {
       console.warn(
         `[ArraySetter] field.path[0] !== target.path[0] <${path[0]} !== ${targetPath[0]}>`,
@@ -86,7 +86,7 @@ export class ListSetter extends Component<ArraySetterProps, ArraySetterState> {
     }
     const fieldValue = field.getValue();
     try {
-      const index = +targetPath[1];
+      const index = +targetPath[targetPath.length - 2];
       fieldValue[index] = items[index].getValue();
       field?.extraProps?.setValue?.call(field, field, fieldValue);
     } catch (e) {
