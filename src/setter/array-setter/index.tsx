@@ -137,7 +137,7 @@ export class ListSetter extends Component<ArraySetterProps, ArraySetterState> {
   onRemove(removed: SettingField) {
     const { field } = this.props;
     const { items } = this.state;
-    const values = field.getValue();
+    const values = field.getValue() || [];
     let i = items.indexOf(removed);
     items.splice(i, 1);
     values.splice(i, 1);
