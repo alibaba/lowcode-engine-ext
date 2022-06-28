@@ -278,7 +278,7 @@ export default class EventBindDialog extends Component<PluginProps> {
       setTimeout(() => {
         event.emit('codeEditor.addFunction', {
           functionName: formatEventName,
-          templete: formatTemp,
+          template: formatTemp,
         });
       }, 200);
     }
