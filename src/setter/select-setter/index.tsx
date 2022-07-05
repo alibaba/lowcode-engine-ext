@@ -7,6 +7,10 @@ interface SelectSetterProps {
   mode?: 'single' | 'multiple' | 'tag';
   defaultValue?: any;
   options: any[];
+  /**
+   * 展开后是否能搜索
+   */
+  showSearch?: boolean;
 }
 
 interface SelectSetterState {
@@ -52,7 +56,7 @@ export default class SelectSetter extends PureComponent<SelectSetterProps, Selec
   };
 
   render() {
-    const { options, onChange, mode, value } = this.props;
+    const { options, onChange, mode, value, showSearch } = this.props;
     return (
       <Select
         autoWidth={false}
@@ -64,6 +68,7 @@ export default class SelectSetter extends PureComponent<SelectSetterProps, Selec
           onChange && onChange(val);
         }}
         style={{ width: '100%' }}
+        showSearch={showSearch}
       />
     );
   }
