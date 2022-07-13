@@ -236,7 +236,6 @@ export default class EventBindDialog extends Component<PluginProps> {
           paramList.join(',') +
           ')' +
           formatTemp.substr(rightIndex + 1, formatTemp.length);
-        console.log(formatTemp);
       }
     }
 
@@ -290,12 +289,11 @@ export default class EventBindDialog extends Component<PluginProps> {
     this.setState({
       paramStr,
     });
-    // console.log(newCode);
   };
 
   render() {
     const { selectedEventName, eventName, visiable, paramStr, useParams } = this.state;
-    console.log('selectedEventName:' + selectedEventName);
+    // console.log('selectedEventName:' + selectedEventName);
     return (
       <Dialog
         visible={visiable}

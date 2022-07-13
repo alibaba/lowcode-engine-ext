@@ -27,13 +27,11 @@ export default class NumberSetter extends React.PureComponent<
       onChange,
       min = Number.MIN_SAFE_INTEGER,
       max = Number.MAX_SAFE_INTEGER,
-      step,
+      step = 1,
       units = '',
       precision = 0,
       value,
     } = this.props;
-
-    console.log('value', value);
 
     return (
       <NumberPicker
@@ -47,7 +45,6 @@ export default class NumberSetter extends React.PureComponent<
         step={step}
         innerAfter={units}
         onChange={(val: number) => {
-          console.log('val', val);
           onChange(val);
         }}
       />

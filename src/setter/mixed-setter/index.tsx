@@ -179,6 +179,8 @@ export default class MixedSetter extends Component<{
   private useSetter = (name: string, usedName: string) => {
     this.fromMixedSetterSelect = true;
     const { field } = this.props;
+    // reset value
+    field.setValue(undefined);
     if (name === 'VariableSetter') {
       const setterComponent = getSetter('VariableSetter')?.component as any;
       if (setterComponent && setterComponent.isPopup) {
@@ -210,8 +212,6 @@ export default class MixedSetter extends Component<{
       return usedItem;
     });
 
-    // reset value
-    field.setValue(undefined);
     this.syncSelectSetter(name);
 
     if (setter) {
