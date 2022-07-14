@@ -175,7 +175,6 @@ export default class ExpressionView extends PureComponent {
    */
   getContextKeys(keys: []) {
     const { editor } = this.props.field;
-    console.log(editor);
     const limitKeys = ['schema', 'utils', 'constants'];
     if (keys.length === 0) return limitKeys;
     if (!limitKeys.includes(keys[0])) return [];

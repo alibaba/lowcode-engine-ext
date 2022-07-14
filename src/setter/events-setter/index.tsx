@@ -421,7 +421,7 @@ export default class EventsSetter extends Component<{
       this.state;
     const showEventList = lifeCycleEventList.length > 0 ? lifeCycleEventList : eventList;
 
-    console.log('eventDataList', eventDataList);
+    // console.log('eventDataList', eventDataList);
 
     return (
       <div className="lc-block-setter event-body" onClick={this.closeEventMenu}>

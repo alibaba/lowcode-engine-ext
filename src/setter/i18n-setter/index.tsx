@@ -65,7 +65,7 @@ class I18nSetter extends Component {
   };
 
   onSearch(value, filterValue) {
-    console.log('onSearch', value, filterValue);
+    // console.log('onSearch', value, filterValue);
   }
 
   showSearchPopUp = () => {
