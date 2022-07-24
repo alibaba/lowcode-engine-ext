@@ -12,7 +12,8 @@ const tempPlaceHolder = '${extParams}';
 const tempPlaceHolderReg = /\$\{extParams\}/g;
 
 const defaultEditorOption = {
-  style: { width: '100%', height: '319px' },
+  height:'319px',
+  width:'100%',
   readOnly: false,
   automaticLayout: true,
   folding: true, // 默认开启折叠代码功能

@@ -12,10 +12,23 @@ const Panel = Collapse.Panel;
 interface fontProps {
   styleData: StyleData | any;
   onStyleChange?: onStyleChange;
+  fontPropsConfig?: any;
   unit?: string;
 }
 export default (props: fontProps) => {
-  const { styleData, onStyleChange } = props;
+  const { styleData, onStyleChange, fontPropsConfig } = props;
+  const defaultFontPropsConfig = {
+    // display 展示列表
+    fontFamilyList: [
+      { value: 'Helvetica', label: 'Helvetica' },
+      { value: 'Arial', label: 'Arial' },
+      { value: 'serif', label: 'serif' },
+    ],
+  };
+
+  // 配置合并
+  const propsConfig = { ...defaultFontPropsConfig, ...fontPropsConfig };
+
   const { fontWeight, textAlign } = fontConfig;
 
   const onNumberChange = (styleKey: string, value: number, unit?: string) => {
@@ -61,6 +74,15 @@ export default (props: fontProps) => {
             value={styleData.fontWeight}
             hasClear={true}
             onChange={(val) => onStyleChange([{ styleKey: 'fontWeight', value: val }])}
+          />
+        </Row>
+        <Row title={'字体'} styleData={styleData} styleKey="">
+          <Select
+            dataSource={propsConfig.fontFamilyList}
+            style={{ width: '100%' }}
+            value={styleData.fontFamily}
+            hasClear={true}
+            onChange={(val) => onStyleChange([{ styleKey: 'fontFamily', value: val }])}
           />
         </Row>
 

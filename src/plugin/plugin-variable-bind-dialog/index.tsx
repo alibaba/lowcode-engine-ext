@@ -20,7 +20,8 @@ field: '表单Field对象'
 `;
 
 const defaultEditorProps = {
-  style: { width: '100%', height: '200px' },
+  width: '100%',
+  height:'200px'
 };
 
 const defaultEditorOption = {

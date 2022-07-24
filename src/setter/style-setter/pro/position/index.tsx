@@ -10,12 +10,15 @@ const Panel = Collapse.Panel;
 interface layoutProps {
   styleData: StyleData | any;
   onStyleChange?: onStyleChange;
+  positionPropsConfig?: any;
 }
 
 export default (props: layoutProps) => {
   const { float, clear, position } = positionConfig;
 
-  const { onStyleChange, styleData } = props;
+  const { onStyleChange, styleData, positionPropsConfig } = props;
+
+  const { isShowFloat, isShowClear } = positionPropsConfig;
 
   const onZIndexChange = (zIndex: number) => {
     onStyleChange([{ styleKey: 'zIndex', value: zIndex }]);
@@ -52,20 +55,24 @@ export default (props: layoutProps) => {
           />
         </Row>
 
-        <Row
-          title={float.title}
-          dataList={float.dataList}
-          onStyleChange={onStyleChange}
-          styleData={styleData}
-          styleKey="float"
-        />
-        <Row
-          title={clear.title}
-          dataList={clear.dataList}
-          onStyleChange={onStyleChange}
-          styleData={styleData}
-          styleKey="clear"
-        />
+        {isShowFloat && (
+          <Row
+            title={float.title}
+            dataList={float.dataList}
+            onStyleChange={onStyleChange}
+            styleData={styleData}
+            styleKey="float"
+          />
+        )}
+        {isShowClear && (
+          <Row
+            title={clear.title}
+            dataList={clear.dataList}
+            onStyleChange={onStyleChange}
+            styleData={styleData}
+            styleKey="clear"
+          />
+        )}
       </Panel>
     </Collapse>
   );

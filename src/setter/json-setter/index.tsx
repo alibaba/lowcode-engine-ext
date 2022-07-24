@@ -7,7 +7,7 @@ import { js_beautify } from 'js-beautify';
 
 const defaultEditorOption = {
   width: '100%',
-  height: 400,
+  height: '400px',
   readOnly: false,
   automaticLayout: true,
   folding: true, // 默认开启折叠代码功能
