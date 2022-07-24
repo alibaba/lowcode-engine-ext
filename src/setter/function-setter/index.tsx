@@ -8,7 +8,8 @@ import './index.less';
 const SETTER_NAME = 'function-setter';
 
 const defaultEditorOption = {
-  style: { width: '100%', height: '95%' },
+  width:'100%',
+  height:'95%',
   options: {
     readOnly: false,
     automaticLayout: true,

@@ -16,8 +16,7 @@ interface rowProps {
 }
 
 export default (props: rowProps) => {
-  const { title, dataList, styleKey, children, styleData, contentStyle = {} } = props;
-
+  const { title, dataList, styleKey, children, styleData, contentStyle = {}, value } = props;
   return (
     <div className="row-container">
       {title && (
@@ -39,7 +38,8 @@ export default (props: rowProps) => {
           <RadioGroup
             dataList={dataList}
             {...props}
-            value={styleData ? styleData[styleKey] : null}
+            // 区分是style类型的值还是其他普通的值，从styleData获取的是对象
+            value={typeof value != 'string' ? styleData && styleData[styleKey] : value}
           ></RadioGroup>
         )}
       </div>

@@ -27,20 +27,40 @@ export default (props: radioProps) => {
     ]);
   };
 
+  const onRadioItemClick = (key: string, val: string | number | boolean, value: string) => {
+    if (value == val) {
+      onStyleChange([
+        {
+          styleKey: key,
+          value: null,
+        },
+      ]);
+    }
+  };
+
   return (
     <div className="radiogroup-style">
-      {value ? (
+      {/* {value ? (
         <RadioGroup
           value={value}
           shape="button"
           onChange={(val) => onRadioChange(styleKey, val)}
+          // onClick={(event) => {
+          //   onRadioClick(event, styleKey, value);
+          // }}
           aria-labelledby="groupId"
         >
           {dataList &&
             dataList.map((item: RadioItem) => (
               <Balloon
                 trigger={
-                  <Radio id={item.value} value={item.value}>
+                  <Radio
+                    id={item.value}
+                    value={item.value}
+                    onClick={(e) => {
+                      onRadioItemClick(styleKey, e.currentTarget.id, value);
+                    }}
+                  >
                     {item.icon ? <Icon type={item.icon} size="small"></Icon> : item.title}
                   </Radio>
                 }
@@ -74,7 +94,38 @@ export default (props: radioProps) => {
               </Balloon>
             ))}
         </RadioGroup>
-      )}
+      )} */}
+      <RadioGroup
+        value={value}
+        shape="button"
+        onChange={(val) => onRadioChange(styleKey, val)}
+        // onClick={(event) => {
+        //   onRadioClick(event, styleKey, value);
+        // }}
+        aria-labelledby="groupId"
+      >
+        {dataList &&
+          dataList.map((item: RadioItem) => (
+            <Balloon
+              trigger={
+                <Radio
+                  id={item.value}
+                  value={item.value}
+                  onClick={(e) => {
+                    onRadioItemClick(styleKey, e.currentTarget.id, value);
+                  }}
+                >
+                  {item.icon ? <Icon type={item.icon} size="small"></Icon> : item.title}
+                </Radio>
+              }
+              triggerType="hover"
+              closable={false}
+              align="t"
+            >
+              {item.tips}
+            </Balloon>
+          ))}
+      </RadioGroup>
     </div>
   );
 };

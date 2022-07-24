@@ -20,6 +20,7 @@ const defaultEditorOption = {
   lineNumbers: 'on',
   wordWrap: 'off',
   formatOnPaste: true,
+  height:'100%',
   fontSize: 12,
   tabSize: 2,
   scrollBeyondLastLine: false,
@@ -87,7 +88,7 @@ export default class CssCode extends React.Component<CodeProps> {
     this.setState({
       cssCode: newCode,
     });
-    let newStyleData = parseToStyleData(newCode);
+    const newStyleData = parseToStyleData(newCode);
     // 检查是否和原来的styleData完全相同
     newStyleData && onStyleDataChange(newStyleData);
   };
