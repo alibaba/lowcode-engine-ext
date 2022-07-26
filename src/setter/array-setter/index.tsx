@@ -147,7 +147,7 @@ export class ListSetter extends Component<ArraySetterProps, ArraySetterState> {
       i++;
     }
     removed.remove();
-    const pureValues = values.map((item: any) => Object.assign({}, item));
+    const pureValues = values.map((item: any) => typeof(item) === 'object' ? Object.assign({}, item):item);
     field?.setValue(pureValues);
     this.setState({ items });
   }
