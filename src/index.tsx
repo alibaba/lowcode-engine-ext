@@ -55,7 +55,7 @@ class StringDateSetter extends Component {
         value={moment(value)}
         showTime={showTime}
         onChange={(val) => {
-          onChange(val.format());
+          onChange(val ? val.format() : val);
         }}
       />
     );
@@ -70,7 +70,7 @@ class StringTimePicker extends Component {
       <TimePicker
         value={moment(value)}
         onChange={(val) => {
-          onChange(val.format('HH:mm:ss'));
+          onChange(val ? val.format('HH:mm:ss') : val);
         }}
       />
     );
