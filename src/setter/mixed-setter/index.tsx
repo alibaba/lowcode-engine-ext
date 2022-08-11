@@ -360,7 +360,7 @@ export default class MixedSetter extends Component<{
               setterComponent.show({ prop: field });
             }}
           >
-            {intlNode('Binded: {expr}', { expr: field.getValue().value })}
+            {intlNode('Binded: {expr}', { expr: field.getValue()?.value ?? '-' })}
           </a>
         );
       } else {
