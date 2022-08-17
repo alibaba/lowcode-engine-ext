@@ -1,6 +1,6 @@
 {
   "name": "@alilc/lowcode-engine-ext",
-  "version": "1.0.4",
+  "version": "1.0.5-beta.2",
   "description": "",
   "files": [
     "dist",
@@ -70,5 +70,5 @@
     "registry": "https://registry.npmjs.org/"
   },
   "license": "MIT",
-  "homepage": "https://unpkg.com/@alilc/lowcode-engine-ext@1.0.4/build/index.html"
+  "homepage": "https://unpkg.com/@alilc/lowcode-engine-ext@1.0.5-beta.2/build/index.html"
 }

@@ -6,11 +6,12 @@ const ICON_URL = '//at.alicdn.com/t/font_2761185_gdpwg9vnz7.js';
 
 let CustomIcon: any;
 
-window.onload = function () {
+document.addEventListener('DOMContentLoaded', function () {
+  // console.log('3 seconds passed');
   CustomIcon = Icon.createFromIconfontCN({
     scriptUrl: ICON_URL,
   });
-};
+});
 
 interface IconProps {
   type: string;
