@@ -29,17 +29,21 @@
     "component"
   ],
   "dependencies": {
+    "@alilc/lowcode-plugin-base-monaco-editor": "1.1.1",
     "@alilc/lowcode-types": "1.0.0",
     "@alilc/lowcode-utils": "1.0.0",
-    "react-color": "^2.19.3",
     "classnames": "^2.2.6",
     "cssjson": "^2.1.3",
+    "intl-messageformat": "^10.1.1",
     "js-beautify": "^1.13.0",
-    "@alilc/lowcode-plugin-base-monaco-editor": "1.1.1"
+    "react-color": "^2.19.3"
   },
   "devDependencies": {
     "@alib/build-scripts": "^0.1.3",
-    "@alifd/next": "1.x",
+    "@alifd/meet-react": ">=2.0.0 <3.0.0",
+    "@alifd/next": "~1.25.50",
+    "@alilc/lowcode-editor-skeleton": "1.0.0",
+    "@babel/core": ">=7.13.0 <8.0.0",
     "@iceworks/spec": "^1.0.0",
     "@types/react": "^16.9.13",
     "@types/react-dom": "^16.9.4",
@@ -47,18 +51,27 @@
     "build-plugin-fusion": "^0.1.0",
     "build-plugin-fusion-css": "1.0.3",
     "build-plugin-moment-locales": "^0.1.0",
-    "@alilc/lowcode-editor-skeleton": "1.0.0",
     "build-plugin-react-app": "^1.1.2",
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.14.0",
+    "eslint": ">=7.5.0 <8.0.0 || >=8.0.0-0 <8.0.0",
     "f2elint": "^2.2.0",
+    "moment": ">=2.22.1 <3.0.0",
+    "monaco-editor": ">= 0.21.0 < 1",
+    "postcss": "^7.0.2",
+    "rax": "^1.0.0",
     "react": "^16.3.0",
     "react-dom": "^16.3.0",
-    "tsconfig-paths-webpack-plugin": "^3.2.0"
+    "sass": ">=1.3.0 <2.0.0",
+    "stylelint": ">=8.3.0 <9.0.0 || >=9.0.0 <10.0.0 || >=10.0.0 <11.0.0 || >=11.0.0 <12.0.0 || >=12.0.0 <13.0.0 || >=13.0.0 <14.0.0",
+    "tsconfig-paths-webpack-plugin": "^3.2.0",
+    "typescript": ">=2.8.0",
+    "vite": ">=2.0.0",
+    "webpack": ">=4.41.1 <5.0.0"
   },
   "peerDependencies": {
-    "react": "^16.3.0",
-    "@alifd/next": "1.x"
+    "@alifd/next": "1.x",
+    "react": "^16.3.0"
   },
   "componentConfig": {
     "name": "lowcode-engine-ext",
