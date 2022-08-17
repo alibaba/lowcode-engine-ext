@@ -28,7 +28,7 @@ export default class ClassNameView extends PureComponent<PluginProps> {
     if (css) {
       const re = /\.?\w+[^{]+\{[^}]*\}/g;
       const list = css.match(re);
-      list.map((item) => {
+      list?.map((item) => {
         if (item[0] === '.') {
           let className = item.substring(1, item.indexOf('{'));
           if (className.indexOf(':') >= 0) {
