@@ -73,6 +73,11 @@ export default class VariableBindDialog extends Component<PluginProps> {
     });
   }
 
+  exportSchema = () => {
+     // 可以定制getSchema方法
+     return this.props.config?.props?.getSchema() || project.exportSchema();
+  }
+
   initCode = () => {
     const { field } = this.state;
     const fieldValue = field.getValue();
@@ -96,7 +101,7 @@ export default class VariableBindDialog extends Component<PluginProps> {
    * @return {Array}
    */
   getMethods(): any[] {
-    const schema = project.exportSchema();
+    const schema = this.exportSchema();
 
     const methodsMap = schema.componentsTree[0]?.methods;
     const methods = [];
@@ -116,7 +121,7 @@ export default class VariableBindDialog extends Component<PluginProps> {
    * @return {Array}
    */
   getVarableList(): any[] {
-    const schema = project.exportSchema();
+    const schema = this.exportSchema();
 
     const stateMap = schema.componentsTree[0]?.state;
     const dataSource = [];
@@ -136,7 +141,7 @@ export default class VariableBindDialog extends Component<PluginProps> {
    * @return {Array}
    */
   getDataSource(): any[] {
-    const schema = project.exportSchema();
+    const schema = this.exportSchema();
     const stateMap = schema.componentsTree[0]?.dataSource;
     const list = stateMap?.list || [];
     const dataSource = [];
