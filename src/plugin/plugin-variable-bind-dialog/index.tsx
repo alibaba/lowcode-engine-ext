@@ -75,7 +75,7 @@ export default class VariableBindDialog extends Component<PluginProps> {
 
   exportSchema = () => {
      // 可以定制getSchema方法
-     return this.props.config?.props?.getSchema() || project.exportSchema();
+     return this.props.config?.props?.getSchema?.() || project.exportSchema();
   }
 
   initCode = () => {
@@ -390,6 +390,9 @@ export default class VariableBindDialog extends Component<PluginProps> {
           title={this.renderTitle()}
           onClose={this.closeDialog}
           footer={this.renderBottom()}
+          popupContainer={
+            document.getElementById('engine-popup-container') ? 'engine-popup-container' : undefined
+          }
         >
           <div className="variable-dialog-body">
             <div className="dialog-left-container">
