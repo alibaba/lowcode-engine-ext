@@ -87,8 +87,10 @@ export class ListSetter extends Component<ArraySetterProps, ArraySetterState> {
     const fieldValue = field.getValue();
     try {
       const index = +targetPath[targetPath.length - 2];
-      fieldValue[index] = items[index].getValue();
-      field?.extraProps?.setValue?.call(field, field, fieldValue);
+      if (typeof index === 'number' && !isNaN(index)) {
+        fieldValue[index] = items[index].getValue();
+        field?.extraProps?.setValue?.call(field, field, fieldValue);
+      }
     } catch (e) {
       console.warn('[ArraySetter] extraProps.setValue failed :', e);
     }
