@@ -14,13 +14,26 @@ const Panel = Collapse.Panel;
 
 const BORDER_MAX = 30;
 
+enum BorderRadiusType {
+  fixedBorder = "fixedBorder",
+  partBorder = "partBorder",
+}
+
 const BorderDirectionMap = {
   borderLeft: 'borderLeft',
   borderRight: 'borderRight',
   borderTop: 'borderTop',
   borderBottom: 'borderBottom',
-  border: 'border',
+  // border:'border'
 };
+
+const borderRadiusMap = {
+  borderRadius:'borderRadius',
+  borderTopLeftRadius:'borderTopLeftRadius',
+  borderTopRightRadius:'borderTopRightRadius',
+  borderBottomLeftRadius:'borderBottomLeftRadius',
+  borderBottomRightRadius:'borderBottomRightRadius',
+}
 
 interface fontProps {
   styleData: StyleData | any;
@@ -35,45 +48,62 @@ export default (props: fontProps) => {
 
   useEffect(() => {
     if (!borderDirection) {
+      debugger;
       for (let key in styleData) {
         for (let borderDirectionKey in BorderDirectionMap) {
           if (key.indexOf(borderDirectionKey) >= 0) {
             setBorderDirection(borderDirectionKey);
-            return;
+            break;
+          }
+          if (styleData['border']){
+            setBorderDirection('border');
+            break;
           }
         }
-
-        // if (key.indexOf(BorderDirectionMap.borderLeft)>=0){
-        //   setBorderDirection('borderLeft');
-        //   return;
-        // }else if (key.indexOf('borderRight')>=0){
-        //   setBorderDirection('borderRight');
-        //   return;
-        // }else if (key.indexOf('borderTop')>=0){
-        //   setBorderDirection('borderTop');
-        //   return;
-        // }else if (key.indexOf('borderBottom')>=0){
-        //   setBorderDirection('borderBottom');
-        //   return;
-        // }else if (key.indexOf('border')>=0){
-        //   setBorderDirection('border');
-        //   return;
-        // }
       }
     }
+
+    // 判断圆角类型
+    if (styleData[borderRadiusMap.borderRadius]){
+      setSelBorderType(BorderRadiusType.fixedBorder);
+    }else if (styleData[borderRadiusMap.borderBottomLeftRadius] || styleData[borderRadiusMap.borderBottomRightRadius] || styleData[borderRadiusMap.borderTopLeftRadius] || styleData[borderRadiusMap.borderTopRightRadius]){
+      setSelBorderType(BorderRadiusType.partBorder);
+    }
+
   }, [styleData]);
 
   const onChangeBorderType = (styleDataList: Array<StyleData>) => {
+    
     if (styleDataList) {
-      setSelBorderType(styleDataList[0].value);
+      const styleKey = styleDataList[0].value;
+      setSelBorderType(styleKey);
     }
   };
 
   const onRangeChange = (styleKey: string, value: string, unit?: string) => {
+
+    // 需要清除partBorder的圆角设置，不然会冲突，容易遗漏
+
     onStyleChange([
       {
         styleKey,
         value: unit ? addUnit(value, unit) : value,
+      },
+      {
+        styleKey:borderRadiusMap.borderBottomLeftRadius,
+        value: null
+      },
+      {
+        styleKey:borderRadiusMap.borderBottomRightRadius,
+        value: null
+      },
+      {
+        styleKey:borderRadiusMap.borderTopLeftRadius,
+        value: null
+      },
+      {
+        styleKey:borderRadiusMap.borderTopRightRadius,
+        value: null
       },
     ]);
   };
@@ -81,6 +111,23 @@ export default (props: fontProps) => {
   const onIconClick = (styleKey: string) => {
     setBorderDirection(styleKey);
   };
+
+  const onPartBorderRadiusChange = (styleKey: string, value: number, unit: string,styleData:any) => {
+    let styleDataList = [
+      {
+        styleKey,
+        value: unit ? addUnit(value, unit) : value,
+      },
+    ];
+    if (styleData['borderRadius']){
+      styleDataList.push({
+        styleKey:'borderRadius',
+        value:null
+      })
+    }
+    onStyleChange(styleDataList);
+  }
+
 
   const onBorderTypeChange = (styleKey: string, value: string) => {
     onStyleChange([
@@ -114,7 +161,7 @@ export default (props: fontProps) => {
 
               <Number
                 styleKey="borderRadius"
-                style={{ minWidth: '60px', marginLeft: '5px' }}
+                style={{ minWidth: '80px', marginLeft: '5px' }}
                 {...props}
                 max={BORDER_MAX}
               />
@@ -135,18 +182,20 @@ export default (props: fontProps) => {
                 <Number
                   max={BORDER_MAX}
                   min={0}
-                  styleKey="borderTopLeftRadius"
+                  styleKey={borderRadiusMap.borderTopLeftRadius}
                   {...props}
-                  style={{ width: '60px' }}
+                  style={{ width: '68px' }}
+                  onChange = {(styleKey, val, unit)=>onPartBorderRadiusChange(styleKey, val, unit,styleData)}
                 />
               </div>
               <div className="row-item">
                 <Icon type="icon-radius-upright" className="radius-icon" />
                 <Number
                   max={BORDER_MAX}
-                  styleKey="borderTopRightRadius"
+                  styleKey={borderRadiusMap.borderTopRightRadius}
                   {...props}
-                  style={{ width: '60px' }}
+                  style={{ width: '68px' }}
+                  onChange = {(styleKey, val, unit)=>onPartBorderRadiusChange(styleKey, val, unit,styleData)}
                 />
               </div>
             </Row>
@@ -160,25 +209,27 @@ export default (props: fontProps) => {
                 <Icon type="icon-radius-bottomleft" className="radius-icon" />
                 <Number
                   max={BORDER_MAX}
-                  styleKey="borderBottomLeftRadius"
+                  styleKey={borderRadiusMap.borderBottomLeftRadius}
                   {...props}
-                  style={{ width: '60px' }}
+                  style={{ width: '68px' }}
+                  onChange = {(styleKey, val, unit)=>onPartBorderRadiusChange(styleKey, val, unit,styleData)}
                 />
               </div>
               <div className="row-item">
                 <Icon type="icon-radius-bottomright" className="radius-icon" />
                 <Number
                   max={BORDER_MAX}
-                  styleKey="borderBottomRightRadius"
+                  styleKey={borderRadiusMap.borderBottomRightRadius}
                   {...props}
-                  style={{ width: '60px' }}
+                  onChange = {(styleKey:string, val:number, unit:string)=>onPartBorderRadiusChange(styleKey, val, unit,styleData)}
+                  style={{ width: '68px' }}
                 />
               </div>
             </Row>
           </>
         )}
 
-        <Row title={'边框'} styleKey="borderRadius" {...props}>
+        <Row title={'边框'} styleKey="border" {...props}>
           <div className="border-container">
             <div className="border-icon-container">
               <div className="top-icon-container">
@@ -207,7 +258,7 @@ export default (props: fontProps) => {
 
                 <div
                   className={
-                    borderDirection === BorderDirectionMap.border
+                    borderDirection === 'border'
                       ? 'sel-icon icon-container'
                       : 'icon-container'
                   }

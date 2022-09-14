@@ -15,6 +15,7 @@ interface numberProps {
   field?: any;
   placeholderScale?: number;
   useComputedStyle?: boolean;
+  onChange?:any;
 }
 
 export default (props: numberProps) => {
@@ -28,6 +29,7 @@ export default (props: numberProps) => {
     style = {},
     className = '',
     placeholderScale,
+    onChange,
   } = props;
 
   const [placeholder, setPlaceholder] = useState(null);
@@ -65,7 +67,7 @@ export default (props: numberProps) => {
       value={unit ? removeUnit(styleData[styleKey]) : styleData[styleKey]}
       min={isEmptyValue(min) ? Number.MIN_SAFE_INTEGER : min}
       max={isEmptyValue(max) ? Number.MAX_SAFE_INTEGER : max}
-      onChange={(val) => onNumberChange(styleKey, val, unit)}
+      onChange={(val) => onChange ? onChange(styleKey, val, unit):onNumberChange(styleKey, val, unit)}
       innerAfter={unit ? unit : ''}
       placeholder={placeholder}
     ></NumberPicker>
