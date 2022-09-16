@@ -46,7 +46,7 @@ export default (props: layoutProps) => {
           <PositionBox styleData={styleData} onStyleChange={onStyleChange} {...props} />
         )}
 
-        <Row title={'层叠顺序'} styleData={styleData} styleKey="zIndex">
+        <Row title={'zIndex'} styleData={styleData} styleKey="zIndex">
           <NumberPicker
             step={1}
             precision={2}

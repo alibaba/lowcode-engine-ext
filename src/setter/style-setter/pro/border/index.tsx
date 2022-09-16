@@ -48,7 +48,6 @@ export default (props: fontProps) => {
 
   useEffect(() => {
     if (!borderDirection) {
-      debugger;
       for (let key in styleData) {
         for (let borderDirectionKey in BorderDirectionMap) {
           if (key.indexOf(borderDirectionKey) >= 0) {
@@ -185,7 +184,7 @@ export default (props: fontProps) => {
                   styleKey={borderRadiusMap.borderTopLeftRadius}
                   {...props}
                   style={{ width: '68px' }}
-                  onChange = {(styleKey, val, unit)=>onPartBorderRadiusChange(styleKey, val, unit,styleData)}
+                  onChangeFunction = {(styleKey, val, unit)=>onPartBorderRadiusChange(styleKey, val, unit,styleData)}
                 />
               </div>
               <div className="row-item">
@@ -195,7 +194,7 @@ export default (props: fontProps) => {
                   styleKey={borderRadiusMap.borderTopRightRadius}
                   {...props}
                   style={{ width: '68px' }}
-                  onChange = {(styleKey, val, unit)=>onPartBorderRadiusChange(styleKey, val, unit,styleData)}
+                  onChangeFunction = {(styleKey, val, unit)=>onPartBorderRadiusChange(styleKey, val, unit,styleData)}
                 />
               </div>
             </Row>
@@ -212,7 +211,7 @@ export default (props: fontProps) => {
                   styleKey={borderRadiusMap.borderBottomLeftRadius}
                   {...props}
                   style={{ width: '68px' }}
-                  onChange = {(styleKey, val, unit)=>onPartBorderRadiusChange(styleKey, val, unit,styleData)}
+                  onChangeFunction = {(styleKey, val, unit)=>onPartBorderRadiusChange(styleKey, val, unit,styleData)}
                 />
               </div>
               <div className="row-item">
@@ -221,7 +220,7 @@ export default (props: fontProps) => {
                   max={BORDER_MAX}
                   styleKey={borderRadiusMap.borderBottomRightRadius}
                   {...props}
-                  onChange = {(styleKey:string, val:number, unit:string)=>onPartBorderRadiusChange(styleKey, val, unit,styleData)}
+                  onChangeFunction = {(styleKey:string, val:number, unit:string)=>onPartBorderRadiusChange(styleKey, val, unit,styleData)}
                   style={{ width: '68px' }}
                 />
               </div>
