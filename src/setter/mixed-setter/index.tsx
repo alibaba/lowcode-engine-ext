@@ -34,7 +34,25 @@ export interface SetterItem {
 const dash = '_';
 function getMixedSelect(field) {
   const path = field.path || [];
-  return `_unsafe_MixedSetter${dash}${path.join(dash)}${dash}select`;
+  if(path.length) {
+    const key = `_unsafe_MixedSetter${dash}${path.at(-1)}${dash}select`
+    const newPath = [...path];
+    newPath.splice(path.length - 1, 1, key);
+    const newKey = field.node.getPropValue(newPath.join('.'))
+    if(newKey) return newKey;
+    // 兼容下以前的问题情况
+    const oldUnsafeKey = `_unsafe_MixedSetter${dash}${path.join(dash)}${dash}select`;
+    return field.node.getPropValue(oldUnsafeKey);
+  }
+  return undefined;
+}
+function setMixedSelect(field, usedSetter) {
+  const path = field.path || [];
+  if(path.length) {
+    const key = `_unsafe_MixedSetter${dash}${path.at(-1)}${dash}select`
+    path.splice(path.length - 1, 1, key);
+    field.node.setPropValue(path.join('.'), usedSetter)
+  }
 }
 
 function nomalizeSetters(
@@ -166,8 +184,7 @@ export default class MixedSetter extends Component<{
   constructor(props) {
     super(props);
     // TODO: use engine ext.props
-    const mixedKey = getMixedSelect(this.props.field);
-    const usedSetter = this.props.field.node.getPropValue(mixedKey);
+    const usedSetter = getMixedSelect(this.props.field);
     if (usedSetter) {
       this.used = usedSetter;
     }
@@ -223,8 +240,7 @@ export default class MixedSetter extends Component<{
     // TODO: sync into engine ext.props
     const { field } = this.props;
     this.used = name;
-    const mixedKey = getMixedSelect(field);
-    field.node.setPropValue(mixedKey, name);
+    setMixedSelect(field, name);
   }
 
   private handleInitial({ initialValue }: SetterItem, fieldValue: string) {
