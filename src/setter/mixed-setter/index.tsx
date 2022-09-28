@@ -40,9 +40,14 @@ function getMixedSelect(field) {
     newPath.splice(path.length - 1, 1, key);
     const newKey = field.node.getPropValue(newPath.join('.'))
     if(newKey) return newKey;
-    // 兼容下以前的问题情况
+    // 兼容下以前的问题情况，如果捕获到，获取 oldUnsafeKey 取值并将其直接置空
     const oldUnsafeKey = `_unsafe_MixedSetter${dash}${path.join(dash)}${dash}select`;
-    return field.node.getPropValue(oldUnsafeKey);
+    const oldUsedSetter = field.node.getPropValue(oldUnsafeKey);
+    if(oldUsedSetter) {
+      field.node.setPropValue(newPath.join('.'), oldUsedSetter);
+      field.node.setPropValue(oldUnsafeKey, undefined);
+    }
+    return oldUsedSetter;
   }
   return undefined;
 }
