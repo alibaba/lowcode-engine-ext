@@ -47,17 +47,6 @@ export default class CssCode extends React.Component<CodeProps> {
     isCanSave:true,
   };
 
-  // shouldComponentUpdate(nextProps: CodeProps, nextState: any) {
-  //   if (
-  //     // nextProps.visible != this.props.visible ||
-  //     this.state.cssCode == '' && nextState.cssCode != ''
-  //   ) {
-  //     return true;
-  //   }
-
-  //   return false;
-  // }
-
   componentWillReceiveProps(nextProps: CodeProps) {
     const cssCode = parseToCssCode(nextProps.styleData);
     this.setState({
@@ -115,7 +104,7 @@ export default class CssCode extends React.Component<CodeProps> {
         <div>
           <div style={{marginBottom:'5px',display:'flex',alignItems:'center',justifyContent:'space-between'}}>
           <Icon type="icon-CSS"></Icon>
-          <Button type="primary" onClick={this.styleSave} disabled={isCanSave}>保存</Button>
+          <Button type="primary" onClick={this.styleSave} disabled={isCanSave} size="small">保存</Button>
         </div>
           <MonacoEditor
                 value={cssCode}
