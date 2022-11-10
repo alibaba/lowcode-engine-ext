@@ -13,18 +13,19 @@ interface rowProps {
   onStyleChange?: onStyleChange;
   value?: string;
   contentStyle?: any;
+  longTitle?: boolean
 }
 
 export default (props: rowProps) => {
-  const { title, dataList, styleKey, children, styleData, contentStyle = {}, value } = props;
+  const { title, dataList, styleKey, children, styleData, contentStyle = {}, value, longTitle } = props;
   return (
     <div className="row-container">
       {title && (
         <div
           className={
             styleData[styleKey]
-              ? 'title-contaienr title-text title-text-active'
-              : 'title-contaienr title-text'
+              ? `${!longTitle?'title-contaienr':'title-contaienr-long'} title-text title-text-active`
+              : `${!longTitle?'title-contaienr':'title-contaienr-long'} title-text`
           }
         >
           {title}

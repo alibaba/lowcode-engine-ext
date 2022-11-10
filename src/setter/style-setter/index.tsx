@@ -6,7 +6,6 @@ import Border from './pro/border';
 import Background from './pro/background';
 import CssCode from './components/css-code';
 import { StyleData } from './utils/types';
-import Icon from './components/icon';
 import { ConfigProvider } from '@alifd/next';
 import './index.less';
 interface StyleSetterProps {
@@ -119,12 +118,18 @@ export default class StyleSetterV2 extends React.PureComponent<StyleSetterProps>
         <div className="lowcode-setter-style-v2">
           {isShowCssCode && (
             <div className="top-bar">
-              <div
+              {/* <div
                 onClick={() => this.changeCssCodeVisiable(false)}
                 className={cssCodeVisiable ? 'top-icon-active' : 'top-icon'}
               >
                 <Icon type="icon-CSS"></Icon>
-              </div>
+              </div> */}
+
+              <CssCode
+              styleData={styleData}
+              onStyleDataChange={this.onStyleDataChange}
+            ></CssCode>
+
             </div>
           )}
 
@@ -164,14 +169,14 @@ export default class StyleSetterV2 extends React.PureComponent<StyleSetterProps>
             ></Border>
           )}
 
-          {initFlag && (
+          {/* {initFlag && (
             <CssCode
               visible={cssCodeVisiable}
               styleData={styleData}
               onStyleDataChange={this.onStyleDataChange}
               changeCssCodeVisiable={this.changeCssCodeVisiable}
             ></CssCode>
-          )}
+          )} */}
         </div>
       </ConfigProvider>
     );
