@@ -39,7 +39,7 @@ export default (props: layoutProps) => {
   return (
     <Collapse defaultExpandedKeys={['0']}>
       <Panel title="布局" className="layout-style-container">
-        <Row title={display.title} dataList={displayDataList} styleKey="display" {...props}></Row>
+        <Row title={display.title} dataList={displayDataList} styleKey="display" {...props} longTitle={true}></Row>
 
         {styleData['display'] === 'flex' && (
           <>
@@ -47,24 +47,28 @@ export default (props: layoutProps) => {
               title={flexDirection.title}
               dataList={flexDirection.dataList}
               styleKey="flexDirection"
+              longTitle={true}
               {...props}
             />
             <Row
               title={justifyContent.title}
               dataList={justifyContent.dataList}
               styleKey="justifyContent"
+              longTitle={true}
               {...props}
             />
             <Row
               title={alignItems.title}
               dataList={alignItems.dataList}
               styleKey="alignItems"
+              longTitle={true}
               {...props}
             />
             <Row
               title={flexWrap.title}
               dataList={flexWrap.dataList}
               styleKey="flexWrap"
+              longTitle={true}
               {...props}
             />
           </>
