@@ -116,6 +116,7 @@ export default class SlotSetter extends Component<{
       switchComponent = (
         <Switch
           autoWidth
+          checked={!!value}
           defaultChecked={isOpenSlot}
           onChange={(checked) => this.onChangeSwitch(checked)}
           size="small"
