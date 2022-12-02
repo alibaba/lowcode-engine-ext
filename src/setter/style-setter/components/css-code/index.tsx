@@ -32,7 +32,10 @@ const defaultEditorOption = {
     glyphMargin: false,
     folding: false,
     lineDecorationsWidth: 0,
-    lineNumbersMinChars: 0
+    lineNumbersMinChars: 0,
+    hover:{
+      enabled:false
+    },
   },
   scrollbar: {
     vertical: 'auto',
