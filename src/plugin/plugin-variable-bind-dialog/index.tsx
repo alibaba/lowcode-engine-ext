@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Dialog, Input, Button, Icon } from '@alifd/next';
+import { Dialog, Input, Button, Icon ,Tree} from '@alifd/next';
 import { PluginProps } from '@alilc/lowcode-types';
 import { event, project } from '@alilc/lowcode-engine';
 import MonacoEditor from '@alilc/lowcode-plugin-base-monaco-editor';
@@ -57,6 +57,7 @@ export default class VariableBindDialog extends Component<PluginProps> {
     selParentVariable: null, // 选中的父级变量
     childrenVariableList: [], // 子级变量列表
     field: {}, // 编辑器全局变量
+    treeList:[],
     minimize: false, // 是否最小化
   };
 
@@ -102,13 +103,15 @@ export default class VariableBindDialog extends Component<PluginProps> {
    */
   getMethods(): any[] {
     const schema = this.exportSchema();
-
     const methodsMap = schema.componentsTree[0]?.methods;
     const methods = [];
-
     for (const key in methodsMap) {
       if (Object.prototype.hasOwnProperty.call(methodsMap, key) && key) {
-        methods.push(`${key}()`);
+        // methods.push(`${key}()`);
+        methods.push({
+          label:`${key}`,
+          key,
+        })
       }
     }
 
@@ -124,15 +127,45 @@ export default class VariableBindDialog extends Component<PluginProps> {
     const schema = this.exportSchema();
 
     const stateMap = schema.componentsTree[0]?.state;
+    const dataSourceMap = {};
     const dataSource = [];
 
     for (const key in stateMap) {
       if (Object.prototype.hasOwnProperty.call(stateMap, key) && key) {
         dataSource.push(`this.state.${key}`);
+        const valueString = stateMap[key].value;
+        let value;
+        try{
+          value = eval('('+valueString+')');
+        }catch(e){}
+        
+        if (value){
+          dataSourceMap[key] = value;
+        }
       }
     }
+    let treeList = [];
+    this.walkNode(dataSourceMap,-1,treeList);
+    // this.setState({
+    //   treeList
+    // })
+    return treeList;
+  }
 
-    return dataSource;
+  walkNode (dataSourceMap,deepNum,treeList){
+    deepNum++;
+    let index = 0
+    for (let key in dataSourceMap){
+      let treeData = {};
+      treeData.label = key;
+      treeData.key = deepNum+'_'+index;
+      if (typeof(dataSourceMap[key])=='object'){
+        treeData.children = [];
+        this.walkNode(dataSourceMap[key],deepNum,treeData.children);
+      }
+      index++;
+      treeList.push(treeData);
+    }
   }
 
   /**
@@ -148,7 +181,11 @@ export default class VariableBindDialog extends Component<PluginProps> {
 
     for (const item of list) {
       if (item && item.id) {
-        dataSource.push(`this.state.${item.id}`);
+        // dataSource.push(`this.state.${item.id}`);
+        dataSource.push({
+          label:`${item.id}`,
+          key:item.id
+        })
       }
     }
 
@@ -190,6 +227,7 @@ export default class VariableBindDialog extends Component<PluginProps> {
         const methods = this.getMethods();
         const stateVaroableList = this.getVarableList();
         const dataSource = this.getDataSource();
+
         this.setState({
           variableListMap: {
             stateVaroableList: {
@@ -318,7 +356,6 @@ export default class VariableBindDialog extends Component<PluginProps> {
     if (!selectedVariable) {
       return;
     }
-
     let newChildrenVariableList = [];
     newChildrenVariableList = selectedVariable.childrens.filter((item) => item.indexOf(val) > -1);
     this.setState({
@@ -340,6 +377,25 @@ export default class VariableBindDialog extends Component<PluginProps> {
       visiable: !state,
     });
   };
+
+  onSelectTreeNode = (selectedKeys,extra) => {
+    debugger
+    const {selParentVariable} = this.state;
+    const isLeaf = extra.selectedNodes[0]?.props?.isLeaf;
+    if (isLeaf){
+      const label = extra.selectedNodes[0]?.props?.label;
+      let selectLabel;
+      if (selParentVariable == 'stateVaroableList'){
+        selectLabel = `this.state.${label}`
+      }else if (selParentVariable == 'methods'){
+        selectLabel = `${label}()`;
+      }else if (selParentVariable == 'dataSource'){
+        selectLabel = `this.state.${label}`
+      }
+      this.onSelectItem(selectLabel);
+    }
+  }
+
 
   renderTitle = () => {
     return (
@@ -365,6 +421,42 @@ export default class VariableBindDialog extends Component<PluginProps> {
       searchValue,
       minimize,
     } = this.state;
+
+    const data = [
+      {
+          label: 'Component',
+          key: '1',
+          children: [
+              {
+                  label: 'Form',
+                  key: '2',
+                  selectable: false,
+                  children: [
+                      {
+                          label: 'Input',
+                          key: '4',
+                      },
+                      {
+                          label: 'Select',
+                          key: '5',
+                          disabled: true,
+                      },
+                  ],
+              },
+              {
+                  label: 'Display',
+                  key: '3',
+                  children: [
+                      {
+                          label: 'Table',
+                          key: '6',
+                      },
+                  ],
+              },
+          ],
+      },
+  ];
+
     return (
       <div>
         {minimize ? (
@@ -411,6 +503,9 @@ export default class VariableBindDialog extends Component<PluginProps> {
                       </li>
                     );
                   })}
+
+
+
                 </ul>
                 <div className="vs-variable-selector-items-container">
                   <div className="ve-search-control">
@@ -423,13 +518,16 @@ export default class VariableBindDialog extends Component<PluginProps> {
                       onChange={this.onVariableSearchChange}
                     />
                   </div>
-                  <ul className="vs-variable-selector-items vs-variable-selector-ul">
-                    {childrenVariableList &&
+                  {/* <ul className="vs-variable-selector-items vs-variable-selector-ul"> */}
+                  <ul className="tree-container">
+                    {/* {childrenVariableList &&
                       childrenVariableList.map((item) => (
                         <li onClick={() => this.onSelectItem(item)} key={item}>
                           {item}
                         </li>
-                      ))}
+                      ))} */}
+
+                    <Tree dataSource={childrenVariableList} onSelect={this.onSelectTreeNode} defaultExpandAll/>
                   </ul>
                 </div>
               </div>
