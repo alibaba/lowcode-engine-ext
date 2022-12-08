@@ -35,7 +35,7 @@ const dash = '_';
 function getMixedSelect(field) {
   const path = field.path || [];
   if(path.length) {
-    const key = `_unsafe_MixedSetter${dash}${path.at(-1)}${dash}select`
+    const key = `_unsafe_MixedSetter${dash}${path[path.length-1]}${dash}select`
     const newPath = [...path];
     newPath.splice(path.length - 1, 1, key);
     const newKey = field.node.getPropValue(newPath.join('.'))
@@ -54,7 +54,7 @@ function getMixedSelect(field) {
 function setMixedSelect(field, usedSetter) {
   const path = field.path || [];
   if(path.length) {
-    const key = `_unsafe_MixedSetter${dash}${path.at(-1)}${dash}select`
+    const key = `_unsafe_MixedSetter${dash}${path[path.length-1]}${dash}select`
     path.splice(path.length - 1, 1, key);
     field.node.setPropValue(path.join('.'), usedSetter)
   }
