@@ -36,6 +36,10 @@
         margin: 0;
         padding: 0;
       }
+      .tree-container{
+        padding-left: 10px;
+      }
+
       .vs-variable-selector-ul {
         li {
           height: 28px;
@@ -59,7 +63,8 @@
         overflow: auto;
       }
       .vs-variable-selector-items-container {
-        width: 157px;
+        width: 197px;
+        overflow-y: auto;
         .ve-search-control {
           height: 28px;
           margin: 10px;
@@ -181,4 +186,9 @@
   img {
     width: 12px;
   }
+}
+
+.next-tree.next-node-indent .next-tree-node-inner.next-selected .next-tree-node-label {
+  color: #fff;
+  background-color: #4576f5;
 }
