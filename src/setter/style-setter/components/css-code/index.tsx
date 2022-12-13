@@ -15,7 +15,6 @@ const defaultEditorOption = {
   folding: true, // 默认开启折叠代码功能
   wordWrap: 'off',
   formatOnPaste: true,
-  height: '100px',
   fontSize: 12,
   tabSize: 2,
   scrollBeyondLastLine: false,
@@ -46,6 +45,7 @@ export default class CssCode extends React.Component<CodeProps> {
     defaultEditorProps: {},
     cssCode: '',
     isCanSave: true,
+    height: '100px',
   };
 
   componentWillReceiveProps(nextProps: CodeProps) {
@@ -96,10 +96,10 @@ export default class CssCode extends React.Component<CodeProps> {
       });
     }
   };
-  prevHeight = 100;
+  prevHeight = 80;
   render() {
-    const { cssCode, defaultEditorProps, isCanSave } = this.state;
-    // 高度缓存
+    const { cssCode, defaultEditorProps, isCanSave, height } = this.state;
+    //  高度缓存
     const handleEditorMount = (monaco: any, editor: any) => {
       editor.onDidBlurEditorWidget(() => {
         this.styleSave();
@@ -116,7 +116,7 @@ export default class CssCode extends React.Component<CodeProps> {
         const height = lineCount * lineHeight + padding;
         if (this.prevHeight !== height) {
           this.prevHeight = height;
-          defaultEditorOption.height = `${height}px`;
+          this.setState({height: `${height}px`})
           editor.layout();
         }
       };
@@ -143,6 +143,7 @@ export default class CssCode extends React.Component<CodeProps> {
           {...{ language: 'css' }}
           onChange={(newCode: string) => this.updateCode(newCode)}
           editorDidMount={handleEditorMount}
+          height={height}
         />
       </div>
     );
