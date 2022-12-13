@@ -11,7 +11,7 @@ interface CodeProps {
 
 const defaultEditorOption = {
   readOnly: false,
-  //automaticLayout: true,
+  // automaticLayout: true,
   folding: true, // 默认开启折叠代码功能
   wordWrap: 'off',
   formatOnPaste: true,
@@ -96,7 +96,7 @@ export default class CssCode extends React.Component<CodeProps> {
       });
     }
   };
-  public prevHeight = 100;
+  prevHeight = 100;
   render() {
     const { cssCode, defaultEditorProps, isCanSave } = this.state;
     // 高度缓存
