@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Button} from '@alifd/next';
+import { Button } from '@alifd/next';
 import { StyleData } from '../../utils/types';
 import { parseToCssCode, parseToStyleData } from '../../utils';
 import MonacoEditor from '@alilc/lowcode-plugin-base-monaco-editor';
@@ -9,14 +9,13 @@ interface CodeProps {
   onStyleDataChange: (val: any) => void;
 }
 
-
 const defaultEditorOption = {
   readOnly: false,
   //automaticLayout: true,
   folding: true, // 默认开启折叠代码功能
   wordWrap: 'off',
   formatOnPaste: true,
-  //height:'100%',
+  height: '100px',
   fontSize: 12,
   tabSize: 2,
   scrollBeyondLastLine: false,
@@ -25,29 +24,28 @@ const defaultEditorOption = {
   minimap: {
     enabled: false,
   },
-  options : {
+  options: {
     lineNumbers: 'off',
-    fixedOverflowWidgets:true,
-    automaticLayout:true,
+    fixedOverflowWidgets: true,
+    automaticLayout: true,
     glyphMargin: false,
     folding: false,
     lineDecorationsWidth: 0,
     lineNumbersMinChars: 0,
-    hover:{
-      enabled:false
+    hover: {
+      enabled: false,
     },
   },
   scrollbar: {
-    vertical: 'auto',
     horizontal: 'auto',
-  }
+  },
 };
 
 export default class CssCode extends React.Component<CodeProps> {
   state = {
     defaultEditorProps: {},
     cssCode: '',
-    isCanSave:true,
+    isCanSave: true,
   };
 
   componentWillReceiveProps(nextProps: CodeProps) {
@@ -79,44 +77,74 @@ export default class CssCode extends React.Component<CodeProps> {
     const { onStyleDataChange } = this.props;
     const newStyleData = parseToStyleData(cssCode);
     // 检查是否和原来的styleData完全相同
-    if (newStyleData){
+    if (newStyleData) {
       onStyleDataChange(newStyleData);
       this.setState({
-        isCanSave:true
-      })
+        isCanSave: true,
+      });
     }
-  }
-
+  };
 
   updateCode = (newCode: string) => {
     this.setState({
       cssCode: newCode,
     });
     const newStyleData = parseToStyleData(newCode);
-    if (newStyleData){
+    if (newStyleData) {
       this.setState({
-        isCanSave:false
-      })
+        isCanSave: false,
+      });
     }
-
   };
-
+  public prevHeight = 100;
   render() {
     const { cssCode, defaultEditorProps, isCanSave } = this.state;
+    // 高度缓存
+    const handleEditorMount = (monaco: any, editor: any) => {
+      editor.onDidBlurEditorWidget(() => {
+        this.styleSave();
+      });
+      editor.onDidChangeModelDecorations(() => {
+        updateEditorHeight();
+        // 控制刷新频率
+        requestAnimationFrame(updateEditorHeight);
+      });
+      const updateEditorHeight = () => {
+        const padding = 20;
+        const lineHeight = editor.getOption(monaco.editor.EditorOption.lineHeight);
+        const lineCount = editor.getModel()?.getLineCount() || 1;
+        const height = lineCount * lineHeight + padding;
+        if (this.prevHeight !== height) {
+          this.prevHeight = height;
+          defaultEditorOption.height = `${height}px`;
+          editor.layout();
+        }
+      };
+    };
     return (
-        <div>
-          <div style={{marginBottom:'5px',display:'flex',alignItems:'center',justifyContent:'space-between'}}>
+      <div>
+        <div
+          style={{
+            marginBottom: '5px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+          }}
+        >
           <Icon type="icon-CSS"></Icon>
-          <Button type="primary" onClick={this.styleSave} disabled={isCanSave} size="small">保存</Button>
+          <Button type="primary" onClick={this.styleSave} disabled={isCanSave} size="small">
+            保存
+          </Button>
         </div>
-          <MonacoEditor
-                value={cssCode}
-                {...defaultEditorProps}
-                {...defaultEditorOption}
-                {...{ language: 'css' }}
-                onChange={(newCode: string) => this.updateCode(newCode)}
-              />
-        </div>
+        <MonacoEditor
+          value={cssCode}
+          {...defaultEditorProps}
+          {...defaultEditorOption}
+          {...{ language: 'css' }}
+          onChange={(newCode: string) => this.updateCode(newCode)}
+          editorDidMount={handleEditorMount}
+        />
+      </div>
     );
   }
 }
