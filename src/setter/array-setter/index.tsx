@@ -38,7 +38,7 @@ export class ListSetter extends Component<ArraySetterProps, ArraySetterState> {
   }
 
   init() {
-    const { value, field } = this.props;
+    const { value, field, onChange } = this.props;
     const items: SettingField[] = [];
     const valueLength = value && Array.isArray(value) ? value.length : 0;
 
@@ -54,7 +54,7 @@ export class ListSetter extends Component<ArraySetterProps, ArraySetterState> {
       });
       items.push(item);
     }
-    field.setValue(value);
+    onChange?.(value);
     this.state = { items };
   }
 
@@ -75,7 +75,7 @@ export class ListSetter extends Component<ArraySetterProps, ArraySetterState> {
       );
       return;
     }
-    const { field } = this.props;
+    const { field, value: fieldValue } = this.props;
     const { items } = this.state;
     const { path } = field;
     if (path[0] !== targetPath[0]) {
@@ -84,7 +84,6 @@ export class ListSetter extends Component<ArraySetterProps, ArraySetterState> {
       );
       return;
     }
-    const fieldValue = field.getValue();
     try {
       const index = +targetPath[targetPath.length - 2];
       if (typeof index === 'number' && !isNaN(index)) {
@@ -97,10 +96,9 @@ export class ListSetter extends Component<ArraySetterProps, ArraySetterState> {
   };
 
   onSort(sortedIds: Array<string | number>) {
-    const { field } = this.props;
+    const { onChange, value: oldValues } = this.props;
     const { items } = this.state;
     const values: any[] = [];
-    const oldValues = field.getValue();
     const newItems: SettingField[] = [];
     sortedIds.map((id, index) => {
       const item = items[+id];
@@ -109,15 +107,15 @@ export class ListSetter extends Component<ArraySetterProps, ArraySetterState> {
       newItems[index] = item;
       return id;
     });
-    field.setValue(values);
+    onChange?.(values);
     this.setState({ items: newItems });
   }
 
   onAdd(newValue?: {[key: string]: any}) {
     const { items = [] } = this.state;
-    const { itemSetter, field } = this.props;
-    const values = field.getValue() || [];
-    const { initialValue } = itemSetter;
+    const { itemSetter, field, onChange, value = [] } = this.props;
+    const values = value || [];
+    const initialValue = (itemSetter as any)?.initialValue;
     const defaultValue = newValue ? newValue : (typeof initialValue === 'function' ? initialValue(field) : initialValue);
     const item = field.createField({
       name: items.length,
@@ -128,18 +126,17 @@ export class ListSetter extends Component<ArraySetterProps, ArraySetterState> {
         setValue: this.onItemChange,
       },
     });
-    values.push(defaultValue);
-
     items.push(item);
+    values.push(defaultValue);
     this.scrollToLast = true;
-    field?.setValue(values);
+    onChange?.(values);
     this.setState({ items });
   }
 
   onRemove(removed: SettingField) {
-    const { field } = this.props;
+    const { onChange, value } = this.props;
     const { items } = this.state;
-    const values = field.getValue() || [];
+    const values = value || [];
     let i = items.indexOf(removed);
     items.splice(i, 1);
     values.splice(i, 1);
@@ -150,7 +147,7 @@ export class ListSetter extends Component<ArraySetterProps, ArraySetterState> {
     }
     removed.remove();
     const pureValues = values.map((item: any) => typeof(item) === 'object' ? Object.assign({}, item):item);
-    field?.setValue(pureValues);
+    onChange?.(pureValues);
     this.setState({ items });
   }
 
