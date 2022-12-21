@@ -21,7 +21,8 @@
     "stylelint": "stylelint \"**/*.{css,scss,less}\"",
     "lint": "npm run eslint && npm run stylelint",
     "f2elint-scan": "f2elint scan -q",
-    "f2elint-fix": "f2elint fix"
+    "f2elint-fix": "f2elint fix",
+    "syncOss": "node ./scripts/sync-oss.js"
   },
   "keywords": [
     "ice",
@@ -70,5 +71,6 @@
     "registry": "https://registry.npmjs.org/"
   },
   "license": "MIT",
-  "homepage": "https://unpkg.com/@alilc/lowcode-engine-ext@1.0.6-beta.7/build/index.html"
+  "homepage": "https://unpkg.com/@alilc/lowcode-engine-ext@1.0.6-beta.7/build/index.html",
+  "repository": "git@github.com:alibaba/lowcode-engine-ext.git"
 }
