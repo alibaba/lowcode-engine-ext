@@ -192,10 +192,10 @@ export class ListSetter extends Component<ArraySetterProps, ArraySetterState> {
       ) : (
         <div className="lc-setter-list-notice">
           {this.props.multiValue ? (
-            <Message type="warning">当前选择了多个节点，且值不一致，修改会覆盖所有值</Message>
+            <Message type="warning">Multiple nodes are currently selected, and the values ​​are inconsistent, and modification will overwrite all values</Message>
           ) : (
             <Message type="notice" size="medium" shape="inline">
-              暂时还没有添加内容
+              No content has been added yet
             </Message>
           )}
         </div>
@@ -213,7 +213,7 @@ export class ListSetter extends Component<ArraySetterProps, ArraySetterState> {
               <Button text type="primary" onClick={() => {
                 this.onAdd()
               }}>
-                <span>添加一项 +</span>
+                <span>add an item +</span>
               </Button>
             ) : renderFooter({...this.props, onAdd: this.onAdd.bind(this),})
           }
@@ -295,7 +295,7 @@ export default class ArraySetter extends Component<{
     if (mode === 'popup' || forceInline) {
       const title = (
         <Fragment>
-          编辑：
+          Edit:
           <Title title={field.title} />
         </Fragment>
       );

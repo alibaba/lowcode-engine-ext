@@ -26,7 +26,7 @@
       "externalNext": "umd"
     }],
     ["build-plugin-moment-locales", {
-      "locales": ["zh-cn"]
+      "locales": ["zh-cn","en-US"]
     }],
     "./build.plugin.js"
   ]

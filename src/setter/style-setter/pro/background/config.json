@@ -1,15 +1,15 @@
 {
   "backgroundType": {
-    "title": "背景",
+    "title": "Bg",
     "dataList": [
       {
         "value": "color",
-        "tips": "颜色填充",
+        "tips": "Fill color",
         "icon": "icon-beijingse"
       },
       {
         "value": "bgImg",
-        "tips": "背景图片",
+        "tips": "Background image",
         "icon": "icon-beijingtupian"
       }
     ]

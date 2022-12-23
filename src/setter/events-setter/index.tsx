@@ -117,21 +117,21 @@ export default class EventsSetter extends Component<{
       eventBtns = [
         {
           value: EVENT_CONTENTS.LIFE_CYCLE_EVENT,
-          label: '生命周期',
+          label: 'Lifecycle Events',
         },
       ];
     } else if (isCustom) {
       eventBtns = [
         {
           value: EVENT_CONTENTS.COMPONENT_EVENT,
-          label: '组件自带事件',
+          label: 'Component events',
         },
       ];
     } else {
       eventBtns = [
         {
           value: EVENT_CONTENTS.NATIVE_EVENT,
-          label: '原生事件',
+          label: 'Native events',
         },
       ];
     }
@@ -426,7 +426,7 @@ export default class EventsSetter extends Component<{
     return (
       <div className="lc-block-setter event-body" onClick={this.closeEventMenu}>
         <div className="event-title">
-          {eventBtns.length > 1 ? <span>点击选择事件类型</span> : <span>点击绑定事件</span>}
+          {eventBtns.length > 1 ? <span>Click to select event type</span> : <span>Event</span>}
         </div>
 
         <RadioGroup
@@ -472,8 +472,8 @@ export default class EventsSetter extends Component<{
 
         <div className="event-table">
           <Table dataSource={eventDataList} size="small">
-            <Table.Column title="已有事件" cell={this.renderEventInfoCell} />
-            <Table.Column title="操作" cell={this.renderEventOperateCell} width={70} />
+            <Table.Column title="Existing events" cell={this.renderEventInfoCell} />
+            <Table.Column title="Operate" cell={this.renderEventOperateCell} width={70} />
           </Table>
         </div>
       </div>

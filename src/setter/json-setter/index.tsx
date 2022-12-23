@@ -78,12 +78,12 @@ export default class JsonSetter extends PureComponent<JsonSetterProps> {
   renderButton = (value) => {
     return !value ? (
       <Button size="small" type="normal" onClick={this.openDialog}>
-        绑定数据
+        Bind data
       </Button>
     ) : (
       <Button size="small" type="primary" onClick={this.openDialog}>
         <Icon type="edit" />
-        编辑数据
+        Edit Data
       </Button>
     );
   };
@@ -100,8 +100,9 @@ export default class JsonSetter extends PureComponent<JsonSetterProps> {
         this.closeDialog();
       } catch (e) {
         Dialog.alert({
-          title: '数据保存失败',
+          title: 'Data save failed',
           content: e.message,
+          locale: {"ok": "Confirm", "cancel": "Cancel"}
         });
       }
     } else {
@@ -118,7 +119,7 @@ export default class JsonSetter extends PureComponent<JsonSetterProps> {
       <div>
         <Button size="small" type="primary" onClick={this.openDialog}>
           <CustomIcon type="icon-ic_edit" />
-          编辑数据
+          Edit data
         </Button>
       </div>
     );
@@ -134,7 +135,8 @@ export default class JsonSetter extends PureComponent<JsonSetterProps> {
           <Dialog
             visible={isShowDialog}
             closeable={'close'}
-            title="数据编辑"
+            title="data editor"
+            locale={{"ok":"Confirm","cancel":"Cancel"}}
             onCancel={this.closeDialog}
             onOk={this.onDialogOk}
             onClose={() => {

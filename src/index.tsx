@@ -96,13 +96,13 @@ const DataVariableSetter = {
     return isJSExpression(v);
   },
   valueType: ['JSExpression'],
-  title: '变量输入',
+  title: 'Variable input',
   recommend: true,
 };
 
 const FunctionBindSetter = {
   component: FunctionSetter,
-  title: '函数绑定',
+  title: 'Function binding',
   condition: (field: any) => {
     const v = field.getValue();
     return isJSFunction(v);

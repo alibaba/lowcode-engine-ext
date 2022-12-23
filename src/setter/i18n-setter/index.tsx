@@ -294,12 +294,13 @@ class I18nSetter extends Component {
           <div className="popup-container">
             <Search
               onChange={this.onChange.bind(this)}
+              placeholder="search"
               popupContent={this.renderI18nList()}
               onSearch={this.onSearch.bind(this)}
               type="normal"
               shape="simple"
               style={{ width: '195px' }}
-              placeholder="搜索已定义的文案"
+              // placeholder="搜索已定义的文案"
             />
             <Button type="primary" className="new-i18n-button" onClick={this.createNewI18nItemData}>
               <Icon type="add" />

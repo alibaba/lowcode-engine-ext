@@ -81,7 +81,7 @@ export default (props: fontProps) => {
 
   const onRangeChange = (styleKey: string, value: string, unit?: string) => {
 
-    // 需要清除partBorder的圆角设置，不然会冲突，容易遗漏
+    // It is necessary to clear the fillet setting of the part border, otherwise it will conflict and it is easy to miss
 
     onStyleChange([
       {
@@ -139,7 +139,7 @@ export default (props: fontProps) => {
 
   return (
     <Collapse defaultExpandedKeys={['0']}>
-      <Panel title="边框" className="border-style-container">
+      <Panel title="Border" className="border-style-container">
         <Row
           title={borderType.title}
           dataList={borderType.dataList}
@@ -228,7 +228,7 @@ export default (props: fontProps) => {
           </>
         )}
 
-        <Row title={'边框'} styleKey="border" {...props}>
+        <Row title={'Sides'} styleKey="border" {...props}>
           <div className="border-container">
             <div className="border-icon-container">
               <div className="top-icon-container">
@@ -305,6 +305,7 @@ export default (props: fontProps) => {
                     hasClear
                     style={{ marginTop: '10px' }}
                     value={styleData[borderDirection + 'Style']}
+                    placeholder="Please select"
                     onChange={(value) => {
                       onBorderTypeChange(borderDirection + 'Style', value);
                     }}

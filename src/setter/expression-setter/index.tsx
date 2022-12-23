@@ -12,16 +12,16 @@ import './index.less';
 const { Option, AutoComplete } = Select;
 const { Tooltip } = Balloon;
 const helpMap = {
-  this: '容器上下文对象',
-  state: '容器的state',
-  props: '容器的props',
-  context: '容器的context',
-  schema: '页面上下文对象',
-  component: '组件上下文对象',
-  constants: '应用常量对象',
-  utils: '应用工具对象',
-  dataSourceMap: '容器数据源Map',
-  field: '表单Field对象',
+  this: 'container context object',
+  state: 'the state of the container',
+  props: 'container props',
+  context: 'The context of the container',
+  schema: 'page context object',
+  component: 'component context object',
+  constants: 'application constant object',
+  utils: 'utility object',
+  dataSourceMap: 'container data source map',
+  field: 'form field object',
 };
 
 export default class ExpressionView extends PureComponent {

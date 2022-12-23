@@ -82,7 +82,7 @@ export default class IconSetter extends PureComponent<IconSetterProps, IconSette
     defaultValue: '',
     hasClear: true,
     icons,
-    placeholder: '请点击选择 Icon',
+    placeholder: 'Please select an Icon',
     onChange: () => undefined,
   };
   static displayName = 'IconSetter';

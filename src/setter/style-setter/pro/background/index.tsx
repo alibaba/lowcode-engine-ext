@@ -72,7 +72,7 @@ export default (props: fontProps) => {
 
   return (
     <Collapse defaultExpandedKeys={['0']}>
-      <Panel title="背景" className="font-style-container">
+      <Panel title="Background" className="font-style-container">
         <Row
           title={backgroundType.title}
           dataList={backgroundType.dataList}
@@ -92,7 +92,7 @@ export default (props: fontProps) => {
           <Row title={' '} styleKey="" {...props}>
             <Input
               innerBefore={<Icon type="icon-suffix-url" style={{ margin: 4 }} />}
-              placeholder="输入图片url"
+              placeholder="Enter image url"
               style={{ width: '100%' }}
               value={backToBgImgUrl(styleData['backgroundImage'])}
               onChange={onInputChange}

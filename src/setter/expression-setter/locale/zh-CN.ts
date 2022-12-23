@@ -14,8 +14,8 @@ export default {
   saved: '已保存',
   // expression
   valueIllegal:
-    '值类型为对象类型，与当前组件属性设置的控件类型不匹配，请在属性“代码编辑模式”下进行编辑',
-  jsExpression: '请输入JS表达式',
+    'The value type is an object type, which does not match the control type set by the current component property, please edit it in the property "code editing mode"',
+  jsExpression: 'Please enter the js expression',
   // Mixin
   input: '字符串Input',
   textarea: '多行字符串Textarea',

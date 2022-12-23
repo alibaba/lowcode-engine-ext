@@ -47,7 +47,7 @@ export default class FunctionSetter extends PureComponent<FunctionSetterProps> {
     type: 'string',
     defaultValue: '',
     hasClear: true,
-    placeholder: '请点击选择 Icon',
+    placeholder: 'Please click to select Icon',
     onChange: () => undefined,
   };
 
@@ -135,7 +135,7 @@ export default class FunctionSetter extends PureComponent<FunctionSetterProps> {
   renderButton = () => {
     return (
       <Button size="small" type="normal" onClick={() => this.bindFunction()}>
-        绑定函数
+        bind function
       </Button>
     );
   };
@@ -205,7 +205,7 @@ export default class FunctionSetter extends PureComponent<FunctionSetterProps> {
       <div>
         <Button size="small" type="primary" onClick={this.openDialog}>
           <Icon type="edit" />
-          编辑函数
+          edit function
         </Button>
       </div>
     );
@@ -250,7 +250,7 @@ export default class FunctionSetter extends PureComponent<FunctionSetterProps> {
           <Dialog
             visible={isShowDialog}
             closeable={'close'}
-            title="函数编辑"
+            title="function editor"
             onCancel={this.closeDialog}
             onOk={this.onDialogOk}
             onClose={() => {

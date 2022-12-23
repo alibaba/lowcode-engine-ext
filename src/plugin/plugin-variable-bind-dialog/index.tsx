@@ -5,18 +5,18 @@ import { event, project } from '@alilc/lowcode-engine';
 import MonacoEditor from '@alilc/lowcode-plugin-base-monaco-editor';
 import './index.less';
 
-const HelpText = `你可以通过点击左侧区域绑定变量或处理函数，当然你也可以在上方输入复杂的表达式。
-输入框内默认支持变量，写法和 JS 写法完全一致。<br>
-this: '容器上下文对象'<br>
-state: '容器的state'<br>
-props: '容器的props'<br>
-context: '容器的context'<br>
-schema: '页面上下文对象'<br>
-component: '组件上下文对象'<br>
-constants: '应用常量对象'<br>
-utils: '应用工具对象'<br>
-dataSourceMap: '容器数据源Map'<br>
-field: '表单Field对象'
+const HelpText = `You can bind variables or processing functions by clicking on the left area, and of course you can also enter complex expressions above.
+Variables are supported by default in the input box, and the writing method is exactly the same as the JS writing method.<br>
+this: 'container context object'<br>
+state: 'the state of the container'<br>
+props: 'container props'<br>
+context: 'The context of the container'<br>
+schema: 'page context object'<br>
+component: 'component context object'<br>
+constants: 'application constant object'<br>
+utils: 'utility object'<br>
+dataSourceMap: 'container data source map'<br>
+field: 'form field object'
 `;
 
 const defaultEditorProps = {
@@ -193,15 +193,15 @@ export default class VariableBindDialog extends Component<PluginProps> {
         this.setState({
           variableListMap: {
             stateVaroableList: {
-              name: 'State属性',
+              name: 'State property',
               childrens: stateVaroableList,
             },
             methods: {
-              name: '自定义处理函数',
+              name: 'Custom handler',
               childrens: methods,
             },
             dataSource: {
-              name: '数据源',
+              name: 'Data source',
               childrens: dataSource,
             },
           },
@@ -290,18 +290,18 @@ export default class VariableBindDialog extends Component<PluginProps> {
         <div className="bottom-left-container">
           {jsCode && jsCode.length > 0 && (
             <Button type="normal" warning onClick={this.removeTheBinding}>
-              移除绑定
+              Remove binding
             </Button>
           )}
         </div>
 
         <div className="bottom-right-container">
           <Button type="primary" onClick={this.onOk}>
-            确定
+            Confirm
           </Button>
           &nbsp;&nbsp;
           <Button type="normal" onClick={this.closeDialog}>
-            取消
+            Cancel
           </Button>
         </div>
       </div>
@@ -344,7 +344,7 @@ export default class VariableBindDialog extends Component<PluginProps> {
   renderTitle = () => {
     return (
       <div className="variable-dialog-title">
-        <span>变量绑定</span>
+        <span>Variable binding</span>
         <img
           style={{ width: '12px' }}
           src="https://img.alicdn.com/imgextra/i1/O1CN01NlC5mY1bTvrlW3blw_!!6000000003467-55-tps-200-200.svg"
@@ -374,7 +374,7 @@ export default class VariableBindDialog extends Component<PluginProps> {
               src="https://img.alicdn.com/imgextra/i2/O1CN01HzeCND1vl948xPEWm_!!6000000006212-55-tps-200-200.svg"
             />
             <span onClick={() => this.minimizeClick(false)} className="vs-variable-minimize-title">
-              变量绑定
+              Variable binding
             </span>
             <img
               onClick={this.closeDialog}
@@ -396,7 +396,7 @@ export default class VariableBindDialog extends Component<PluginProps> {
         >
           <div className="variable-dialog-body">
             <div className="dialog-left-container">
-              <div className="dialog-small-title">变量列表</div>
+              <div className="dialog-small-title">Variable list</div>
 
               <div className="vs-variable-selector-inner">
                 <ul className="vs-variable-selector-category vs-variable-selector-ul">
@@ -416,9 +416,9 @@ export default class VariableBindDialog extends Component<PluginProps> {
                   <div className="ve-search-control">
                     <Input
                       innerAfter={<Icon type="search" size="xs" style={{ margin: 4 }} />}
-                      placeholder="搜索"
+                      placeholder="search"
                       value={searchValue}
-                      aria-label="搜索"
+                      aria-label="search"
                       style={{ width: '100%' }}
                       onChange={this.onVariableSearchChange}
                     />
@@ -436,7 +436,7 @@ export default class VariableBindDialog extends Component<PluginProps> {
             </div>
 
             <div className="dialog-right-container">
-              <div className="dialog-small-title">绑定</div>
+              <div className="dialog-small-title">To bind</div>
               <div id="jsEditorDom" className="editor-context" ref={this.editorJsRef}>
                 <MonacoEditor
                   value={jsCode}
@@ -451,7 +451,7 @@ export default class VariableBindDialog extends Component<PluginProps> {
               </div>
 
               <div className="dialog-help-tip-input">
-                <p className="vs-variable-content-desc-title">用法</p>
+                <p className="vs-variable-content-desc-title">Usage</p>
                 <p dangerouslySetInnerHTML={{ __html: helpText }} />
               </div>
             </div>

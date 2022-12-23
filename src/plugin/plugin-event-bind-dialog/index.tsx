@@ -259,7 +259,7 @@ export default class EventBindDialog extends Component<PluginProps> {
     const formatEventName = this.formatEventName(eventName);
 
     if (SystemEventNameMap[formatEventName]) {
-      Message.error('不可以绑定到系统内置函数,请修改函数名以后重新绑定');
+      Message.error('Cannot be bound to system built-in functions, Please modify the function name and rebind');
       return;
     }
 
@@ -298,24 +298,25 @@ export default class EventBindDialog extends Component<PluginProps> {
     return (
       <Dialog
         visible={visiable}
-        title="事件绑定"
+        title="Event Binding"
         onClose={this.closeDialog}
         onCancel={this.closeDialog}
         onOk={() => this.onOk()}
+        locale= {{"ok":"Confirm", "cancel":"Cancel"}}
       >
         <div className="event-dialog-body">
           <div className="dialog-left-container">
-            <div className="dialog-small-title">事件选择</div>
+            <div className="dialog-small-title">event selection</div>
 
             <div className="dialog-left-context">
               <ul className="event-type-container">
-                <li className="select-item">内置函数</li>
-                <li className="select-item select-item-active">组件事件</li>
+                <li className="select-item">built-in function</li>
+                <li className="select-item select-item-active">component event</li>
               </ul>
 
               <div className="event-select-container">
                 <div>
-                  <Search className="event-search-box" shape="simple" />
+                  <Search placeholder="search" className="event-search-box" shape="simple" />
 
                   <ul className="event-list">
                     <li
@@ -324,7 +325,7 @@ export default class EventBindDialog extends Component<PluginProps> {
                       }
                       onClick={() => this.onSelectItem('')}
                     >
-                      新建事件
+                      New event
                     </li>
                     {this.eventList.map((item, index) => (
                       <li
@@ -346,15 +347,15 @@ export default class EventBindDialog extends Component<PluginProps> {
           </div>
 
           <div className="dialog-right-container">
-            <div className="dialog-small-title">事件名称</div>
+            <div className="dialog-small-title">Event name</div>
             <div className="event-input-container">
               <Input style={{ width: '100%' }} value={eventName} onChange={this.onInputChange} />
             </div>
 
             <div className="dialog-small-title">
-              扩展参数设置{' '}
+              Extended parameter settings{' '}
               <HelpTip>
-                扩展参数做为单独的一个json格式入参追加在原有透传参数之后 如:onClick
+                The extended parameter is appended after the original transparent transmission parameter as a single input parameter in json format, such as:onClick
                 (event,extParams)
               </HelpTip>
               <Switch
@@ -362,8 +363,8 @@ export default class EventBindDialog extends Component<PluginProps> {
                 size="small"
                 style={{ marginLeft: '10px' }}
                 autoWidth
-                checkedChildren="启用"
-                unCheckedChildren="关闭"
+                checkedChildren="enable"
+                unCheckedChildren="disable"
                 onChange={this.onChange}
               />
             </div>

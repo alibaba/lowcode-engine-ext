@@ -2,7 +2,7 @@ import * as React from 'react';
 import Row from '../../components/row';
 import { Collapse, NumberPicker, Select } from '@alifd/next';
 import { useEffect } from 'react';
-import PositionBox from '../position/positionBox';
+import PositionBox from './positionBox';
 import { StyleData, onStyleChange } from '../../utils/types';
 import positionConfig from './config.json';
 const Panel = Collapse.Panel;
@@ -32,11 +32,12 @@ export default (props: layoutProps) => {
 
   return (
     <Collapse defaultExpandedKeys={['0']}>
-      <Panel title="位置">
+      <Panel title="Position">
         <Row title={position.title} styleData={styleData} styleKey="position">
           <Select
             dataSource={position.dataList}
             value={styleData.position}
+            placeholder="Please select"
             hasClear={true}
             onChange={(val) => onStyleChange([{ styleKey: 'position', value: val }])}
           />

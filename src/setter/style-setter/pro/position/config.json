@@ -1,6 +1,6 @@
 {
   "position": {
-    "title": "定位",
+    "title": "Position",
     "dataList": [
       {
         "value": "static",
@@ -30,7 +30,7 @@
     ]
   },
   "float": {
-    "title": "浮动方向",
+    "title": "Float",
     "dataList": [
       {
         "value": "none",
@@ -50,7 +50,7 @@
     ]
   },
   "clear": {
-    "title": "清除",
+    "title": "Clear",
     "dataList": [
       {
         "value": "none",

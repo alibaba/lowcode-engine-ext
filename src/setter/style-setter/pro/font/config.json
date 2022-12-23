@@ -1,6 +1,6 @@
 {
   "fontWeight": {
-    "title": "字重",
+    "title": "Font weight",
     "dataList": [
       {
         "value": 100,
@@ -43,26 +43,26 @@
   },
 
   "textAlign": {
-    "title": "对齐",
+    "title": "Alignment",
     "dataList": [
       {
         "value": "left",
-        "tips": "左对齐 left",
+        "tips": "Align left",
         "icon": "icon-align-left"
       },
       {
         "value": "center",
-        "tips": "居中对齐 center",
+        "tips": "Align center",
         "icon": "icon-align-middle"
       },
       {
         "value": "right",
-        "tips": "右对齐 center",
+        "tips": "Align right",
         "icon": "icon-align-right"
       },
       {
         "value": "justify",
-        "tips": "两端对齐 justify",
+        "tips": "Align justify",
         "icon": "icon-justify"
       }
     ]

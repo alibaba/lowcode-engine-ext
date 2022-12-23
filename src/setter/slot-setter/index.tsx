@@ -92,8 +92,8 @@ export default class SlotSetter extends Component<{
       onChange,
       supportParams,
       hideParams,
-      checkedText = '启用',
-      unCheckedText = '关闭',
+      checkedText = '',
+      unCheckedText = '',
       templates,
     } = this.props;
 

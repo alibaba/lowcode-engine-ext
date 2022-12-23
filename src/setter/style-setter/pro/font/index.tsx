@@ -42,10 +42,10 @@ export default (props: fontProps) => {
 
   return (
     <Collapse defaultExpandedKeys={['0']}>
-      <Panel title="文字" className="font-style-container">
+      <Panel title="Text" className="font-style-container">
         <div className="inner-row-contaienr">
           <div className="row-item">
-            <span className="row-item-title">字号</span>
+            <span className="row-item-title">font size</span>
             <Number
               max={100}
               min={0}
@@ -56,7 +56,7 @@ export default (props: fontProps) => {
             />
           </div>
           <div className="row-item">
-            <span className="row-item-title">行高</span>
+            <span className="row-item-title">line height</span>
             <Number
               min={0}
               styleKey="lineHeight"
@@ -67,26 +67,28 @@ export default (props: fontProps) => {
           </div>
         </div>
 
-        <Row title={'字重'} styleData={styleData} styleKey="">
+        <Row title={'Font Weight'} styleData={styleData} styleKey="">
           <Select
             dataSource={fontWeight.dataList}
             style={{ width: '100%' }}
             value={styleData.fontWeight}
             hasClear={true}
+            placeholder="Please select"
             onChange={(val) => onStyleChange([{ styleKey: 'fontWeight', value: val }])}
           />
         </Row>
-        <Row title={'字体'} styleData={styleData} styleKey="">
+        <Row title={'Font'} styleData={styleData} styleKey="">
           <Select
             dataSource={propsConfig.fontFamilyList}
             style={{ width: '100%' }}
             value={styleData.fontFamily}
             hasClear={true}
+            placeholder="Please select"
             onChange={(val) => onStyleChange([{ styleKey: 'fontFamily', value: val }])}
           />
         </Row>
 
-        <Row title={'文字颜色'} styleKey="" {...props}>
+        <Row title={'Text color'} styleKey="" {...props}>
           <ColorInput styleKey={'color'} {...props} inputWidth="100%"></ColorInput>
         </Row>
 
@@ -97,7 +99,7 @@ export default (props: fontProps) => {
           {...props}
         />
 
-        <Row title={'透明度'} styleKey="opacity" {...props}>
+        <Row title={'Opacity'} styleKey="opacity" {...props}>
           <div className="opacity-container">
             <Range
               style={{ marginRight: '7px' }}

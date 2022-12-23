@@ -43,7 +43,7 @@ const formateOptions = (options: any[]) => {
 
 export default class SelectSetter extends PureComponent<SelectSetterProps, SelectSetterState> {
   static defaultProps = {
-    placeholder: '请选择',
+    placeholder: 'Please select',
     options: [{ label: '-', value: '' }],
     defaultValue: null as any,
     onChange: () => undefined as any,
