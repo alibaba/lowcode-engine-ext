@@ -96,10 +96,10 @@ export default class CssCode extends React.Component<CodeProps> {
       });
     }
   };
+  // 高度缓存
   prevHeight = 80;
   render() {
     const { cssCode, defaultEditorProps, isCanSave, height } = this.state;
-    //  高度缓存
     const handleEditorMount = (monaco: any, editor: any) => {
       editor.onDidBlurEditorWidget(() => {
         this.styleSave();
@@ -120,6 +120,8 @@ export default class CssCode extends React.Component<CodeProps> {
           editor.layout();
         }
       };
+      // 挂载时先适配高度
+      updateEditorHeight()
     };
     return (
       <div>
