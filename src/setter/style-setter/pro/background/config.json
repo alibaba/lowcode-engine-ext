@@ -20,22 +20,23 @@
       {
         "value": "default",
         "tips": "默认",
-        "title":"默认"
+        "title": "默认"
       },
       {
         "value": "contain",
         "tips": "等比填充contain",
-        "title":"等比填充"
-      },{
+        "title": "等比填充"
+      },
+      {
         "value": "cover",
         "tips": "等比覆盖cover",
-        "title":"等比覆盖"
+        "title": "等比覆盖"
       }
     ]
   },
   "backgroundPosition": {
     "title": "定位",
-    "dataList":[
+    "dataList": [
       { "title": "leftTop", "position": "0 0", "icon": "icon-zuoshangjiao" },
       { "title": "midTop", "position": "50% 0", "icon": "icon-dingbu" },
       { "title": "rightTop", "position": "100% 0", "icon": "icon-youshangjiao" },

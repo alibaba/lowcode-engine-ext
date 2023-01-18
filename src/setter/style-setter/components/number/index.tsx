@@ -2,7 +2,13 @@ import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { NumberPicker } from '@alifd/next';
 import { StyleData, onStyleChange } from '../../utils/types';
-import { addUnit, removeUnit, isEmptyValue, getPlaceholderPropertyValue, unifyStyle } from '../../utils';
+import {
+  addUnit,
+  removeUnit,
+  isEmptyValue,
+  getPlaceholderPropertyValue,
+  unifyStyle,
+} from '../../utils';
 interface numberProps {
   styleKey: string;
   styleData: StyleData | any;
@@ -14,10 +20,10 @@ interface numberProps {
   className?: string;
   field?: any;
   placeholderScale?: number;
-  defaultPlaceholder?: string
+  defaultPlaceholder?: string;
   useComputedStyle?: boolean;
-  onChangeFunction?:any;
-  multiProp?:any //属性值包含多项是的项序号
+  onChangeFunction?: any;
+  multiProp?: any; //属性值包含多项是的项序号
 }
 
 export default (props: numberProps) => {
@@ -36,8 +42,7 @@ export default (props: numberProps) => {
     defaultPlaceholder,
   } = props;
 
-  console.log('props',props);
-  
+  console.log('props', props);
 
   const [placeholder, setPlaceholder] = useState(defaultPlaceholder);
 
@@ -66,14 +71,14 @@ export default (props: numberProps) => {
   useEffect(() => {
     initData(props);
   }, []);
-  let value = unit ? removeUnit(styleData[styleKey]) : styleData[styleKey]
+  let value = unit ? removeUnit(styleData[styleKey]) : styleData[styleKey];
   // 不加multiprop一样，加了单独处理
-  if(typeof multiProp ==='number'){
-    value = unifyStyle[styleData[styleKey]]?.split(' ')?.[multiProp]
-    if(value===null||value===undefined||value==="auto"){
-      value = null
-    }else{
-      value = unit ? removeUnit(value) : value
+  if (typeof multiProp === 'number') {
+    value = unifyStyle(styleData[styleKey])?.split(' ')?.[multiProp];
+    if (value === null || value === undefined || value === 'auto') {
+      value = null;
+    } else {
+      value = unit ? removeUnit(value) : value;
     }
   }
   return (
@@ -83,7 +88,11 @@ export default (props: numberProps) => {
       value={value}
       min={isEmptyValue(min) ? Number.MIN_SAFE_INTEGER : min}
       max={isEmptyValue(max) ? Number.MAX_SAFE_INTEGER : max}
-      onChange={(val) => onChangeFunction ? onChangeFunction(styleKey, val, unit):onNumberChange(styleKey, val, unit)}
+      onChange={(val) =>
+        onChangeFunction
+          ? onChangeFunction(styleKey, val, unit)
+          : onNumberChange(styleKey, val, unit)
+      }
       innerAfter={unit ? unit : ''}
       placeholder={placeholder}
     ></NumberPicker>

@@ -60,13 +60,12 @@ export default class StyleSetterV2 extends React.PureComponent<StyleSetterProps>
     if (value) {
       this.setState({
         styleData: value,
-        initFlag: true,
-      });
-    }else{
-      this.setState({
-        initFlag: true,
       });
     }
+
+    this.setState({
+      initFlag: true,
+    });
   }
 
   changeCssCodeVisiable = (visible: boolean) => {
@@ -91,6 +90,7 @@ export default class StyleSetterV2 extends React.PureComponent<StyleSetterProps>
           styleData[item.styleKey] = item.value;
         }
       });
+
     this.setState({
       styleData,
     });
@@ -115,8 +115,7 @@ export default class StyleSetterV2 extends React.PureComponent<StyleSetterProps>
 
     return (
       <ConfigProvider>
-        {/* styleData加载了再渲染，否则会拿不到styleData */}
-        {initFlag?<div className="lowcode-setter-style-v2">
+        <div className="lowcode-setter-style-v2">
           {isShowCssCode && (
             <div className="top-bar">
               {/* <div
@@ -126,11 +125,7 @@ export default class StyleSetterV2 extends React.PureComponent<StyleSetterProps>
                 <Icon type="icon-CSS"></Icon>
               </div> */}
 
-              <CssCode
-              styleData={styleData}
-              onStyleDataChange={this.onStyleDataChange}
-            ></CssCode>
-
+              <CssCode styleData={styleData} onStyleDataChange={this.onStyleDataChange}></CssCode>
             </div>
           )}
 
@@ -178,7 +173,7 @@ export default class StyleSetterV2 extends React.PureComponent<StyleSetterProps>
               changeCssCodeVisiable={this.changeCssCodeVisiable}
             ></CssCode>
           )} */}
-        </div>:<></>}
+        </div>
       </ConfigProvider>
     );
   }

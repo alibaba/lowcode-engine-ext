@@ -68,8 +68,10 @@ export default (props: fontProps) => {
     styleData: any,
     direction: string,
   ) => {
-    const bgSizeArray = styleData[styleKey] ? unifyStyle[styleData[styleKey]].split(' ') : ['auto', 'auto'];
-    const [width='auto', height='auto'] = bgSizeArray;
+    const bgSizeArray = styleData[styleKey]
+      ? unifyStyle(styleData[styleKey])?.split(' ')
+      : ['auto', 'auto'];
+    const [width = 'auto', height = 'auto'] = bgSizeArray;
     let styleDataList;
     if (styleData) {
       let unifiedValue = unit ? addUnit(value, unit) : value;
@@ -111,8 +113,10 @@ export default (props: fontProps) => {
   const onBgPositionChange = (value, direction) => {
     const unit = 'px';
     const styleKey = 'backgroundPosition';
-    const bgSizeArray = styleData[styleKey] ? unifyStyle[styleData[styleKey]].split(' ') : ['auto', 'auto'];
-    const [width='auto', height='auto'] = bgSizeArray;
+    const bgSizeArray = styleData[styleKey]
+      ? unifyStyle(styleData[styleKey]).split(' ')
+      : ['auto', 'auto'];
+    const [width = 'auto', height = 'auto'] = bgSizeArray;
     let styleDataList;
     if (styleData) {
       let unifiedValue = /^-?[1-9]\d*$/.test(value) ? value + unit : value; //正则匹配非0数字并加单位
@@ -155,7 +159,7 @@ export default (props: fontProps) => {
       setBgType('color');
     } else if (styleData.backgroundImage) {
       setBgType('bgImg');
-    }else{
+    } else {
       setBgType(null);
     }
     setBgRepeatType(styleData.backgroundRepeat);
