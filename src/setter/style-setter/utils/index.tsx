@@ -124,3 +124,31 @@ export function parseToStyleData(cssCode: string) {
 
   return styleData;
 }
+// 多参数样式解析单个参数
+export const parseValue = (styleValue: String, valueIndex: number) => {
+  if (!styleValue) return;
+  const styleArray = styleValue?.split(' ') || [];
+  const value = styleArray[valueIndex];
+  const unifiedValue = unifyValue(value);
+  return unifiedValue === 'auto' ? null : unifiedValue;
+};
+
+// 去除一下单位
+export const unifyValue = (value: string) => {
+  if (/^-?\d+px$/.test(value)) {
+    return value.replace('px', '');
+  }
+  return value;
+};
+
+// 规范手动输入的css样式
+export const unifyStyle = (value: string) => {
+  if (!value) return;
+  //首部空格去除
+  if (value.substring(0, 1) === ' ') {
+    value.replace(/\s+/, '');
+  }
+  //多属性间重复字符串去除
+  value.replace(/\s+/g, ' ');
+  return value;
+};

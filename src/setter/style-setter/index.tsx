@@ -125,11 +125,7 @@ export default class StyleSetterV2 extends React.PureComponent<StyleSetterProps>
                 <Icon type="icon-CSS"></Icon>
               </div> */}
 
-              <CssCode
-              styleData={styleData}
-              onStyleDataChange={this.onStyleDataChange}
-            ></CssCode>
-
+              <CssCode styleData={styleData} onStyleDataChange={this.onStyleDataChange}></CssCode>
             </div>
           )}
 
