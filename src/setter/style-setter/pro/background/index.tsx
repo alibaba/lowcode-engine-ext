@@ -110,22 +110,27 @@ export default (props: fontProps) => {
   };
 
   // backgroundPosition切换
-  const onBgPositionChange = (value, direction) => {
-    const unit = 'px';
-    const styleKey = 'backgroundPosition';
+  const onBgPositionChange = (
+    styleKey: string,
+    value: number,
+    unit: string,
+    styleData: any,
+    direction: string,
+  ) => {
     const bgSizeArray = styleData[styleKey]
       ? unifyStyle(styleData[styleKey]).split(' ')
       : ['auto', 'auto'];
     const [width = 'auto', height = 'auto'] = bgSizeArray;
     let styleDataList;
     if (styleData) {
-      let unifiedValue = /^-?[1-9]\d*$/.test(value) ? value + unit : value; //正则匹配非0数字并加单位
+      let unifiedValue = /^-?[0-9]\d*$/.test(value) ? value + unit : value; //正则匹配非0数字并加单位
       if (
         unifiedValue === null ||
         unifiedValue === undefined ||
         unifiedValue.replace(/\s*/g, '') === '' //空格和空字符串也为空值
-      )
+      ){
         unifiedValue = 'auto';
+      }
       if (direction === 'horizontal') {
         styleDataList = [
           {
@@ -248,6 +253,7 @@ export default (props: fontProps) => {
                     min={0}
                     styleKey="backgroundSize"
                     {...props}
+                    unit = {['px','%']}
                     onChangeFunction={(styleKey: string, val: number, unit: string) =>
                       onBgSizeChange(styleKey, val, unit, styleData, 'width')
                     }
@@ -261,6 +267,7 @@ export default (props: fontProps) => {
                     styleKey="backgroundSize"
                     min={0}
                     {...props}
+                    unit = {['px','%']}
                     onChangeFunction={(styleKey: string, val: number, unit: string) =>
                       onBgSizeChange(styleKey, val, unit, styleData, 'height')
                     }
@@ -296,25 +303,33 @@ export default (props: fontProps) => {
                 <div className="background-position-container-right">
                   <div className="background-position-left">
                     <span>左</span>
-                    <Input
-                      placeholder="auto"
-                      style={{ width: '60px', marginLeft: '30px' }}
-                      onChange={(value) => {
-                        onBgPositionChange(value, 'horizontal');
-                      }}
-                      value={parseValue(styleData['backgroundPosition'], 0)}
-                    ></Input>
+                    <Number
+                    style={{ marginLeft: '10px' }}
+                    styleKey="backgroundPosition"
+                    {...props}
+                    unit = {['px','%']}
+                    onChangeFunction={(styleKey: string, val: number, unit: string) =>
+                      onBgPositionChange(styleKey, val, unit, styleData, 'horizontal')
+                    }
+                    multiProp={0}
+                    defaultPlaceholder={'auto'}
+                  />
                   </div>
                   <div className="background-position-top">
                     <span>顶</span>
-                    <Input
-                      placeholder="auto"
-                      style={{ width: '60px', marginLeft: '30px' }}
-                      onChange={(value) => {
-                        onBgPositionChange(value, 'verticle');
-                      }}
-                      value={parseValue(styleData['backgroundPosition'], 1)}
-                    ></Input>
+                    <Number
+                    style={{ marginLeft: '10px' }}
+                    min={-10}
+                    styleKey="backgroundPosition"
+                    {...props}
+                    unit = {['px','%']}
+                    onChangeFunction={(styleKey: string, val: number, unit: string) =>
+                      onBgPositionChange(styleKey, val, unit, styleData, 'verticle')
+                    }
+                    multiProp={1}
+                    defaultPlaceholder={'auto'}
+                  />
+           
                   </div>
                 </div>
               </div>

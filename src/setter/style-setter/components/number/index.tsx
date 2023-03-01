@@ -1,19 +1,22 @@
 import * as React from 'react';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { NumberPicker } from '@alifd/next';
 import { StyleData, onStyleChange } from '../../utils/types';
+import { Select } from 'antd';
 import {
   addUnit,
   removeUnit,
   isEmptyValue,
   getPlaceholderPropertyValue,
   unifyStyle,
+  getUnit,
 } from '../../utils';
+import './index.less';
 interface numberProps {
   styleKey: string;
   styleData: StyleData | any;
   onStyleChange?: onStyleChange;
-  unit?: string;
+  unit?: string | Array<string>;
   min?: number;
   max?: number;
   style?: any;
@@ -42,15 +45,13 @@ export default (props: numberProps) => {
     defaultPlaceholder,
   } = props;
 
-  console.log('props', props);
 
   const [placeholder, setPlaceholder] = useState(defaultPlaceholder);
-
   const onNumberChange = (styleKey: string, value: number, unit?: string) => {
     onStyleChange([
       {
         styleKey,
-        value: unit ? addUnit(value, unit) : value,
+        value: unit ? addUnit(value, unit) : String(value),
       },
     ]);
   };
@@ -72,15 +73,51 @@ export default (props: numberProps) => {
     initData(props);
   }, []);
   let value = unit ? removeUnit(styleData[styleKey]) : styleData[styleKey];
+  let curUnit = unit ? getUnit(styleData[styleKey])||'px' : '';
   // 不加multiprop一样，加了单独处理
   if (typeof multiProp === 'number') {
     value = unifyStyle(styleData[styleKey])?.split(' ')?.[multiProp];
     if (value === null || value === undefined || value === 'auto') {
       value = null;
+      curUnit = 'px';
     } else {
+      curUnit = unit ? getUnit(value)||'px' : '';
       value = unit ? removeUnit(value) : value;
     }
   }
+  if(isNaN(value)){
+    value = 0
+  }
+  const getInnerAfter = useMemo(() => {
+    if (typeof unit === 'string') {
+      return unit;
+    }
+    if (!unit) {
+      return '';
+    }
+    const options = unit?.map((item) => {
+      return {
+        value: item,
+        label: item,
+      };
+    });
+    return (
+      <Select
+        defaultValue="px"
+        style={{ width: 24 }}
+        value={curUnit||'px'}
+        dropdownMatchSelectWidth={false}
+        bordered={false}
+        showArrow={false}
+        onChange={(val) =>
+          onChangeFunction
+            ? onChangeFunction(styleKey, value, val)
+            : onNumberChange(styleKey, value, val)
+        }
+        options={options}
+      />
+    );
+  }, [unit]);
   return (
     <NumberPicker
       style={style}
@@ -90,10 +127,10 @@ export default (props: numberProps) => {
       max={isEmptyValue(max) ? Number.MAX_SAFE_INTEGER : max}
       onChange={(val) =>
         onChangeFunction
-          ? onChangeFunction(styleKey, val, unit)
-          : onNumberChange(styleKey, val, unit)
+          ? onChangeFunction(styleKey, val, curUnit)
+          : onNumberChange(styleKey, val, curUnit)
       }
-      innerAfter={unit ? unit : ''}
+      innerAfter={getInnerAfter}
       placeholder={placeholder}
     ></NumberPicker>
   );
