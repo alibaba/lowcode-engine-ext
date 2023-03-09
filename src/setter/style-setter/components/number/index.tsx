@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { useEffect, useState, useMemo } from 'react';
-import { NumberPicker } from '@alifd/next';
+import { NumberPicker, Select } from '@alifd/next';
 import { StyleData, onStyleChange } from '../../utils/types';
-import { Select } from 'antd';
+//import { Select } from 'antd';
 import {
   addUnit,
   removeUnit,
@@ -45,7 +45,6 @@ export default (props: numberProps) => {
     defaultPlaceholder,
   } = props;
 
-
   const [placeholder, setPlaceholder] = useState(defaultPlaceholder);
   const onNumberChange = (styleKey: string, value: number, unit?: string) => {
     onStyleChange([
@@ -73,7 +72,7 @@ export default (props: numberProps) => {
     initData(props);
   }, []);
   let value = unit ? removeUnit(styleData[styleKey]) : styleData[styleKey];
-  let curUnit = unit ? getUnit(styleData[styleKey])||'px' : '';
+  let curUnit = unit ? getUnit(styleData[styleKey]) || 'px' : '';
   // 不加multiprop一样，加了单独处理
   if (typeof multiProp === 'number') {
     value = unifyStyle(styleData[styleKey])?.split(' ')?.[multiProp];
@@ -81,12 +80,12 @@ export default (props: numberProps) => {
       value = null;
       curUnit = 'px';
     } else {
-      curUnit = unit ? getUnit(value)||'px' : '';
+      curUnit = unit ? getUnit(value) || 'px' : '';
       value = unit ? removeUnit(value) : value;
     }
   }
-  if(isNaN(value)){
-    value = 0
+  if (isNaN(value)) {
+    value = 0;
   }
   const getInnerAfter = useMemo(() => {
     if (typeof unit === 'string') {
@@ -102,20 +101,20 @@ export default (props: numberProps) => {
       };
     });
     return (
-      <Select
-        defaultValue="px"
-        style={{ width: 24 }}
-        value={curUnit||'px'}
-        dropdownMatchSelectWidth={false}
-        bordered={false}
-        showArrow={false}
-        onChange={(val) =>
-          onChangeFunction
-            ? onChangeFunction(styleKey, value, val)
-            : onNumberChange(styleKey, value, val)
-        }
-        options={options}
-      />
+        <Select
+          defaultValue="px"
+          style={{ width: '24px' }}
+          value={curUnit || 'px'}
+          autoWidth={false}
+          hasBorder={false}
+          hasArrow={false}
+          onChange={(val) =>
+            onChangeFunction
+              ? onChangeFunction(styleKey, value, val)
+              : onNumberChange(styleKey, value, val)
+          }
+          dataSource={options}
+        />
     );
   }, [unit]);
   return (
