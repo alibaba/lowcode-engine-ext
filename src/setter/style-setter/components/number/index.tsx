@@ -2,7 +2,6 @@ import * as React from 'react';
 import { useEffect, useState, useMemo } from 'react';
 import { NumberPicker, Select } from '@alifd/next';
 import { StyleData, onStyleChange } from '../../utils/types';
-//import { Select } from 'antd';
 import {
   addUnit,
   removeUnit,
