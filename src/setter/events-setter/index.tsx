@@ -319,6 +319,10 @@ export default class EventsSetter extends Component<{
   };
 
   onRelatedEventNameClick = (eventName: string) => {
+    // props 事件，不需要跳转
+    if (/(this\.)?props\./.test(eventName)) {
+      return;
+    }
     skeleton.showPanel('codeEditor');
     setTimeout(() => {
       event.emit('codeEditor.focusByFunction', {
