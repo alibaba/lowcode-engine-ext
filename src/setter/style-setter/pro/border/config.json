@@ -15,6 +15,22 @@
     ]
   },
 
+  "shadowType": {
+    "title": "阴影",
+    "dataList": [
+      {
+        "value": "outerShadow",
+        "tips": "外阴影",
+        "icon": "icon-yinying"
+      },
+      {
+        "value": "insetShadow",
+        "tips": "内阴影",
+        "icon": "icon-yinying-outside"
+      }
+    ]
+  },
+
   "borderStyle": {
     "title": "边框样式",
     "dataList": [

@@ -152,3 +152,10 @@ export const unifyStyle = (value: string) => {
   value.replace(/\s+/g, ' ');
   return value;
 };
+
+export const getUnit = (value: string) => {
+  if(typeof value !== 'string') return ''
+  if (value != undefined && value != null){
+    return value.replace(/^-?[0-9]\d*/g, '')
+  }
+}
