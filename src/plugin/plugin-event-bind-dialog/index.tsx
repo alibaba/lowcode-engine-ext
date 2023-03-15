@@ -11,6 +11,8 @@ const defaultParams = '{\n \t "testKey":123 \n}';
 const tempPlaceHolder = '${extParams}';
 const tempPlaceHolderReg = /\$\{extParams\}/g;
 
+const propEventsReg = /(this\.)?props\.[a-zA-Z0-9\-_]+/;
+
 const defaultEditorOption = {
   height:'319px',
   width:'100%',
@@ -245,7 +247,7 @@ export default class EventBindDialog extends Component<PluginProps> {
 
   formatEventName = (eventName: string) => {
     // 支持绑定this.props.xxxx
-    if (/(this\.)?props\.[a-zA-Z\-_]/.test(eventName)) {
+    if (propEventsReg.test(eventName)) {
       return eventName.replace(/(this\.)|(\s+)/, '');
     }
     const newEventNameArr = eventName.split('');
@@ -275,7 +277,7 @@ export default class EventBindDialog extends Component<PluginProps> {
     );
 
     // 选中的是新建事件 && 注册了sourceEditor面板
-    if (this.state.selectedEventName == '') {
+    if (this.state.selectedEventName == '' && !propEventsReg.test(formatEventName)) {
       // 判断面板是否处于激活状态
       skeleton.showPanel('codeEditor');
       const formatTemp = this.formatTemplate(configEventData.template, formatEventName, useParams);
