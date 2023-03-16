@@ -14,6 +14,43 @@ interface ArraySetterState {
   items: SettingField[];
 }
 
+/**
+ * onItemChange 用于 ArraySetter 的单个 index 下的数据发生变化，
+ * 因此 target.path 的数据格式必定为 [propName1, propName2, arrayIndex, key?]。
+ *
+ * @param target
+ * @param value
+ */
+function onItemChange (target: SettingField, items: SettingField[], props: ArraySetterProps) {
+  const targetPath: Array<string | number> = target?.path;
+  if (!targetPath || targetPath.length < 2) {
+    console.warn(
+      `[ArraySetter] onItemChange 接收的 target.path <${
+        targetPath || 'undefined'
+      }> 格式非法需为 [propName, arrayIndex, key?]`,
+    );
+    return;
+  }
+  const { field, value: fieldValue } = props;
+  // const { items } = this.state;
+  const { path } = field;
+  if (path[0] !== targetPath[0]) {
+    console.warn(
+      `[ArraySetter] field.path[0] !== target.path[0] <${path[0]} !== ${targetPath[0]}>`,
+    );
+    return;
+  }
+  try {
+    const index = +targetPath[targetPath.length - 2];
+    if (typeof index === 'number' && !isNaN(index)) {
+      fieldValue[index] = items[index].getValue();
+      field?.extraProps?.setValue?.call(field, field, fieldValue);
+    }
+  } catch (e) {
+    console.warn('[ArraySetter] extraProps.setValue failed :', e);
+  }
+};
+
 interface ArraySetterProps {
   value: any[];
   field: SettingField;
@@ -34,66 +71,33 @@ export class ListSetter extends Component<ArraySetterProps, ArraySetterState> {
 
   constructor(props: ArraySetterProps) {
     super(props);
-    this.init();
   }
 
-  init() {
-    const { value, field, onChange } = this.props;
+  static getDerivedStateFromProps(props: ArraySetterProps, state: ArraySetterState) {
     const items: SettingField[] = [];
+    const { value, field } = props;
     const valueLength = value && Array.isArray(value) ? value.length : 0;
 
     for (let i = 0; i < valueLength; i++) {
       const item = field.createField({
-        name: i,
-        setter: this.props.itemSetter,
+        name: i.toString(),
+        setter: props.itemSetter,
         forceInline: 1,
+        type: 'field',
         extraProps: {
           defaultValue: value[i],
-          setValue: this.onItemChange,
+          setValue: (target: SettingField) => {
+            onItemChange(target, items, props);
+          },
         },
       });
       items.push(item);
     }
-    onChange?.(value);
-    this.state = { items };
-  }
 
-  /**
-   * onItemChange 用于 ArraySetter 的单个 index 下的数据发生变化，
-   * 因此 target.path 的数据格式必定为 [propName1, propName2, arrayIndex, key?]。
-   *
-   * @param target
-   * @param value
-   */
-  onItemChange = (target: SettingField) => {
-    const targetPath: Array<string | number> = target?.path;
-    if (!targetPath || targetPath.length < 2) {
-      console.warn(
-        `[ArraySetter] onItemChange 接收的 target.path <${
-          targetPath || 'undefined'
-        }> 格式非法需为 [propName, arrayIndex, key?]`,
-      );
-      return;
-    }
-    const { field, value: fieldValue } = this.props;
-    const { items } = this.state;
-    const { path } = field;
-    if (path[0] !== targetPath[0]) {
-      console.warn(
-        `[ArraySetter] field.path[0] !== target.path[0] <${path[0]} !== ${targetPath[0]}>`,
-      );
-      return;
-    }
-    try {
-      const index = +targetPath[targetPath.length - 2];
-      if (typeof index === 'number' && !isNaN(index)) {
-        fieldValue[index] = items[index].getValue();
-        field?.extraProps?.setValue?.call(field, field, fieldValue);
-      }
-    } catch (e) {
-      console.warn('[ArraySetter] extraProps.setValue failed :', e);
-    }
-  };
+    return {
+      items,
+    };
+  }
 
   onSort(sortedIds: Array<string | number>) {
     const { onChange, value: oldValues } = this.props;
@@ -108,29 +112,16 @@ export class ListSetter extends Component<ArraySetterProps, ArraySetterState> {
       return id;
     });
     onChange?.(values);
-    this.setState({ items: newItems });
   }
 
   onAdd(newValue?: {[key: string]: any}) {
-    const { items = [] } = this.state;
     const { itemSetter, field, onChange, value = [] } = this.props;
     const values = value || [];
     const initialValue = (itemSetter as any)?.initialValue;
     const defaultValue = newValue ? newValue : (typeof initialValue === 'function' ? initialValue(field) : initialValue);
-    const item = field.createField({
-      name: items.length,
-      setter: itemSetter,
-      forceInline: 1,
-      extraProps: {
-        defaultValue,
-        setValue: this.onItemChange,
-      },
-    });
-    items.push(item);
     values.push(defaultValue);
     this.scrollToLast = true;
     onChange?.(values);
-    this.setState({ items });
   }
 
   onRemove(removed: SettingField) {
@@ -148,7 +139,6 @@ export class ListSetter extends Component<ArraySetterProps, ArraySetterState> {
     removed.remove();
     const pureValues = values.map((item: any) => typeof(item) === 'object' ? Object.assign({}, item):item);
     onChange?.(pureValues);
-    this.setState({ items });
   }
 
   componentWillUnmount() {
