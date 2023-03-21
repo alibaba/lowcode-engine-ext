@@ -9,6 +9,7 @@ interface ColorInputProps {
   styleData: StyleData | any;
   onStyleChange?: onStyleChange;
   inputWidth?: string;
+  color?:any
 }
 
 interface state {
@@ -79,15 +80,15 @@ export default class ColorSetter extends React.Component<ColorInputProps, state>
   };
 
   render() {
-    const { styleKey, styleData, inputWidth = '108px' } = this.props;
+    const { styleKey, styleData, inputWidth = '108px',color } = this.props;
     const InputTarget = (
       <Input
         className="lowcode-setter-color"
         style={{ width: inputWidth }}
         hasClear
-        innerBefore={<div className="color-box" style={{ backgroundColor: styleData[styleKey] }} />}
+        innerBefore={<div className="color-box" style={{ backgroundColor: color?color:styleData[styleKey] }} />}
         onChange={this.inputChange}
-        value={styleData[styleKey]}
+        value={color?color:styleData[styleKey]}
       />
     );
     return (
@@ -100,7 +101,7 @@ export default class ColorSetter extends React.Component<ColorInputProps, state>
         triggerType="click"
         closable={false}
       >
-        <SketchPicker width={250} color={styleData[styleKey]} onChange={this.handleChange} />
+        <SketchPicker width={250} color={color?color:styleData[styleKey]} onChange={this.handleChange} />
       </Balloon>
     );
   }

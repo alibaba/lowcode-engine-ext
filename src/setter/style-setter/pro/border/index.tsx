@@ -7,7 +7,7 @@ import ColorInput from '../../components/color-input';
 import { StyleData, onStyleChange } from '../../utils/types';
 import { Collapse, Range, Select } from '@alifd/next';
 import fontConfig from './config.json';
-import { addUnit, removeUnit } from '../../utils';
+import { addUnit, removeUnit, unifyStyle } from '../../utils';
 import './index.less';
 const Option = Select.Option;
 const Panel = Collapse.Panel;
@@ -42,10 +42,10 @@ interface fontProps {
 }
 export default (props: fontProps) => {
   const { styleData, onStyleChange, unit } = props;
-  const { borderType, borderStyle } = fontConfig;
+  const { borderType, borderStyle, shadowType} = fontConfig;
   const [selBorderType, setSelBorderType] = useState(null);
   const [borderDirection, setBorderDirection] = useState(null);
-
+  const [shadow, setShadow] = useState('')
   useEffect(() => {
     if (!borderDirection) {
       for (let key in styleData) {
@@ -68,11 +68,20 @@ export default (props: fontProps) => {
     }else if (styleData[borderRadiusMap.borderBottomLeftRadius] || styleData[borderRadiusMap.borderBottomRightRadius] || styleData[borderRadiusMap.borderTopLeftRadius] || styleData[borderRadiusMap.borderTopRightRadius]){
       setSelBorderType(BorderRadiusType.partBorder);
     }
-
+    // 初始绑定样式
+    if(styleData['boxShadow']){
+      const bgSizeArray = unifyStyle(styleData['boxShadow'])?.split(' ')
+      if(bgSizeArray?.[0]==='inset'){
+        setShadow('insetShadow')
+      }else{
+        setShadow('outerShadow')
+      }
+    }else{
+      setShadow('')
+    }
   }, [styleData]);
 
   const onChangeBorderType = (styleDataList: Array<StyleData>) => {
-    
     if (styleDataList) {
       const styleKey = styleDataList[0].value;
       setSelBorderType(styleKey);
@@ -136,7 +145,48 @@ export default (props: fontProps) => {
       },
     ]);
   };
-
+  const onBoxShadowChange = (styleKey: string, value: any, index?:number, unit?:string,shadowPosition?:string,isColor?:boolean) => {
+    const bgSizeArray = styleData[styleKey]
+      ? unifyStyle(styleData[styleKey])?.split(' ')
+      : ['0', '0', '0', '0', '#000'];
+      if(shadowPosition==='outerShadow'){
+        if(bgSizeArray?.[0]==='inset'){
+          bgSizeArray.shift()
+        }
+      }else if(shadowPosition==='insetShadow'){
+        if(bgSizeArray?.[0]!=='inset'){
+          bgSizeArray?.unshift('inset')
+        }
+      }
+      if(bgSizeArray?.[0]==='inset'){
+        setShadow('insetShadow')
+      }else{
+        setShadow('outerShadow')
+      }
+      let unifiedValue = value
+      if(!value&&isColor){
+        unifiedValue = '#000'
+      }
+      if(unifiedValue===null||unifiedValue===undefined||!bgSizeArray) return
+      unifiedValue = unit? addUnit(unifiedValue,unit):  String(unifiedValue)
+      if(index!==undefined&&index!==null){
+        bgSizeArray[index] = unifiedValue
+      }
+      let curValue: String =''
+      bgSizeArray.forEach((item)=>{
+        curValue = curValue+item+' '
+      })
+      curValue=curValue.substring(0,curValue.length-1)
+      const styleDataList = [
+        {
+          styleKey,
+          value:curValue
+        },
+      ];
+      onStyleChange(styleDataList);
+  }
+  //insetShadow会在第一位插入inset字符串，使所有阴影样式的序号+1
+  const insetBoxShadowShift = shadow==='insetShadow' ? 1 : 0
   return (
     <Collapse defaultExpandedKeys={['0']}>
       <Panel title="边框" className="border-style-container">
@@ -318,6 +368,85 @@ export default (props: fontProps) => {
             </div>
           </div>
         </Row>
+        <Row
+          title={shadowType.title}
+          dataList={shadowType.dataList}
+          styleKey={'shadowType'}
+          {...props}
+          onStyleChange={(type)=>{
+            onBoxShadowChange('boxShadow', type?.[0].value, undefined, undefined ,type?.[0].value  )
+          }}
+          value={shadow}
+        >
+        </Row>
+        <div className="shadow-container">
+            <div className="shadow-color-container">
+              <span className='shadow-color-title'>阴影颜色</span>
+              <ColorInput
+              {...props}
+              color = {styleData['boxShadow']?.split(' ')?.[insetBoxShadowShift+4]}
+              onStyleChange = {(color)=>{
+                onBoxShadowChange('boxShadow', color?.[0].value, insetBoxShadowShift+4,undefined,undefined,true )
+              }}
+              />
+            </div>
+            <div className="shadow-size-container">
+              <div className="shadow-size-x">
+                <span className="shadow-size-x-title">x</span>
+                <Number
+                  style={{ marginRight: '4px' }}
+                  styleKey="boxShadow"
+                  {...props}
+                  onChangeFunction={(styleKey: string, val: number, unit: string) =>
+                    onBoxShadowChange(styleKey, val, insetBoxShadowShift+0, unit )
+                  }
+                  multiProp={insetBoxShadowShift+0}
+                  defaultPlaceholder={'0'}
+                />
+              </div>
+              <div className="shadow-size-y">
+                <span className="shadow-size-y-title">y</span>
+                <Number
+                  styleKey="boxShadow"
+                  {...props}
+                  onChangeFunction={(styleKey: string, val: number, unit: string) =>
+                    onBoxShadowChange(styleKey, val, insetBoxShadowShift+1, unit )
+                  }
+                  multiProp={insetBoxShadowShift+1}
+                  defaultPlaceholder={'0'}
+                />
+              </div>
+            </div>
+            <div className="shadow-config-container">
+              <div className="shadow-blur-container">
+                <div className="shadow-blur-container-title">模糊</div>
+                <Number
+                  style={{ marginRight: '4px' }}
+                  min={2}
+                  styleKey="boxShadow"
+                  {...props}
+                  onChangeFunction={(styleKey: string, val: number, unit: string) =>
+                    onBoxShadowChange(styleKey, val, insetBoxShadowShift+2, unit )
+                  }
+                  multiProp={insetBoxShadowShift+2}
+                  defaultPlaceholder={'0'}
+                />
+              </div>
+              <div className="shadow-extend-container">
+                <div className="shadow-extend-container-title">扩展</div>
+                <Number
+                  styleKey="boxShadow"
+                  min={3}
+                  {...props}
+                  onChangeFunction={(styleKey: string, val: number, unit: string) =>
+                    onBoxShadowChange(styleKey, val, insetBoxShadowShift+3, unit )
+                  }
+                  multiProp={insetBoxShadowShift+3}
+                  defaultPlaceholder={'0'}
+                />
+              </div>
+            </div>
+          </div>
       </Panel>
     </Collapse>
   );
