@@ -89,6 +89,7 @@ export default (props: layoutProps) => {
                 min={0}
                 styleKey="width"
                 {...props}
+                unit = {['px','%']}
                 useComputedStyle={true}
               />
             </div>
@@ -99,6 +100,7 @@ export default (props: layoutProps) => {
                 min={0}
                 {...props}
                 style={{ width: '100%' }}
+                unit = {['px','%']}
                 useComputedStyle={true}
               />
             </div>
