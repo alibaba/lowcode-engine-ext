@@ -9,6 +9,7 @@ import {
   getPlaceholderPropertyValue,
   unifyStyle,
 } from '../../utils';
+
 interface numberProps {
   styleKey: string;
   styleData: StyleData | any;
@@ -23,7 +24,7 @@ interface numberProps {
   defaultPlaceholder?: string;
   useComputedStyle?: boolean;
   onChangeFunction?: any;
-  multiProp?: any; //属性值包含多项是的项序号
+  multiProp?: any; // 属性值包含多项是的项序号
 }
 
 export default (props: numberProps) => {
@@ -41,8 +42,6 @@ export default (props: numberProps) => {
     multiProp,
     defaultPlaceholder,
   } = props;
-
-  console.log('props', props);
 
   const [placeholder, setPlaceholder] = useState(defaultPlaceholder);
 
@@ -93,8 +92,8 @@ export default (props: numberProps) => {
           ? onChangeFunction(styleKey, val, unit)
           : onNumberChange(styleKey, val, unit)
       }
-      innerAfter={unit ? unit : ''}
+      innerAfter={unit || ''}
       placeholder={placeholder}
-    ></NumberPicker>
+     />
   );
 };

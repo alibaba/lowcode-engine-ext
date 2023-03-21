@@ -23,3 +23,38 @@ https://uipaas-assets.com/prod/npm/@alilc/lowcode-engine-ext/1.0.5/dist/css/engi
 
 https://uipaas-assets.com/prod/npm/@alilc/lowcode-engine-ext/1.0.5/dist/js/engine-ext.js
 ```
+
+#### 拓展变量绑定面板
+
+通过传入extraDataMap拓展属性绑定面板
+
+```typescript
+ctx.skeleton.add({
+  area: 'centerArea',
+  type: 'Widget',
+  content: pluginMap.VariableBindDialog,
+  name: 'variableBindDialog',
+  props: {
+    getSchema: () => editorController.getSchema(),
+    // 拓展变量绑定
+    extraDataMap: {
+      props: {
+        name: 'Props', // 变量组展示名
+        key: 'props', // 属性名，例如 this.props
+        getChildren: () => [
+          {
+            label: 'prop1',
+            value: 'value1',
+          },
+          {
+            label: 'prop2',
+            children: [
+              { label: 'propxxx', value: 1 }
+            ]
+          }
+        ],
+      }
+    }
+  },
+});
+```
