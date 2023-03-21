@@ -25,7 +25,7 @@ interface numberProps {
   defaultPlaceholder?: string;
   useComputedStyle?: boolean;
   onChangeFunction?: any;
-  multiProp?: any; //属性值包含多项是的项序号
+  multiProp?: any; // 属性值包含多项是的项序号
 }
 
 export default (props: numberProps) => {
@@ -130,6 +130,6 @@ export default (props: numberProps) => {
       }
       innerAfter={getInnerAfter}
       placeholder={placeholder}
-    ></NumberPicker>
+     />
   );
 };
