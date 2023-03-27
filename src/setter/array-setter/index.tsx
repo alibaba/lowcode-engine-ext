@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { Component, Fragment } from 'react';
-import { common, SettingField } from '@alilc/lowcode-engine';
+import { common } from '@alilc/lowcode-engine';
 import { Button, Message } from '@alifd/next';
-import { SetterType, FieldConfig, SetterConfig } from '@alilc/lowcode-types';
+import { IPublicModelSettingField, IPublicTypeSetterType, IPublicTypeFieldConfig, IPublicTypeSetterConfig } from '@alilc/lowcode-types';
 import CustomIcon from '../../components/custom-icon';
 import Sortable from './sortable';
 import './style.less';
@@ -11,7 +11,7 @@ const { Title } = editorCabin;
 const { createSettingFieldView, PopupContext } = skeletonCabin;
 
 interface ArraySetterState {
-  items: SettingField[];
+  items: IPublicModelSettingField[];
 }
 
 /**
@@ -21,7 +21,7 @@ interface ArraySetterState {
  * @param target
  * @param value
  */
-function onItemChange (target: SettingField, items: SettingField[], props: ArraySetterProps) {
+function onItemChange (target: IPublicModelSettingField, items: IPublicModelSettingField[], props: ArraySetterProps) {
   const targetPath: Array<string | number> = target?.path;
   if (!targetPath || targetPath.length < 2) {
     console.warn(
@@ -53,9 +53,9 @@ function onItemChange (target: SettingField, items: SettingField[], props: Array
 
 interface ArraySetterProps {
   value: any[];
-  field: SettingField;
-  itemSetter?: SetterType;
-  columns?: FieldConfig[];
+  field: IPublicModelSettingField;
+  itemSetter?: IPublicTypeSetterType;
+  columns?: IPublicTypeFieldConfig[];
   multiValue?: boolean;
   hideDescription?: boolean;
   onChange?: Function;
@@ -74,23 +74,27 @@ export class ListSetter extends Component<ArraySetterProps, ArraySetterState> {
   }
 
   static getDerivedStateFromProps(props: ArraySetterProps, state: ArraySetterState) {
-    const items: SettingField[] = [];
+    const items: IPublicModelSettingField[] = [];
     const { value, field } = props;
     const valueLength = value && Array.isArray(value) ? value.length : 0;
 
     for (let i = 0; i < valueLength; i++) {
-      const item = field.createField({
-        name: i.toString(),
-        setter: props.itemSetter,
-        forceInline: 1,
-        type: 'field',
-        extraProps: {
-          defaultValue: value[i],
-          setValue: (target: SettingField) => {
-            onItemChange(target, items, props);
+      let item = state.items[i];
+      if (!item) {
+        item = field.createField({
+          name: i.toString(),
+          setter: props.itemSetter,
+          forceInline: 1,
+          type: 'field',
+          extraProps: {
+            defaultValue: value[i],
+            setValue: (target: IPublicModelSettingField) => {
+              onItemChange(target, items, props);
+            },
           },
-        },
-      });
+        });
+      }
+      item.setValue(value[i])
       items.push(item);
     }
 
@@ -103,7 +107,7 @@ export class ListSetter extends Component<ArraySetterProps, ArraySetterState> {
     const { onChange, value: oldValues } = this.props;
     const { items } = this.state;
     const values: any[] = [];
-    const newItems: SettingField[] = [];
+    const newItems: IPublicModelSettingField[] = [];
     sortedIds.map((id, index) => {
       const item = items[+id];
       item.setKey(index);
@@ -124,7 +128,7 @@ export class ListSetter extends Component<ArraySetterProps, ArraySetterState> {
     onChange?.(values);
   }
 
-  onRemove(removed: SettingField) {
+  onRemove(removed: IPublicModelSettingField) {
     const { onChange, value } = this.props;
     const { items } = this.state;
     const values = value || [];
@@ -210,7 +214,7 @@ export class ListSetter extends Component<ArraySetterProps, ArraySetterState> {
   }
 }
 class ArrayItem extends Component<{
-  field: SettingField;
+  field: IPublicModelSettingField;
   onRemove: () => void;
   scrollIntoView: boolean;
 }> {
@@ -253,8 +257,8 @@ class TableSetter extends ListSetter {
 
 export default class ArraySetter extends Component<{
   value: any[];
-  field: SettingField;
-  itemSetter?: SetterType;
+  field: IPublicModelSettingField;
+  itemSetter?: IPublicTypeSetterType;
   mode?: 'popup' | 'list';
   forceInline?: boolean;
   multiValue?: boolean;
@@ -266,9 +270,9 @@ export default class ArraySetter extends Component<{
   render() {
     const { mode, forceInline, ...props } = this.props;
     const { field, itemSetter } = props;
-    let columns: FieldConfig[] | undefined;
-    if ((itemSetter as SetterConfig)?.componentName === 'ObjectSetter') {
-      const items: FieldConfig[] = (itemSetter as any).props?.config?.items;
+    let columns: IPublicTypeFieldConfig[] | undefined;
+    if ((itemSetter as IPublicTypeSetterConfig)?.componentName === 'ObjectSetter') {
+      const items: IPublicTypeFieldConfig[] = (itemSetter as any).props?.config?.items;
       if (items && Array.isArray(items)) {
         columns = items.filter(
           (item) => item.isRequired || item.important || (item.setter as any)?.isRequired,
