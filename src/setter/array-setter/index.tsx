@@ -94,7 +94,6 @@ export class ListSetter extends Component<ArraySetterProps, ArraySetterState> {
           },
         });
       }
-      item.setValue(value[i])
       items.push(item);
     }
 
