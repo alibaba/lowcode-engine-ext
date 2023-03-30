@@ -54,7 +54,7 @@ interface RowSetterState {
   descriptor?: IPublicTypeTitleContent;
 }
 
-function getItemsFromProps(props: RowSetterProps) {
+function getItemsFromProps(props: RowSetterProps, state?: RowSetterState) {
   const { config, field, columns } = props;
   const { extraProps } = field;
   const items: IPublicModelSettingField[] = [];
@@ -63,7 +63,7 @@ function getItemsFromProps(props: RowSetterProps) {
     for (let i = 0; i < l; i++) {
       const conf = config.items[i];
       if (conf.isRequired || conf.important || (conf.setter as any)?.isRequired) {
-        const item = field.createField({
+        const item = state?.items?.filter(d => d.name === conf.name)?.[0] || field.createField({
           ...conf,
           // in column-cell
           forceInline: 3,
@@ -90,9 +90,9 @@ class RowSetter extends Component<RowSetterProps, RowSetterState> {
     items: [],
   };
 
-  static getDerivedStateFromProps(props: RowSetterProps) {
+  static getDerivedStateFromProps(props: RowSetterProps, state: RowSetterState) {
     return {
-      items: getItemsFromProps(props),
+      items: getItemsFromProps(props, state),
     };
   }
 
