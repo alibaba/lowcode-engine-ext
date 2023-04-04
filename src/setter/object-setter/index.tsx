@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { Component, Fragment } from 'react';
 import { Button } from '@alifd/next';
-import { common, SettingField } from '@alilc/lowcode-engine';
-import { SetterType, FieldConfig, CustomView, TitleContent } from '@alilc/lowcode-types';
+import { common } from '@alilc/lowcode-engine';
+import { IPublicTypeSetterType, IPublicModelSettingField, IPublicTypeFieldConfig, IPublicTypeCustomView, IPublicTypeTitleContent } from '@alilc/lowcode-types';
 import CustomIcon from '../../components/custom-icon';
 import './index.less';
 
@@ -12,8 +12,8 @@ const { isSettingField } = designerCabin;
 const { createSettingFieldView, PopupContext } = skeletonCabin;
 
 export default class ObjectSetter extends Component<{
-  field: SettingField;
-  descriptor?: TitleContent;
+  field: IPublicModelSettingField;
+  descriptor?: IPublicTypeTitleContent;
   config: ObjectSetterConfig;
   mode?: 'popup' | 'form';
   // 1: in tablerow  2: in listrow 3: in column-cell
@@ -36,33 +36,34 @@ export default class ObjectSetter extends Component<{
 }
 
 interface ObjectSetterConfig {
-  items?: FieldConfig[];
-  extraSetter?: SetterType;
+  items?: IPublicTypeFieldConfig[];
+  extraSetter?: IPublicTypeSetterType;
 }
 
 interface RowSetterProps {
-  field: SettingField;
-  descriptor?: TitleContent;
+  value: any;
+  field: IPublicModelSettingField;
+  descriptor?: IPublicTypeTitleContent;
   config: ObjectSetterConfig;
   columns?: number;
   primaryButton?: boolean;
 }
 
 interface RowSetterState {
-  items: SettingField[];
-  descriptor?: TitleContent;
+  items: IPublicModelSettingField[];
+  descriptor?: IPublicTypeTitleContent;
 }
 
-function getItemsFromProps(props: RowSetterProps) {
+function getItemsFromProps(props: RowSetterProps, state?: RowSetterState) {
   const { config, field, columns } = props;
   const { extraProps } = field;
-  const items: SettingField[] = [];
+  const items: IPublicModelSettingField[] = [];
   if (columns && config?.items) {
     const l = Math.min(config.items.length, columns);
     for (let i = 0; i < l; i++) {
       const conf = config.items[i];
       if (conf.isRequired || conf.important || (conf.setter as any)?.isRequired) {
-        const item = field.createField({
+        const item = state?.items?.filter(d => d.name === conf.name)?.[0] || field.createField({
           ...conf,
           // in column-cell
           forceInline: 3,
@@ -89,16 +90,16 @@ class RowSetter extends Component<RowSetterProps, RowSetterState> {
     items: [],
   };
 
-  static getDerivedStateFromProps(props: RowSetterProps) {
+  static getDerivedStateFromProps(props: RowSetterProps, state: RowSetterState) {
     return {
-      items: getItemsFromProps(props),
+      items: getItemsFromProps(props, state),
     };
   }
 
   constructor(props: RowSetterProps) {
     super(props);
     const { descriptor, field } = props;
-    const items: SettingField[] = getItemsFromProps(props);
+    const items: IPublicModelSettingField[] = getItemsFromProps(props);
     this.state = { items };
 
     let firstRun = true;
@@ -123,8 +124,11 @@ class RowSetter extends Component<RowSetterProps, RowSetterState> {
     });
   }
 
-  shouldComponentUpdate(_: any, nextState: any) {
+  shouldComponentUpdate(nextProps: any, nextState: any) {
     if (this.state.descriptor !== nextState.descriptor) {
+      return true;
+    }
+    if (this.props.value !== nextProps.value) {
       return true;
     }
     return false;
@@ -187,11 +191,11 @@ class RowSetter extends Component<RowSetterProps, RowSetterState> {
 }
 
 interface FormSetterProps {
-  field: SettingField;
+  field: IPublicModelSettingField;
   config: ObjectSetterConfig;
 }
 class FormSetter extends Component<FormSetterProps> {
-  private items: (SettingField | CustomView)[];
+  private items: (IPublicModelSettingField | IPublicTypeCustomView)[];
 
   constructor(props: RowSetterProps) {
     super(props);
@@ -199,7 +203,7 @@ class FormSetter extends Component<FormSetterProps> {
     const { extraProps } = field;
 
     if (Array.isArray(field.items) && field.items.length > 0) {
-      field.items.forEach((item: SettingField | CustomView) => {
+      field.items.forEach((item: IPublicModelSettingField | IPublicTypeCustomView) => {
         if (isSettingField(item)) {
           const originalSetValue = item.extraProps.setValue;
           item.extraProps.setValue = (...args) => {

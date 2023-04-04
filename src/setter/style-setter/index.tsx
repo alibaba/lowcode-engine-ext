@@ -8,6 +8,7 @@ import CssCode from './components/css-code';
 import { StyleData } from './utils/types';
 import { ConfigProvider } from '@alifd/next';
 import './index.less';
+
 interface StyleSetterProps {
   value: StyleData;
   defaultValue: string;
@@ -79,9 +80,9 @@ export default class StyleSetterV2 extends React.PureComponent<StyleSetterProps>
    * @param styleKey
    * @param value
    */
-  onStyleChange = (styleDataList: Array<StyleData>) => {
+  onStyleChange = (styleDataList: StyleData[]) => {
     const { onChange } = this.props;
-    let styleData: StyleData | any = Object.assign({}, this.state.styleData);
+    const styleData: StyleData | any = Object.assign({}, this.state.styleData);
     styleDataList &&
       styleDataList.map((item) => {
         if (item.value == undefined || item.value == null) {
@@ -111,7 +112,6 @@ export default class StyleSetterV2 extends React.PureComponent<StyleSetterProps>
   render() {
     const { isShowCssCode, showModuleList } = this.props;
     const { styleData, cssCodeVisiable, initFlag } = this.state;
-    console.log('styleData', styleData);
 
     return (
       <ConfigProvider>
@@ -125,7 +125,7 @@ export default class StyleSetterV2 extends React.PureComponent<StyleSetterProps>
                 <Icon type="icon-CSS"></Icon>
               </div> */}
 
-              <CssCode styleData={styleData} onStyleDataChange={this.onStyleDataChange}></CssCode>
+              <CssCode styleData={styleData} onStyleDataChange={this.onStyleDataChange} />
             </div>
           )}
 
@@ -134,11 +134,11 @@ export default class StyleSetterV2 extends React.PureComponent<StyleSetterProps>
               onStyleChange={this.onStyleChange}
               styleData={styleData}
               {...this.props}
-            ></Layout>
+             />
           )}
 
           {showModuleList.filter((item) => item == 'font').length > 0 && (
-            <Font onStyleChange={this.onStyleChange} styleData={styleData} {...this.props}></Font>
+            <Font onStyleChange={this.onStyleChange} styleData={styleData} {...this.props} />
           )}
 
           {showModuleList.filter((item) => item == 'background').length > 0 && (
@@ -146,7 +146,7 @@ export default class StyleSetterV2 extends React.PureComponent<StyleSetterProps>
               onStyleChange={this.onStyleChange}
               styleData={styleData}
               {...this.props}
-            ></Background>
+             />
           )}
 
           {showModuleList.filter((item) => item == 'position').length > 0 && (
@@ -154,7 +154,7 @@ export default class StyleSetterV2 extends React.PureComponent<StyleSetterProps>
               onStyleChange={this.onStyleChange}
               styleData={styleData}
               {...this.props}
-            ></Position>
+             />
           )}
 
           {showModuleList.filter((item) => item == 'border').length > 0 && (
@@ -162,7 +162,7 @@ export default class StyleSetterV2 extends React.PureComponent<StyleSetterProps>
               onStyleChange={this.onStyleChange}
               styleData={styleData}
               {...this.props}
-            ></Border>
+             />
           )}
 
           {/* {initFlag && (

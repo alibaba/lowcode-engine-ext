@@ -69,6 +69,10 @@ export default class VariableBindDialog extends Component<PluginProps> {
 
   private matchedKeys:null;
 
+  get extraDataMap() {
+    return this.props.config.props?.extraDataMap;
+  }
+
   componentDidMount() {
     event.on('common:variableBindDialog.openDialog', ({ field }) => {
       this.setState({ field }, () => {
@@ -140,15 +144,15 @@ export default class VariableBindDialog extends Component<PluginProps> {
         const valueString = stateMap[key].value;
         let value;
         try{
-          value = eval('('+valueString+')');
+          value = eval(`(${valueString})`);
         }catch(e){}
-        
+
         if (value){
           dataSourceMap[key] = value;
         }
       }
     }
-    let treeList = [];
+    const treeList = [];
     this.walkNode(dataSourceMap,-1,treeList);
     // this.setState({
     //   treeList
@@ -158,11 +162,11 @@ export default class VariableBindDialog extends Component<PluginProps> {
 
   /**
    * 通过子节点id查找节点path
-   * @param tree 
-   * @param func 
-   * @param field 
-   * @param path 
-   * @returns 
+   * @param tree
+   * @param func
+   * @param field
+   * @param path
+   * @returns
    */
   treeFindPath(tree, func, field = "", path = []) {
     if (!tree) return []
@@ -180,18 +184,18 @@ export default class VariableBindDialog extends Component<PluginProps> {
 
   /**
    * 循环遍历节点
-   * @param dataSourceMap 
-   * @param deepNum 
-   * @param treeList 
+   * @param dataSourceMap
+   * @param deepNum
+   * @param treeList
    */
   walkNode (dataSourceMap,deepNum,treeList){
     deepNum++;
     let index = 0
-    for (let key in dataSourceMap){
-      let treeData = {};
+    for (const key in dataSourceMap){
+      const treeData = {};
       treeData.label = key;
-      //treeData.key = deepNum+'_'+index;
-      if (typeof(dataSourceMap[key])=='object' && !(dataSourceMap[key] instanceof Array)){
+      // treeData.key = deepNum+'_'+index;
+      if (typeof(dataSourceMap[key])==='object' && !(dataSourceMap[key] instanceof Array)){
         treeData.children = [];
         this.walkNode(dataSourceMap[key],deepNum,treeData.children);
       }
@@ -274,6 +278,7 @@ export default class VariableBindDialog extends Component<PluginProps> {
               name: '数据源',
               childrens: dataSource,
             },
+            ...this.extraDataMap,
           },
         });
       },
@@ -424,7 +429,13 @@ export default class VariableBindDialog extends Component<PluginProps> {
   onVariableItemClick = (key: string) => {
     const { variableListMap } = this.state;
 
-    const childrenVariableList = variableListMap[key].childrens;
+    let childrenVariableList;
+    if (this.extraDataMap?.[key] && this.extraDataMap[key]?.getChildren?.()) {
+      childrenVariableList = this.extraDataMap[key].getChildren();
+    } else {
+      childrenVariableList = variableListMap[key].childrens;
+    }
+
     // const matchedKeys = [];
     // const loop = data =>
     //   data.forEach(item => {
@@ -464,9 +475,15 @@ export default class VariableBindDialog extends Component<PluginProps> {
       selectLabel = `${label}()`;
     }else if (selParentVariable == 'dataSource'){
       selectLabel = `this.state.${label}`
+    } else {
+      const fondKey = Object.keys(this.extraDataMap || {}).find(k => k === selParentVariable);
+      if (fondKey) {
+        const propKey = this.extraDataMap[fondKey].key;
+        const pathList = this.treeFindPath(childrenVariableList, (data: any) => data.key === key,'label');
+        selectLabel = `this.${propKey}.${pathList.join('.')}`;
+      }
     }
     this.onSelectItem(selectLabel);
-    
   }
 
 
@@ -573,10 +590,10 @@ export default class VariableBindDialog extends Component<PluginProps> {
                         </li>
                       ))} */}
 
-                    <Tree 
-                      dataSource={childrenVariableList} 
-                      onSelect={this.onSelectTreeNode} 
-                      defaultExpandAll 
+                    <Tree
+                      dataSource={childrenVariableList}
+                      onSelect={this.onSelectTreeNode}
+                      defaultExpandAll
                       filterTreeNode={filterTreeNode}
                       expandedKeys={expandedKeys}
                       autoExpandParent={autoExpandParent}
