@@ -60,7 +60,7 @@ function getItemsFromProps(props: RowSetterProps, state?: RowSetterState) {
   const items: IPublicModelSettingField[] = [];
   if (columns && config?.items) {
     const l = Math.min(config.items.length, columns);
-    for (let i = 0; i < l; i++) {
+    for (let i = 0; i < config.items.length; i++) {
       const conf = config.items[i];
       if (conf.isRequired || conf.important || (conf.setter as any)?.isRequired) {
         const item = state?.items?.filter(d => d.name === conf.name)?.[0] || field.createField({
@@ -76,6 +76,9 @@ function getItemsFromProps(props: RowSetterProps, state?: RowSetterState) {
           extraProps.setValue?.apply(null, args);
         };
         items.push(item);
+      }
+      if (items.length >= l) {
+        break;
       }
     }
   }
