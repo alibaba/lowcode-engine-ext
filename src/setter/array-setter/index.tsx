@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { Component, Fragment } from 'react';
-import { common, SettingField } from '@alilc/lowcode-engine';
+import { common } from '@alilc/lowcode-engine';
 import { Button, Message } from '@alifd/next';
-import { SetterType, FieldConfig, SetterConfig } from '@alilc/lowcode-types';
+import { IPublicModelSettingField, IPublicTypeSetterType, IPublicTypeFieldConfig, IPublicTypeSetterConfig } from '@alilc/lowcode-types';
 import CustomIcon from '../../components/custom-icon';
 import Sortable from './sortable';
 import './style.less';
@@ -11,14 +11,51 @@ const { Title } = editorCabin;
 const { createSettingFieldView, PopupContext } = skeletonCabin;
 
 interface ArraySetterState {
-  items: SettingField[];
+  items: IPublicModelSettingField[];
 }
+
+/**
+ * onItemChange 用于 ArraySetter 的单个 index 下的数据发生变化，
+ * 因此 target.path 的数据格式必定为 [propName1, propName2, arrayIndex, key?]。
+ *
+ * @param target
+ * @param value
+ */
+function onItemChange (target: IPublicModelSettingField, items: IPublicModelSettingField[], props: ArraySetterProps) {
+  const targetPath: Array<string | number> = target?.path;
+  if (!targetPath || targetPath.length < 2) {
+    console.warn(
+      `[ArraySetter] onItemChange 接收的 target.path <${
+        targetPath || 'undefined'
+      }> 格式非法需为 [propName, arrayIndex, key?]`,
+    );
+    return;
+  }
+  const { field, value: fieldValue } = props;
+  // const { items } = this.state;
+  const { path } = field;
+  if (path[0] !== targetPath[0]) {
+    console.warn(
+      `[ArraySetter] field.path[0] !== target.path[0] <${path[0]} !== ${targetPath[0]}>`,
+    );
+    return;
+  }
+  try {
+    const index = +targetPath[targetPath.length - 2];
+    if (typeof index === 'number' && !isNaN(index)) {
+      fieldValue[index] = items[index].getValue();
+      field?.extraProps?.setValue?.call(field, field, fieldValue);
+    }
+  } catch (e) {
+    console.warn('[ArraySetter] extraProps.setValue failed :', e);
+  }
+};
 
 interface ArraySetterProps {
   value: any[];
-  field: SettingField;
-  itemSetter?: SetterType;
-  columns?: FieldConfig[];
+  field: IPublicModelSettingField;
+  itemSetter?: IPublicTypeSetterType;
+  columns?: IPublicTypeFieldConfig[];
   multiValue?: boolean;
   hideDescription?: boolean;
   onChange?: Function;
@@ -34,72 +71,42 @@ export class ListSetter extends Component<ArraySetterProps, ArraySetterState> {
 
   constructor(props: ArraySetterProps) {
     super(props);
-    this.init();
   }
 
-  init() {
-    const { value, field, onChange } = this.props;
-    const items: SettingField[] = [];
+  static getDerivedStateFromProps(props: ArraySetterProps, state: ArraySetterState) {
+    const items: IPublicModelSettingField[] = [];
+    const { value, field } = props;
     const valueLength = value && Array.isArray(value) ? value.length : 0;
 
     for (let i = 0; i < valueLength; i++) {
-      const item = field.createField({
-        name: i,
-        setter: this.props.itemSetter,
-        forceInline: 1,
-        extraProps: {
-          defaultValue: value[i],
-          setValue: this.onItemChange,
-        },
-      });
+      let item = state.items[i];
+      if (!item) {
+        item = field.createField({
+          name: i.toString(),
+          setter: props.itemSetter,
+          forceInline: 1,
+          type: 'field',
+          extraProps: {
+            defaultValue: value[i],
+            setValue: (target: IPublicModelSettingField) => {
+              onItemChange(target, items, props);
+            },
+          },
+        });
+      }
       items.push(item);
     }
-    onChange?.(value);
-    this.state = { items };
-  }
 
-  /**
-   * onItemChange 用于 ArraySetter 的单个 index 下的数据发生变化，
-   * 因此 target.path 的数据格式必定为 [propName1, propName2, arrayIndex, key?]。
-   *
-   * @param target
-   * @param value
-   */
-  onItemChange = (target: SettingField) => {
-    const targetPath: Array<string | number> = target?.path;
-    if (!targetPath || targetPath.length < 2) {
-      console.warn(
-        `[ArraySetter] onItemChange 接收的 target.path <${
-          targetPath || 'undefined'
-        }> 格式非法需为 [propName, arrayIndex, key?]`,
-      );
-      return;
-    }
-    const { field, value: fieldValue } = this.props;
-    const { items } = this.state;
-    const { path } = field;
-    if (path[0] !== targetPath[0]) {
-      console.warn(
-        `[ArraySetter] field.path[0] !== target.path[0] <${path[0]} !== ${targetPath[0]}>`,
-      );
-      return;
-    }
-    try {
-      const index = +targetPath[targetPath.length - 2];
-      if (typeof index === 'number' && !isNaN(index)) {
-        fieldValue[index] = items[index].getValue();
-        field?.extraProps?.setValue?.call(field, field, fieldValue);
-      }
-    } catch (e) {
-      console.warn('[ArraySetter] extraProps.setValue failed :', e);
-    }
-  };
+    return {
+      items,
+    };
+  }
 
   onSort(sortedIds: Array<string | number>) {
     const { onChange, value: oldValues } = this.props;
     const { items } = this.state;
     const values: any[] = [];
-    const newItems: SettingField[] = [];
+    const newItems: IPublicModelSettingField[] = [];
     sortedIds.map((id, index) => {
       const item = items[+id];
       item.setKey(index);
@@ -108,32 +115,19 @@ export class ListSetter extends Component<ArraySetterProps, ArraySetterState> {
       return id;
     });
     onChange?.(values);
-    this.setState({ items: newItems });
   }
 
   onAdd(newValue?: {[key: string]: any}) {
-    const { items = [] } = this.state;
     const { itemSetter, field, onChange, value = [] } = this.props;
     const values = value || [];
     const initialValue = (itemSetter as any)?.initialValue;
     const defaultValue = newValue ? newValue : (typeof initialValue === 'function' ? initialValue(field) : initialValue);
-    const item = field.createField({
-      name: items.length,
-      setter: itemSetter,
-      forceInline: 1,
-      extraProps: {
-        defaultValue,
-        setValue: this.onItemChange,
-      },
-    });
-    items.push(item);
     values.push(defaultValue);
     this.scrollToLast = true;
     onChange?.(values);
-    this.setState({ items });
   }
 
-  onRemove(removed: SettingField) {
+  onRemove(removed: IPublicModelSettingField) {
     const { onChange, value } = this.props;
     const { items } = this.state;
     const values = value || [];
@@ -148,7 +142,6 @@ export class ListSetter extends Component<ArraySetterProps, ArraySetterState> {
     removed.remove();
     const pureValues = values.map((item: any) => typeof(item) === 'object' ? Object.assign({}, item):item);
     onChange?.(pureValues);
-    this.setState({ items });
   }
 
   componentWillUnmount() {
@@ -220,7 +213,7 @@ export class ListSetter extends Component<ArraySetterProps, ArraySetterState> {
   }
 }
 class ArrayItem extends Component<{
-  field: SettingField;
+  field: IPublicModelSettingField;
   onRemove: () => void;
   scrollIntoView: boolean;
 }> {
@@ -263,8 +256,8 @@ class TableSetter extends ListSetter {
 
 export default class ArraySetter extends Component<{
   value: any[];
-  field: SettingField;
-  itemSetter?: SetterType;
+  field: IPublicModelSettingField;
+  itemSetter?: IPublicTypeSetterType;
   mode?: 'popup' | 'list';
   forceInline?: boolean;
   multiValue?: boolean;
@@ -276,9 +269,9 @@ export default class ArraySetter extends Component<{
   render() {
     const { mode, forceInline, ...props } = this.props;
     const { field, itemSetter } = props;
-    let columns: FieldConfig[] | undefined;
-    if ((itemSetter as SetterConfig)?.componentName === 'ObjectSetter') {
-      const items: FieldConfig[] = (itemSetter as any).props?.config?.items;
+    let columns: IPublicTypeFieldConfig[] | undefined;
+    if ((itemSetter as IPublicTypeSetterConfig)?.componentName === 'ObjectSetter') {
+      const items: IPublicTypeFieldConfig[] = (itemSetter as any).props?.config?.items;
       if (items && Array.isArray(items)) {
         columns = items.filter(
           (item) => item.isRequired || item.important || (item.setter as any)?.isRequired,

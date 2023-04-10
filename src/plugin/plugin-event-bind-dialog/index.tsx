@@ -11,6 +11,8 @@ const defaultParams = '{\n \t "testKey":123 \n}';
 const tempPlaceHolder = '${extParams}';
 const tempPlaceHolderReg = /\$\{extParams\}/g;
 
+const propEventsReg = /(this\.)?props\.[a-zA-Z0-9\-_]+/;
+
 const defaultEditorOption = {
   height:'319px',
   width:'100%',
@@ -79,8 +81,8 @@ export default class EventBindDialog extends Component<PluginProps> {
     // },
   ];
 
-  private relatedEventName: string = '';
-  private bindEventName: string = '';
+  private relatedEventName = '';
+  private bindEventName = '';
 
   state: any = {
     visiable: false,
@@ -212,7 +214,7 @@ export default class EventBindDialog extends Component<PluginProps> {
     if (template) {
       const functionName = this.pickupFunctionName(template);
 
-      formatTemp = template.replace(new RegExp('^s*' + functionName), eventName);
+      formatTemp = template.replace(new RegExp(`^s*${  functionName}`), eventName);
       if (useParams) {
         formatTemp = formatTemp.replace(tempPlaceHolderReg, 'extParams');
 
@@ -232,11 +234,11 @@ export default class EventBindDialog extends Component<PluginProps> {
         // 重新join进去
 
         formatTemp =
-          formatTemp.substr(0, leftIndex) +
-          '(' +
-          paramList.join(',') +
-          ')' +
-          formatTemp.substr(rightIndex + 1, formatTemp.length);
+          `${formatTemp.substr(0, leftIndex)
+          }(${
+          paramList.join(',')
+          })${
+          formatTemp.substr(rightIndex + 1, formatTemp.length)}`;
       }
     }
 
@@ -244,6 +246,10 @@ export default class EventBindDialog extends Component<PluginProps> {
   };
 
   formatEventName = (eventName: string) => {
+    // 支持绑定this.props.xxxx
+    if (propEventsReg.test(eventName)) {
+      return eventName.replace(/(this\.)|(\s+)/, '');
+    }
     const newEventNameArr = eventName.split('');
     const index = eventName.indexOf('.');
     if (index >= 0) {
@@ -271,7 +277,7 @@ export default class EventBindDialog extends Component<PluginProps> {
     );
 
     // 选中的是新建事件 && 注册了sourceEditor面板
-    if (this.state.selectedEventName == '') {
+    if (this.state.selectedEventName == '' && !propEventsReg.test(formatEventName)) {
       // 判断面板是否处于激活状态
       skeleton.showPanel('codeEditor');
       const formatTemp = this.formatTemplate(configEventData.template, formatEventName, useParams);
@@ -346,7 +352,14 @@ export default class EventBindDialog extends Component<PluginProps> {
           </div>
 
           <div className="dialog-right-container">
-            <div className="dialog-small-title">事件名称</div>
+            <div className="dialog-small-title">
+              事件名称
+              {(window as any).lowcodeSetterSwitch?.enablePropsEvents && (
+                <HelpTip iconStyle={{marginLeft: 4}}>
+                  如需绑定 props 属性，可通过 props.xxx 进行绑定
+                </HelpTip>
+              )}
+            </div>
             <div className="event-input-container">
               <Input style={{ width: '100%' }} value={eventName} onChange={this.onInputChange} />
             </div>

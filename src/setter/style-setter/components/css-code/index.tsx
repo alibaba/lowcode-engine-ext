@@ -4,6 +4,7 @@ import { StyleData } from '../../utils/types';
 import { parseToCssCode, parseToStyleData } from '../../utils';
 import MonacoEditor from '@alilc/lowcode-plugin-base-monaco-editor';
 import Icon from '../../components/icon';
+
 interface CodeProps {
   styleData: StyleData | any;
   onStyleDataChange: (val: any) => void;
@@ -123,6 +124,7 @@ export default class CssCode extends React.Component<CodeProps> {
       // 挂载时先适配高度
       updateEditorHeight()
     };
+
     return (
       <div>
         <div
@@ -133,20 +135,22 @@ export default class CssCode extends React.Component<CodeProps> {
             justifyContent: 'space-between',
           }}
         >
-          <Icon type="icon-CSS"></Icon>
+          <Icon type="icon-CSS" />
           <Button type="primary" onClick={this.styleSave} disabled={isCanSave} size="small">
             保存
           </Button>
         </div>
-        <MonacoEditor
-          value={cssCode}
-          {...defaultEditorProps}
-          {...defaultEditorOption}
-          {...{ language: 'css' }}
-          onChange={(newCode: string) => this.updateCode(newCode)}
-          editorDidMount={handleEditorMount}
-          height={height}
-        />
+        {this.state.cssCode && (
+          <MonacoEditor
+            value={cssCode}
+            {...defaultEditorProps}
+            {...defaultEditorOption}
+            {...{ language: 'css' }}
+            onChange={(newCode: string) => this.updateCode(newCode)}
+            editorDidMount={handleEditorMount}
+            height={height}
+          />
+        )}
       </div>
     );
   }
