@@ -472,7 +472,7 @@ export default class VariableBindDialog extends Component<PluginProps> {
       const pathList = this.treeFindPath(childrenVariableList,data=>(data.key==key),'label');
       selectLabel = `this.state.${pathList.join('.')}`
     }else if (selParentVariable == 'methods'){
-      selectLabel = `${label}()`;
+      selectLabel = `this.${label}()`;
     }else if (selParentVariable == 'dataSource'){
       selectLabel = `this.state.${label}`
     } else {
@@ -486,6 +486,9 @@ export default class VariableBindDialog extends Component<PluginProps> {
     this.onSelectItem(selectLabel);
   }
 
+  onClear = () => {
+    this.updateCode('')
+  }
 
   renderTitle = () => {
     return (
@@ -617,6 +620,9 @@ export default class VariableBindDialog extends Component<PluginProps> {
                     this.editorDidMount.call(this, editor, useMonaco);
                   }}
                 />
+                <Button className="clear" text={true} onClick={this.onClear}>
+                  <Icon type="delete-filling" className="icon" />
+                </Button>
               </div>
 
               <div className="dialog-help-tip-input">

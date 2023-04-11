@@ -141,7 +141,21 @@
     width: 420px;
     padding-left: 12px;
     float: left;
-
+    .editor-context {
+      position: relative;
+      .clear {
+        position: absolute;
+        top: 0;
+        right: 12px;
+        .icon {
+          color: #8d9299;
+          opacity: 0.5;
+        }
+        .icon:hover {
+          opacity: 1;
+        }
+      }
+    }
     .event-input-container {
       margin-bottom: 20px;
     }
