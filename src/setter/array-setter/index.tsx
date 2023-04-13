@@ -114,6 +114,9 @@ export class ListSetter extends Component<ArraySetterProps, ArraySetterState> {
       newItems[index] = item;
       return id;
     });
+    this.setState({
+      items: newItems,
+    });
     onChange?.(values);
   }
 
