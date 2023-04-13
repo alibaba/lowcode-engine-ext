@@ -1,8 +1,8 @@
 import * as React from 'react';
 import './index.less';
-import { Input } from '@alifd/next';
 import { StyleData, onStyleChange } from '../../utils/types';
-import { addUnit, removeUnit } from '../../utils';
+import { addUnit, isCssVarBind, removeUnit as originRemoveUnit } from '../../utils';
+import LayoutInput from './LayoutInput';
 
 const KEY_ARROW_DOWN = 'ArrowDown';
 const KEY_ARROW_UP = 'ArrowUp';
@@ -12,6 +12,13 @@ interface layoutBoxProps {
   onStyleChange: onStyleChange;
   unit?: 'px';
   layoutPropsConfig: any;
+}
+
+const removeUnit = (value: any) => {
+  if (isCssVarBind(value)) {
+    return value;
+  }
+  return originRemoveUnit(value);
 }
 
 export default (props: layoutBoxProps) => {
@@ -63,45 +70,45 @@ export default (props: layoutBoxProps) => {
       {layoutPropsConfig.isShowMargin && (
         <>
           <div className="margin-top-div">
-            <Input
+            <LayoutInput
               className="next-noborder"
               placeholder="0"
               maxLength={3}
-              value={removeUnit(styleData['marginTop'])}
+              value={removeUnit(styleData.marginTop)}
               onChange={(val) => onInputChange('marginTop', val)}
               onKeyDown={(e) => onInputKeyDown(e.key, 'marginTop')}
-            ></Input>
+             />
           </div>
           <div className="margin-right-div">
-            <Input
+            <LayoutInput
               className="next-noborder"
               placeholder="0"
               maxLength={3}
-              value={removeUnit(styleData['marginRight'])}
+              value={removeUnit(styleData.marginRight)}
               onChange={(val) => onInputChange('marginRight', val)}
               onKeyDown={(e) => onInputKeyDown(e.key, 'marginRight')}
-            ></Input>
+             />
           </div>
           <div className="margin-bottom-div">
             <span className="help-txt">MARGIN</span>
-            <Input
+            <LayoutInput
               className="next-noborder"
               placeholder="0"
               maxLength={3}
-              value={removeUnit(styleData['marginBottom'])}
+              value={removeUnit(styleData.marginBottom)}
               onChange={(val) => onInputChange('marginBottom', val)}
               onKeyDown={(e) => onInputKeyDown(e.key, 'marginBottom')}
-            ></Input>
+             />
           </div>
           <div className="margin-left-div">
-            <Input
+            <LayoutInput
               className="next-noborder"
               placeholder="0"
               maxLength={3}
-              value={removeUnit(styleData['marginLeft'])}
+              value={removeUnit(styleData.marginLeft)}
               onChange={(val) => onInputChange('marginLeft', val)}
               onKeyDown={(e) => onInputKeyDown(e.key, 'marginLeft')}
-            ></Input>
+             />
           </div>
         </>
       )}
@@ -109,45 +116,45 @@ export default (props: layoutBoxProps) => {
       {layoutPropsConfig.isShowPadding && (
         <>
           <div className="padding-top-div">
-            <Input
+            <LayoutInput
               className="next-noborder"
               placeholder="0"
               maxLength={3}
-              value={removeUnit(styleData['paddingTop'])}
+              value={removeUnit(styleData.paddingTop)}
               onChange={(val) => onInputChange('paddingTop', val)}
               onKeyDown={(e) => onInputKeyDown(e.key, 'paddingTop')}
-            ></Input>
+             />
           </div>
           <div className="padding-right-div">
-            <Input
+            <LayoutInput
               className="next-noborder"
               placeholder="0"
               maxLength={3}
-              value={removeUnit(styleData['paddingRight'])}
+              value={removeUnit(styleData.paddingRight)}
               onChange={(val) => onInputChange('paddingRight', val)}
               onKeyDown={(e) => onInputKeyDown(e.key, 'paddingRight')}
-            ></Input>
+             />
           </div>
           <div className="padding-bottom-div">
             <span className="help-txt">PADDING</span>
-            <Input
+            <LayoutInput
               className="next-noborder"
               placeholder="0"
               maxLength={3}
-              value={removeUnit(styleData['paddingBottom'])}
+              value={removeUnit(styleData.paddingBottom)}
               onChange={(val) => onInputChange('paddingBottom', val)}
               onKeyDown={(e) => onInputKeyDown(e.key, 'paddingBottom')}
-            ></Input>
+             />
           </div>
           <div className="padding-left-div">
-            <Input
+            <LayoutInput
               className="next-noborder"
               placeholder="0"
               maxLength={3}
-              value={removeUnit(styleData['paddingLeft'])}
+              value={removeUnit(styleData.paddingLeft)}
               onChange={(val) => onInputChange('paddingLeft', val)}
               onKeyDown={(e) => onInputKeyDown(e.key, 'paddingLeft')}
-            ></Input>
+             />
           </div>
         </>
       )}
