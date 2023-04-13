@@ -85,9 +85,9 @@ export function hexify(color: string) {
   const b = Math.floor(a * parseInt(values[2]) + (1 - a) * 255);
   return (
     `#${
-    ('0' + r.toString(16)).slice(-2)
-    }${('0' + g.toString(16)).slice(-2)
-    }${('0' + b.toString(16)).slice(-2)}`
+    (`0${  r.toString(16)}`).slice(-2)
+    }${(`0${  g.toString(16)}`).slice(-2)
+    }${(`0${  b.toString(16)}`).slice(-2)}`
   );
 }
 
@@ -162,6 +162,6 @@ export const getUnit = (value: string) => {
 
 export function isCssVarBind(value: any) {
   if (typeof value === 'string') {
-    return /\$var\(/.test(value);
+    return /var\(/.test(value);
   }
 }
