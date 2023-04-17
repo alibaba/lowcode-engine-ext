@@ -348,6 +348,7 @@ export default (props: fontProps) => {
         <Row title={'透明度'} styleKey="opacity" {...props}>
           <div className="opacity-container">
             <Range
+              disabled={isCssVarBind(styleData.opacity)}
               style={{ marginLeft: '10px', marginRight: '10px', width: '104px' }}
               value={!isEmptyValue(styleData.opacity) ? styleData.opacity * 100 : 0}
               onChange={(val) => onOpacityChange('opacity', parseInt(val) / 100)}

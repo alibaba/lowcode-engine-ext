@@ -1,4 +1,5 @@
 import * as React from 'react';
+import cls from 'classnames';
 import './index.less';
 import { StyleData, onStyleChange } from '../../utils/types';
 import { addUnit, isCssVarBind, removeUnit as originRemoveUnit } from '../../utils';
@@ -69,7 +70,7 @@ export default (props: layoutBoxProps) => {
     <div className="layout-box-container">
       {layoutPropsConfig.isShowMargin && (
         <>
-          <div className="margin-top-div">
+          <div className={cls("margin-top-div", isCssVarBind(styleData.marginTop) && 'css-var-bind')}>
             <LayoutInput
               className="next-noborder"
               placeholder="0"
@@ -79,7 +80,7 @@ export default (props: layoutBoxProps) => {
               onKeyDown={(e) => onInputKeyDown(e.key, 'marginTop')}
              />
           </div>
-          <div className="margin-right-div">
+          <div className={cls("margin-right-div", isCssVarBind(styleData.marginBottom) && 'css-var-bind')}>
             <LayoutInput
               className="next-noborder"
               placeholder="0"
@@ -89,7 +90,7 @@ export default (props: layoutBoxProps) => {
               onKeyDown={(e) => onInputKeyDown(e.key, 'marginRight')}
              />
           </div>
-          <div className="margin-bottom-div">
+          <div className={cls("margin-bottom-div", isCssVarBind(styleData.marginBottom) && 'css-var-bind')}>
             <span className="help-txt">MARGIN</span>
             <LayoutInput
               className="next-noborder"
@@ -100,7 +101,7 @@ export default (props: layoutBoxProps) => {
               onKeyDown={(e) => onInputKeyDown(e.key, 'marginBottom')}
              />
           </div>
-          <div className="margin-left-div">
+          <div className={cls("margin-left-div", isCssVarBind(styleData.marginLeft) && 'css-var-bind')}>
             <LayoutInput
               className="next-noborder"
               placeholder="0"
@@ -115,7 +116,7 @@ export default (props: layoutBoxProps) => {
 
       {layoutPropsConfig.isShowPadding && (
         <>
-          <div className="padding-top-div">
+          <div className={cls("padding-top-div", isCssVarBind(styleData.paddingTop) && 'css-var-bind')}>
             <LayoutInput
               className="next-noborder"
               placeholder="0"
@@ -125,7 +126,7 @@ export default (props: layoutBoxProps) => {
               onKeyDown={(e) => onInputKeyDown(e.key, 'paddingTop')}
              />
           </div>
-          <div className="padding-right-div">
+          <div className={cls("padding-right-div", isCssVarBind(styleData.paddingRight) && 'css-var-bind')}>
             <LayoutInput
               className="next-noborder"
               placeholder="0"
@@ -135,7 +136,7 @@ export default (props: layoutBoxProps) => {
               onKeyDown={(e) => onInputKeyDown(e.key, 'paddingRight')}
              />
           </div>
-          <div className="padding-bottom-div">
+          <div className={cls("padding-bottom-div", isCssVarBind(styleData.paddingBottom) && 'css-var-bind')}>
             <span className="help-txt">PADDING</span>
             <LayoutInput
               className="next-noborder"
@@ -146,7 +147,7 @@ export default (props: layoutBoxProps) => {
               onKeyDown={(e) => onInputKeyDown(e.key, 'paddingBottom')}
              />
           </div>
-          <div className="padding-left-div">
+          <div className={cls("padding-left-div", isCssVarBind(styleData.paddingLeft) && 'css-var-bind')}>
             <LayoutInput
               className="next-noborder"
               placeholder="0"
