@@ -5,7 +5,9 @@ import { useEffect } from 'react';
 import PositionBox from '../position/positionBox';
 import { StyleData, onStyleChange } from '../../utils/types';
 import positionConfig from './config.json';
-const Panel = Collapse.Panel;
+import { isCssVarBind } from '../../utils';
+
+const {Panel} = Collapse;
 
 interface layoutProps {
   styleData: StyleData | any;
@@ -37,21 +39,22 @@ export default (props: layoutProps) => {
           <Select
             dataSource={position.dataList}
             value={styleData.position}
-            hasClear={true}
+            hasClear
             onChange={(val) => onStyleChange([{ styleKey: 'position', value: val }])}
           />
         </Row>
 
-        {styleData['position'] && styleData['position'] != 'static' && (
+        {styleData.position && styleData.position != 'static' && (
           <PositionBox styleData={styleData} onStyleChange={onStyleChange} {...props} />
         )}
 
         <Row title={'zIndex'} styleData={styleData} styleKey="zIndex">
           <NumberPicker
+            disabled={isCssVarBind(styleData.zIndex)}
             step={1}
             precision={2}
             onChange={onZIndexChange}
-            value={styleData['zIndex']}
+            value={styleData.zIndex}
           />
         </Row>
 

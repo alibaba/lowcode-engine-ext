@@ -64,7 +64,7 @@ export function toLine(styleKey: string) {
 }
 
 export function toHump(name: String) {
-  return name.replace(/\-(\w)/g, function (all, letter) {
+  return name.replace(/\-(\w)/g, (all, letter) => {
     return letter.toUpperCase();
   });
 }
@@ -84,10 +84,10 @@ export function hexify(color: string) {
   const g = Math.floor(a * parseInt(values[1]) + (1 - a) * 255);
   const b = Math.floor(a * parseInt(values[2]) + (1 - a) * 255);
   return (
-    '#' +
-    ('0' + r.toString(16)).slice(-2) +
-    ('0' + g.toString(16)).slice(-2) +
-    ('0' + b.toString(16)).slice(-2)
+    `#${
+    (`0${  r.toString(16)}`).slice(-2)
+    }${(`0${  g.toString(16)}`).slice(-2)
+    }${(`0${  b.toString(16)}`).slice(-2)}`
   );
 }
 
@@ -144,11 +144,11 @@ export const unifyValue = (value: string) => {
 // 规范手动输入的css样式
 export const unifyStyle = (value: string) => {
   if (!value) return;
-  //首部空格去除
+  // 首部空格去除
   if (value.substring(0, 1) === ' ') {
     value.replace(/\s+/, '');
   }
-  //多属性间重复字符串去除
+  // 多属性间重复字符串去除
   value.replace(/\s+/g, ' ');
   return value;
 };
@@ -157,5 +157,11 @@ export const getUnit = (value: string) => {
   if(typeof value !== 'string') return ''
   if (value != undefined && value != null){
     return value.replace(/^-?[0-9]\d*/g, '')
+  }
+}
+
+export function isCssVarBind(value: any) {
+  if (typeof value === 'string') {
+    return /var\(/.test(value);
   }
 }

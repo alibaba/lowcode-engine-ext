@@ -1,3 +1,5 @@
+@bindColor: #bcd1fa;
+
 .layout-style-container {
   .inner-row-contaienr {
     display: flex;
@@ -44,6 +46,10 @@
       -webkit-transition: all 0.3s ease;
       transition: all 0.3s ease;
 
+      &.css-var-bind {
+        border-top: 20px solid @bindColor;
+      }
+
       .next-input.next-medium {
         position: absolute;
         left: 0;
@@ -77,6 +83,9 @@
       border-right: 20px solid #d6e4ff;
       -webkit-transition: all 0.3s ease;
       transition: all 0.3s ease;
+      &.css-var-bind {
+        border-right: 20px solid @bindColor;
+      }
       .next-input.next-medium {
         position: absolute;
         top: 0;
@@ -116,6 +125,9 @@
       border-bottom: 20px solid #d6e4ff;
       -webkit-transition: all 0.3s ease;
       transition: all 0.3s ease;
+      &.css-var-bind {
+        border-bottom: 20px solid @bindColor;
+      }
       .next-input.next-medium {
         position: absolute;
         left: 0;
@@ -147,6 +159,9 @@
       border-left: 20px solid #d6e4ff;
       -webkit-transition: all 0.3s ease;
       transition: all 0.3s ease;
+      &.css-var-bind {
+        border-left: 20px solid @bindColor;
+      }
       .next-input.next-medium {
         position: absolute;
         top: 0;
@@ -186,6 +201,9 @@
       border-top: 20px solid #d6e4ff;
       -webkit-transition: all 0.3s ease;
       transition: all 0.3s ease;
+      &.css-var-bind {
+        border-top: 20px solid @bindColor;
+      }
       .next-input.next-medium {
         position: absolute;
         left: 0;
@@ -219,6 +237,9 @@
       border-bottom: 20px solid #d6e4ff;
       -webkit-transition: all 0.3s ease;
       transition: all 0.3s ease;
+      &.css-var-bind {
+        border-bottom: 20px solid @bindColor;
+      }
       .next-input.next-medium {
         position: absolute;
         left: 0;
@@ -252,6 +273,9 @@
       border-right: 20px solid #d6e4ff;
       -webkit-transition: all 0.3s ease;
       transition: all 0.3s ease;
+      &.css-var-bind {
+        border-right: 20px solid @bindColor;
+      }
       .next-input.next-medium {
         position: absolute;
         top: 0;
@@ -291,6 +315,9 @@
       border-left: 20px solid #d6e4ff;
       -webkit-transition: all 0.3s ease;
       transition: all 0.3s ease;
+      &.css-var-bind {
+        border-left: 20px solid @bindColor;
+      }
       .next-input.next-medium {
         position: absolute;
         top: 0;
@@ -318,4 +345,13 @@
       border-left: 20px solid #bfd4fb;
     }
   }
+}
+
+
+.ext-css-layout-input {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
 }
