@@ -42,7 +42,7 @@ function onItemChange (target: IPublicModelSettingField, index: number, item: IP
   try {
     const fieldValue = field.getValue();
     fieldValue[index] = item.getValue();
-    field?.extraProps?.setValue?.call(field, field, fieldValue);
+    field?.setValue(fieldValue);
   } catch (e) {
     console.warn('[ArraySetter] extraProps.setValue failed :', e);
   }
@@ -110,9 +110,6 @@ export class ListSetter extends Component<ArraySetterProps, ArraySetterState> {
       values[index] = oldValues[itemIndex];
       newItems[index] = items[itemIndex];
       return id;
-    });
-    this.setState({
-      items: newItems,
     });
     onChange?.(values);
   }
