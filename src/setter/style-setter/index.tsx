@@ -43,6 +43,7 @@ export default class StyleSetterV2 extends React.PureComponent<StyleSetterProps>
         { value: 'Helvetica', label: 'Helvetica' },
         { value: 'Arial', label: 'Arial' },
         { value: 'serif', label: 'serif' },
+        { value: 'Alibaba Sans 102 ver2', label: 'Alibaba Sans 102 ver2' },
       ],
     },
 
@@ -138,7 +139,7 @@ export default class StyleSetterV2 extends React.PureComponent<StyleSetterProps>
           )}
 
           {showModuleList.filter((item) => item == 'font').length > 0 && (
-            <Font onStyleChange={this.onStyleChange} styleData={styleData} {...this.props}></Font>
+            <Font onStyleChange={this.onStyleChange} styleData={styleData} {...this.props} fontPropsConfig= { StyleSetterV2.defaultProps.fontPropsConfig}></Font>
           )}
 
           {showModuleList.filter((item) => item == 'background').length > 0 && (
