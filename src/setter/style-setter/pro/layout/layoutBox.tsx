@@ -11,7 +11,7 @@ const KEY_ARROW_UP = 'ArrowUp';
 interface layoutBoxProps {
   styleData: StyleData | any;
   onStyleChange: onStyleChange;
-  unit?: 'px';
+  unit?: string;
   layoutPropsConfig: any;
 }
 
