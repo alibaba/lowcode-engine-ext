@@ -11,6 +11,7 @@ interface layoutProps {
   styleData: StyleData | any;
   onStyleChange?: onStyleChange;
   layoutPropsConfig?: any;
+  unit?: string
 }
 
 const defaultLayoutPropsConfig = {
@@ -22,7 +23,7 @@ const defaultLayoutPropsConfig = {
 };
 
 export default (props: layoutProps) => {
-  const { onStyleChange, styleData, layoutPropsConfig } = props;
+  const { onStyleChange, styleData, layoutPropsConfig, unit } = props;
 
   // 配置合并
   const propsConfig = { ...defaultLayoutPropsConfig, ...layoutPropsConfig };
@@ -78,6 +79,7 @@ export default (props: layoutProps) => {
           styleData={styleData}
           onStyleChange={onStyleChange}
           layoutPropsConfig={propsConfig}
+          unit={unit}
         />
 
         {isShowWidthHeight && (
