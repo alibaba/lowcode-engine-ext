@@ -45,7 +45,7 @@ export default class NumberSetter extends React.PureComponent<
         step={step}
         innerAfter={units}
         onChange={(val: number) => {
-          onChange(val);
+          onChange(!val ? 0 : val);
         }}
       />
     );
