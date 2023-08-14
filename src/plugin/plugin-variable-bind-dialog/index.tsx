@@ -25,24 +25,26 @@ const defaultEditorProps = {
 };
 
 const defaultEditorOption = {
-  readOnly: false,
-  automaticLayout: true,
-  folding: true, // 默认开启折叠代码功能
-  lineNumbers: 'on',
-  wordWrap: 'off',
-  formatOnPaste: true,
-  fontSize: 12,
-  tabSize: 2,
-  scrollBeyondLastLine: false,
-  fixedOverflowWidgets: false,
-  snippetSuggestions: 'top',
-  minimap: {
-    enabled: false,
-  },
-  scrollbar: {
-    vertical: 'auto',
-    horizontal: 'auto',
-  },
+  options:{
+    readOnly: false,
+    automaticLayout: true,
+    folding: false, // 默认开启折叠代码功能
+    lineNumbers: 'off',
+    wordWrap: 'on',
+    formatOnPaste: true,
+    fontSize: 12,
+    tabSize: 2,
+    scrollBeyondLastLine: false,
+    fixedOverflowWidgets: false,
+    snippetSuggestions: 'top',
+    minimap: {
+      enabled: false,
+    },
+    scrollbar: {
+      vertical: 'auto',
+      horizontal: 'auto',
+    },
+  }
 };
 
 export default class VariableBindDialog extends Component<PluginProps> {
