@@ -6,7 +6,15 @@
     font-weight: 700;
     margin-bottom: 8px;
     color: rgb(0, 0, 0);
+    display: flex;
+    justify-content: space-between;
+    .error-message{
+      color:rgba(255,97,96);
+      font-weight: 400;
+    }
   }
+
+
   .dialog-help-tip-input {
     height: 180px;
     border: 1px solid rgba(31, 56, 88, 0.3);
@@ -29,7 +37,7 @@
     .vs-variable-selector-inner {
       border: 1px solid rgba(31, 56, 88, 0.3);
       display: flex;
-      height: 382px;
+      height: 389px;
       border-radius: 3px;
       ul {
         list-style: none;
@@ -141,6 +149,7 @@
     width: 420px;
     padding-left: 12px;
     float: left;
+    position: relative;
 
     .event-input-container {
       margin-bottom: 20px;
@@ -148,6 +157,32 @@
     textarea {
       height: 100%;
     }
+
+    .editor-type-tag {
+      width: 18px;
+      height: 18px;
+      background-color: rgba(17, 105, 247, 0.18);
+      border-radius: 2px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: absolute;
+      top: 35px;
+      z-index: 100;
+      left: 17px;
+    }
+
+    .editor-context{
+      border: 1px solid rgba(31, 56, 88, 0.3) ;
+      padding: 5px 5px 0px 15px;
+      border-top-right-radius: 3px;
+      border-top-left-radius: 3px;
+    }
+
+    .editor-context-error{
+      border-color:rgba(255,97,96,0.7);
+    }
+    
   }
 }
 
@@ -191,4 +226,12 @@
 .next-tree.next-node-indent .next-tree-node-inner.next-selected .next-tree-node-label {
   color: #fff;
   background-color: #4576f5;
+}
+
+.lc-code-control:hover {
+  border-color: rgba(0, 0, 0, 0);
+}
+
+.lc-code-control.ve-focused {
+  border-color: rgba(0, 0, 0, 0);
 }
