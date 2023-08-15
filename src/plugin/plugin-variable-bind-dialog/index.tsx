@@ -43,6 +43,7 @@ const defaultEditorOption = {
     scrollbar: {
       vertical: 'auto',
       horizontal: 'auto',
+      verticalScrollbarSize:0
     },
   }
 };
@@ -50,6 +51,7 @@ const defaultEditorOption = {
 export default class VariableBindDialog extends Component<PluginProps> {
   state = {
     visiable: false,
+    isOverFlowMaxSize:false,
     // stateVaroableList: [],
     helpText: HelpText,
     // contextKeys: [],
@@ -63,6 +65,7 @@ export default class VariableBindDialog extends Component<PluginProps> {
     minimize: false, // 是否最小化
     autoExpandParent: true,
     expandedKeys: [],
+    maxTextSize:0, // 绑定变量最大字符数
   };
 
   private editorJsRef = React.createRef();
@@ -82,6 +85,9 @@ export default class VariableBindDialog extends Component<PluginProps> {
         this.openDialog();
       });
     });
+
+    
+
   }
 
   exportSchema = () => {
@@ -94,6 +100,8 @@ export default class VariableBindDialog extends Component<PluginProps> {
     const fieldValue = field.getValue();
     const jsCode = fieldValue?.value;
 
+    const {maxTextSize} = this.props.config?.props || {}
+
     this.setState({
       jsCode,
       // fullScreenStatus: false,
@@ -103,6 +111,9 @@ export default class VariableBindDialog extends Component<PluginProps> {
       selParentVariable: null, // 选中的父级变量
       childrenVariableList: [], // 子级变量列表
       minimize: false, // 是否最小化
+      isOverFlowMaxSize:false,
+      // 配置的最大文本长度，默认为0，不控制
+      maxTextSize:maxTextSize?maxTextSize:0
     });
   };
 
@@ -311,12 +322,24 @@ export default class VariableBindDialog extends Component<PluginProps> {
   };
 
   updateCode = (newCode) => {
+
+    let isOverFlowMaxSize = false;
+    if (this.state.maxTextSize){
+      isOverFlowMaxSize = newCode?.length>this.state.maxTextSize
+    }
+
+
     this.setState(
       {
         jsCode: newCode,
+        isOverFlowMaxSize
       },
       this.autoSave,
     );
+
+
+
+    console.log('size====',newCode?.length);
   };
 
   autoSave = () => {
@@ -362,7 +385,7 @@ export default class VariableBindDialog extends Component<PluginProps> {
   };
 
   renderBottom = () => {
-    const { jsCode } = this.state;
+    const { jsCode,isOverFlowMaxSize } = this.state;
     return (
       <div className="variable-bind-dialog-bottom">
         <div className="bottom-left-container">
@@ -374,7 +397,7 @@ export default class VariableBindDialog extends Component<PluginProps> {
         </div>
 
         <div className="bottom-right-container">
-          <Button type="primary" onClick={this.onOk}>
+          <Button type="primary" onClick={this.onOk} disabled={isOverFlowMaxSize}>
             确定
           </Button>
           &nbsp;&nbsp;
@@ -504,6 +527,15 @@ export default class VariableBindDialog extends Component<PluginProps> {
     );
   };
 
+  renderErrorMessage = () => {
+    const {isOverFlowMaxSize,maxTextSize} = this.state;
+    return (
+      isOverFlowMaxSize ? <span className='error-message'>表达式文本不能超过{maxTextSize}个字符，请换成函数调用</span> :null
+      
+    )
+  }
+
+
   render() {
     const {
       visiable,
@@ -516,6 +548,7 @@ export default class VariableBindDialog extends Component<PluginProps> {
       minimize,
       expandedKeys,
       autoExpandParent,
+      isOverFlowMaxSize
     } = this.state;
 
     const filterTreeNode = (node) => {
@@ -604,8 +637,9 @@ export default class VariableBindDialog extends Component<PluginProps> {
             </div>
 
             <div className="dialog-right-container">
-              <div className="dialog-small-title">绑定</div>
-              <div id="jsEditorDom" className="editor-context" ref={this.editorJsRef}>
+              <div className="dialog-small-title">绑定 {this.renderErrorMessage()}</div>
+              <div id="jsEditorDom" className={isOverFlowMaxSize?"editor-context editor-context-error":"editor-context"} ref={this.editorJsRef}>
+                <div className="editor-type-tag">=</div>
                 <MonacoEditor
                   value={jsCode}
                   {...defaultEditorProps}
