@@ -34,16 +34,16 @@ export interface SetterItem {
 const dash = '_';
 function getMixedSelect(field) {
   const path = field.path || [];
-  if(path.length) {
-    const key = `_unsafe_MixedSetter${dash}${path[path.length-1]}${dash}select`
+  if (path.length) {
+    const key = `_unsafe_MixedSetter${dash}${path[path.length - 1]}${dash}select`;
     const newPath = [...path];
     newPath.splice(path.length - 1, 1, key);
-    const newKey = field.node.getPropValue(newPath.join('.'))
-    if(newKey) return newKey;
+    const newKey = field.node.getPropValue(newPath.join('.'));
+    if (newKey) return newKey;
     // 兼容下以前的问题情况，如果捕获到，获取 oldUnsafeKey 取值并将其直接置空
     const oldUnsafeKey = `_unsafe_MixedSetter${dash}${path.join(dash)}${dash}select`;
     const oldUsedSetter = field.node.getPropValue(oldUnsafeKey);
-    if(oldUsedSetter) {
+    if (oldUsedSetter) {
       field.node.setPropValue(newPath.join('.'), oldUsedSetter);
       field.node.setPropValue(oldUnsafeKey, undefined);
     }
@@ -53,10 +53,10 @@ function getMixedSelect(field) {
 }
 function setMixedSelect(field, usedSetter) {
   const path = field.path || [];
-  if(path.length) {
-    const key = `_unsafe_MixedSetter${dash}${path[path.length-1]}${dash}select`
+  if (path.length) {
+    const key = `_unsafe_MixedSetter${dash}${path[path.length - 1]}${dash}select`;
     path.splice(path.length - 1, 1, key);
-    field.node.setPropValue(path.join('.'), usedSetter)
+    field.node.setPropValue(path.join('.'), usedSetter);
   }
 }
 
@@ -160,6 +160,10 @@ export default class MixedSetter extends Component<{
 
   private setters = nomalizeSetters(this.props.setters);
 
+  private usedValue: {
+    [key: string]: any;
+  } = {};
+
   // set name ,used in setting Transducer
   static displayName = 'MixedSetter';
 
@@ -199,18 +203,19 @@ export default class MixedSetter extends Component<{
   private hasVariableSetter = this.setters.some((item) => item.name === 'VariableSetter');
 
   private useSetter = (name: string, usedName: string) => {
+    const { field, value } = this.props;
     this.fromMixedSetterSelect = true;
-    const { field } = this.props;
+    this.usedValue[usedName] = value;
+
     if (name !== this.used) {
       // reset value
       field.setValue(undefined);
     }
     if (name === 'VariableSetter') {
       const setterComponent = getSetter('VariableSetter')?.component as any;
+
       if (name !== this.used) {
-        field.setValue({
-          type: 'JSExpression'
-        });
+        field.setValue(this.usedValue[name]);
       }
       if (setterComponent && setterComponent.isPopup) {
         setterComponent.show({ prop: field });
@@ -255,7 +260,7 @@ export default class MixedSetter extends Component<{
     setMixedSelect(field, name);
   }
 
-  private handleInitial({ initialValue }: SetterItem, fieldValue: string) {
+  private handleInitial({ initialValue, name }: SetterItem, fieldValue?: string) {
     const { field, onChange } = this.props;
     let newValue: any = initialValue;
     if (newValue && typeof newValue === 'function') {
@@ -263,7 +268,7 @@ export default class MixedSetter extends Component<{
     } else if (fieldValue) {
       newValue = fieldValue;
     }
-    onChange && onChange(newValue);
+    onChange && onChange(newValue ? newValue : this.usedValue[name]);
   }
 
   private shell: HTMLDivElement | null = null;
