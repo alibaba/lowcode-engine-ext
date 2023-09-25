@@ -201,21 +201,19 @@ export default class MixedSetter extends Component<{
   private useSetter = (name: string, usedName: string) => {
     this.fromMixedSetterSelect = true;
     const { field } = this.props;
-    if (name !== this.used) {
-      // reset value
-      field.setValue(undefined);
-    }
+
     if (name === 'VariableSetter') {
       const setterComponent = getSetter('VariableSetter')?.component as any;
-      if (name !== this.used) {
-        field.setValue({
-          type: 'JSExpression'
-        });
-      }
       if (setterComponent && setterComponent.isPopup) {
         setterComponent.show({ prop: field });
         this.syncSelectSetter(name);
         return;
+      }
+    } else {
+      // 变量类型直接设undefined会引起初始值变化
+      if (name !== this.used ) {
+        // reset value
+        field.setValue(undefined);
       }
     }
     if (name === this.used) {
