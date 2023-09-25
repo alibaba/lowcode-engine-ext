@@ -385,7 +385,7 @@ export default class VariableBindDialog extends Component<PluginProps> {
   };
 
   renderBottom = () => {
-    const { jsCode,isOverFlowMaxSize } = this.state;
+    const { jsCode } = this.state;
     return (
       <div className="variable-bind-dialog-bottom">
         <div className="bottom-left-container">
@@ -397,7 +397,7 @@ export default class VariableBindDialog extends Component<PluginProps> {
         </div>
 
         <div className="bottom-right-container">
-          <Button type="primary" onClick={this.onOk} disabled={isOverFlowMaxSize}>
+          <Button type="primary" onClick={this.onOk} disabled={this.isBtnDisable()}>
             确定
           </Button>
           &nbsp;&nbsp;
@@ -535,6 +535,12 @@ export default class VariableBindDialog extends Component<PluginProps> {
     )
   }
 
+  isBtnDisable = () => {
+    const {jsCode,isOverFlowMaxSize} = this.state;
+
+    return jsCode === undefined || jsCode?.length == 0 || isOverFlowMaxSize;
+  }
+
 
   render() {
     const {
@@ -548,7 +554,7 @@ export default class VariableBindDialog extends Component<PluginProps> {
       minimize,
       expandedKeys,
       autoExpandParent,
-      isOverFlowMaxSize
+      isOverFlowMaxSize,
     } = this.state;
 
     const filterTreeNode = (node) => {

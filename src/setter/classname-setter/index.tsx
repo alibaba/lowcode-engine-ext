@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Select } from '@alifd/next';
 import { project } from '@alilc/lowcode-engine';
+import './index.less';
 
 export interface PluginProps {
   value: string;
@@ -84,6 +85,7 @@ export default class ClassNameView extends PureComponent<PluginProps> {
     return (
       <Select
         size="small"
+        style={{ width: '100%' }}
         aria-label="tag mode"
         mode="tag"
         dataSource={dataSource}
