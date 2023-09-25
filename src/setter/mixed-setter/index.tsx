@@ -222,6 +222,12 @@ export default class MixedSetter extends Component<{
         this.syncSelectSetter(name);
         return;
       }
+    } else {
+      // 变量类型直接设undefined会引起初始值变化
+      if (name !== this.used ) {
+        // reset value
+        field.setValue(undefined);
+      }
     }
     if (name === this.used) {
       return;
