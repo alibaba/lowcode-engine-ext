@@ -3,6 +3,7 @@ import React, { PureComponent } from 'react';
 import { Input, Icon, Balloon } from '@alifd/next';
 
 import './index.less';
+import { intl } from './locale';
 
 const icons = [
   'smile',
@@ -82,7 +83,7 @@ export default class IconSetter extends PureComponent<IconSetterProps, IconSette
     defaultValue: '',
     hasClear: true,
     icons,
-    placeholder: '请点击选择 Icon',
+    placeholder: `${intl('PleaseClickToSelectIcon')}`,
     onChange: () => undefined,
   };
   static displayName = 'IconSetter';
