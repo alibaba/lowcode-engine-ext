@@ -4,6 +4,7 @@ import { Button, Icon, Dialog } from '@alifd/next';
 import MonacoEditor from '@alilc/lowcode-plugin-base-monaco-editor';
 import CustomIcon from '../../components/custom-icon';
 import { js_beautify } from 'js-beautify';
+import { intl } from './locale';
 
 const defaultEditorOption = {
   width: '100%',
@@ -78,12 +79,12 @@ export default class JsonSetter extends PureComponent<JsonSetterProps> {
   renderButton = (value) => {
     return !value ? (
       <Button size="small" type="normal" onClick={this.openDialog}>
-        绑定数据
+        { intl('BindingData') }
       </Button>
     ) : (
       <Button size="small" type="primary" onClick={this.openDialog}>
         <Icon type="edit" />
-        编辑数据
+        { intl('EditData') }
       </Button>
     );
   };
@@ -100,7 +101,7 @@ export default class JsonSetter extends PureComponent<JsonSetterProps> {
         this.closeDialog();
       } catch (e) {
         Dialog.alert({
-          title: '数据保存失败',
+          title: intl('FailedToSaveData'),
           content: e.message,
         });
       }
@@ -118,7 +119,7 @@ export default class JsonSetter extends PureComponent<JsonSetterProps> {
       <div>
         <Button size="small" type="primary" onClick={this.openDialog}>
           <CustomIcon type="icon-ic_edit" />
-          编辑数据
+          { intl('EditData') }
         </Button>
       </div>
     );
@@ -134,11 +135,17 @@ export default class JsonSetter extends PureComponent<JsonSetterProps> {
           <Dialog
             visible={isShowDialog}
             closeable={'close'}
-            title="数据编辑"
+            title={intl('EditData')}
             onCancel={this.closeDialog}
             onOk={this.onDialogOk}
             onClose={() => {
               this.closeDialog();
+            }}
+            cancelProps={{
+              children: intl('Cancel')
+            }}
+            okProps={{
+              children: intl('Confirm')
             }}
           >
             <div style={{ width: '500px', height: '400px' }}>
