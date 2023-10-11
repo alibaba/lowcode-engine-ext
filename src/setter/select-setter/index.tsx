@@ -58,12 +58,13 @@ export default class SelectSetter extends PureComponent<SelectSetterProps, Selec
   };
 
   render() {
-    const { options, onChange, mode, value, showSearch, hasClear } = this.props;
+    const { options, onChange, mode, value, showSearch, hasClear, defaultValue } = this.props;
     return (
       <Select
         autoWidth={false}
         size="small"
         value={value}
+        defaultValue={defaultValue}
         dataSource={formateOptions(options)}
         mode={mode}
         onChange={(val) => {
