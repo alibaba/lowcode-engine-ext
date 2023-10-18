@@ -4,11 +4,14 @@ import { StyleData } from '../../utils/types';
 import { parseToCssCode, parseToStyleData } from '../../utils';
 import MonacoEditor from '@alilc/lowcode-plugin-base-monaco-editor';
 import Icon from '../../components/icon';
+import { intlLocal } from './locale';
 
 interface CodeProps {
   styleData: StyleData | any;
   onStyleDataChange: (val: any) => void;
 }
+
+const cssConfig = intlLocal();
 
 const defaultEditorOption = {
   readOnly: false,
@@ -137,7 +140,7 @@ export default class CssCode extends React.Component<CodeProps> {
         >
           <Icon type="icon-CSS" />
           <Button type="primary" onClick={this.styleSave} disabled={isCanSave} size="small">
-            保存
+            {cssConfig.save}
           </Button>
         </div>
         {this.state.cssCode && (

@@ -1,0 +1,63 @@
+{
+  "title": "边框",
+  "shadowColor": "阴影颜色",
+  "blur": "模糊",
+  "spread": "扩展",
+  "borderType": {
+    "title": "圆角",
+    "dataList": [
+      {
+        "value": "fixedBorder",
+        "tips": "固定圆角",
+        "icon": "icon-yuanjiaofangkuang"
+      },
+      {
+        "value": "partBorder",
+        "tips": "分别定义",
+        "icon": "icon-yuanjiao"
+      }
+    ]
+  },
+
+  "shadowType": {
+    "title": "阴影",
+    "dataList": [
+      {
+        "value": "outerShadow",
+        "tips": "外阴影",
+        "icon": "icon-yinying"
+      },
+      {
+        "value": "insetShadow",
+        "tips": "内阴影",
+        "icon": "icon-yinying-outside"
+      }
+    ]
+  },
+
+  "borderStyle": {
+    "title": "边框样式",
+    "dataList": [
+      {
+        "value": "none",
+        "tips": "无样式",
+        "icon": "icon-close"
+      },
+      {
+        "value": "solid",
+        "tips": "实线",
+        "icon": "icon-shixian"
+      },
+      {
+        "value": "dashed",
+        "tips": "虚线",
+        "icon": "icon-xuxian"
+      },
+      {
+        "value": "dotted",
+        "tips": "点线",
+        "icon": "icon-dianxian"
+      }
+    ]
+  }
+}
