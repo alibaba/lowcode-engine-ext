@@ -16,6 +16,7 @@ import { intlNode } from './locale';
 
 import './index.less';
 import { IconVariable } from './icons/variable';
+import { ResetIcon } from './icons/reset';
 
 const { editorCabin } = common;
 const { computed, obx, Title, createSetterContent, observer, shallowIntl } = editorCabin;
@@ -183,6 +184,7 @@ export default class MixedSetter extends Component<{
         firstMatched = setter;
       }
     }
+    this.used = (firstMatched || firstDefault || this.setters[0]).name;
     return firstMatched || firstDefault || this.setters[0];
   }
 
@@ -197,6 +199,8 @@ export default class MixedSetter extends Component<{
 
   // dirty fix vision variable setter logic
   private hasVariableSetter = this.setters.some((item) => item.name === 'VariableSetter');
+
+  private hasResetSetter = this.setters.some((item) => item.name === 'ResetSetter');
 
   private useSetter = (name: string, usedName: string) => {
     this.fromMixedSetterSelect = true;
@@ -403,6 +407,84 @@ export default class MixedSetter extends Component<{
     };
   }
 
+  // 有resetSetter的处理
+  private contentsFromPolyfill2() {
+    const { field } = this.props;
+
+    const n = this.setters.length;
+
+    let setterContent: any;
+    let actions: any;
+    if (n < 3) {
+      const tipContent = field.isUseVariable()
+        ? intlNode('Binded: {expr}', { expr: field.getValue()?.value })
+        : intlNode('Variable Binding');
+      if (n === 1) {
+        // 只有一个resetSetter，在actions中展示
+      } else if (n === 2) {
+        // =2: 另外一个 Setter 原地展示，如果是 VariableSetter 点击弹出调用 VariableSetter.show
+        const otherSetter = this.setters.find((item) => item.name !== 'ResetSetter')!;
+        if (otherSetter.name === 'VariableSetter') {
+          const variableSetterComponent = getSetter('VariableSetter')?.component as any;
+          setterContent = (
+            <a
+              onClick={() => {
+                variableSetterComponent.show({ prop: field });
+              }}
+            >
+              {tipContent}
+            </a>
+          )
+          this.used = 'VariableSetter';
+        } else {
+          setterContent = this.renderCurrentSetter(otherSetter, {
+            value: field.getMockOrValue(),
+          });
+        }
+      }
+      actions = this.handleResetSetterAction();
+    } else {
+      // >=3: 原地展示当前 setter<当前绑定的值，点击调用 VariableSetter.show>，icon tip 提示绑定的值，点击展示切换 Setter，点击其它 setter 直接切换，点击 Variable Setter-> VariableSetter.show
+      // 点击resetSetter 重置属性
+      const currentSetter =
+        !this.used && field.isUseVariable()
+          ? this.setters.find((item) => item.name === 'VariableSetter')
+          : this.getCurrentSetter();
+      if (currentSetter?.name === 'VariableSetter') {
+        const variableSetterComponent = getSetter('VariableSetter')?.component as any;
+        setterContent = (
+          <a
+            onClick={() => {
+              variableSetterComponent.show({ prop: field });
+            }}
+          >
+            {intlNode('Binded: {expr}', { expr: field.getValue()?.value })}
+          </a>
+        );
+      } else {
+        setterContent = this.renderCurrentSetter(currentSetter);
+      }
+      actions = this.renderSwitchAction(currentSetter);
+      // 添加resetSetter
+      const resetAction = this.handleResetSetterAction();
+      actions = (<>{actions}{resetAction}</>)
+    }
+
+    return {
+      setterContent,
+      actions,
+    };
+  }
+
+
+  private getClassName() {
+    const n = this.setters.length;
+    if (this.hasResetSetter && n > 2) {
+      // 通过class来修改样式
+      return 'lc-setter-mixeds';
+    }
+  }
+
   private renderSwitchAction(currentSetter?: SetterItem) {
     const usedName = currentSetter?.name || this.used;
     const triggerNode = (
@@ -424,7 +506,7 @@ export default class MixedSetter extends Component<{
           onItemClick={(name) => this.useSetter(name, usedName)}
         >
           {this.setters
-            .filter((setter) => setter.list || setter.name === usedName)
+            .filter((setter) => (setter.list || setter.name === usedName) && setter.name!== 'ResetSetter')
             .map((setter) => {
               return (
                 <Menu.Item key={setter.name}>
@@ -437,6 +519,38 @@ export default class MixedSetter extends Component<{
     );
   }
 
+  private handleResetSetterAction() {
+    return (<Title
+      title={{
+        icon: <ResetIcon size={24} />,
+        tip: intlNode('Reset Attribute'),
+      }}
+      onClick={() => this.resetClickHandler()}
+    />)
+  }
+
+  resetClickHandler() {
+    const { onChange, initialValue, field } = this.props;
+    let newValue = initialValue;
+    if (this.used === 'VariableSetter') {
+      const fieldValue = field.getValue();
+      const value =
+        Object.prototype.toString.call(fieldValue) === '[object Object]'
+          ? fieldValue.mock
+          : fieldValue;
+      // 清除变量绑定
+      field.setValue(value);
+      // 清除标记
+      this.used = undefined;
+      newValue = newValue??value;
+    }
+    // fixme 属性为children默认使用StringSetter并且不配置defaultValue时，onChange(null)画布不会更新，so做此处理。例如antd物料的button组件
+    if (this.used === 'StringSetter') {
+      newValue = newValue?? '';
+    }
+    onChange(newValue)
+  }
+
   render() {
     const { className } = this.props;
     let contents:
@@ -446,7 +560,9 @@ export default class MixedSetter extends Component<{
         }
       | undefined;
 
-    if (this.hasVariableSetter) {
+    if (this.hasResetSetter) {
+      contents = this.contentsFromPolyfill2();
+    } else if (this.hasVariableSetter) {
       // polyfill vision variable setter logic
       const setterComponent = getSetter('VariableSetter')?.component as any;
       if (setterComponent && setterComponent.isPopup) {
@@ -466,7 +582,7 @@ export default class MixedSetter extends Component<{
         ref={(shell) => {
           this.shell = shell;
         }}
-        className={classNames('lc-setter-mixed', className)}
+        className={classNames('lc-setter-mixed', className, this.getClassName())}
       >
         {contents.setterContent}
         <div className="lc-setter-actions">{contents.actions}</div>
