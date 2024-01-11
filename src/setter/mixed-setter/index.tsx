@@ -1,7 +1,7 @@
 import React, { Component, ComponentClass, ReactNode } from 'react';
 import classNames from 'classnames';
 import { Dropdown, Menu } from '@alifd/next';
-import { common, setters, SettingField } from '@alilc/lowcode-engine';
+import { common, setters, SettingField, event } from '@alilc/lowcode-engine';
 import {
   SetterConfig,
   CustomView,
@@ -289,6 +289,9 @@ export default class MixedSetter extends Component<{
 
   componentDidMount() {
     this.checkIsBlockField();
+    event.on('common:variableSetter.selectVariableSetter',() => {
+      this.used='VariableSetter'
+    })
   }
 
   private renderCurrentSetter(currentSetter?: SetterItem, extraProps?: object) {
@@ -407,49 +410,109 @@ export default class MixedSetter extends Component<{
     };
   }
 
-  // 有resetSetter的处理
   private contentsFromPolyfill2() {
     const { field } = this.props;
 
-    const n = this.setters.length;
-
-    let setterContent: any;
-    let actions: any;
-    if (n < 3) {
-      const tipContent = field.isUseVariable()
-        ? intlNode('Binded: {expr}', { expr: field.getValue()?.value })
-        : intlNode('Variable Binding');
-      if (n === 1) {
-        // 只有一个resetSetter，在actions中展示
-      } else if (n === 2) {
-        // =2: 另外一个 Setter 原地展示，如果是 VariableSetter 点击弹出调用 VariableSetter.show
-        const otherSetter = this.setters.find((item) => item.name !== 'ResetSetter')!;
-        if (otherSetter.name === 'VariableSetter') {
-          const variableSetterComponent = getSetter('VariableSetter')?.component as any;
-          setterContent = (
-            <a
-              onClick={() => {
-                variableSetterComponent.show({ prop: field });
-              }}
-            >
-              {tipContent}
-            </a>
-          )
-          this.used = 'VariableSetter';
-        } else {
-          setterContent = this.renderCurrentSetter(otherSetter, {
-            value: field.getMockOrValue(),
-          });
-        }
-      }
-      actions = this.handleResetSetterAction();
+    const setterNum = this.setters.length;
+    if (setterNum < 4) {
+      return this.handleSettersLessThanFour(field, setterNum);
     } else {
-      // >=3: 原地展示当前 setter<当前绑定的值，点击调用 VariableSetter.show>，icon tip 提示绑定的值，点击展示切换 Setter，点击其它 setter 直接切换，点击 Variable Setter-> VariableSetter.show
-      // 点击resetSetter 重置属性
+      return this.handleSettersGreaterThanThree(field);
+    }
+
+  }
+  handleSettersLessThanFour(field: SettingField, setterNum: number) {
+    if (setterNum === 1) {
+      // return { actions: this.handleResetSetterAction() }
+    }
+    if (setterNum === 2) {
+      return this.handleTwoSetters(field);
+    }
+    if (setterNum === 3) {
+      return this.handleThreeSetters(field)
+    }
+  }
+
+  handleTwoSetters(field: SettingField) {
+    const otherSetter = this.setters.find((item) => item.name !== 'ResetSetter')!;
+    if (otherSetter.name === 'VariableSetter') {
+      return {
+        setterContent: this.renderVariableSetterContent(field),
+        actions: this.handleResetSetterAction(),
+      }
+    }
+    return {
+      setterContent: this.renderCurrentSetter(otherSetter, {
+        value: field.getMockOrValue(),
+      }),
+      actions: this.handleResetSetterAction(),
+    }
+  }
+
+  renderVariableSetterContent(field: SettingField) {
+    const tipContent = field.isUseVariable()
+    ? intlNode('Binded: {expr}', { expr: field.getValue()?.value })
+    : intlNode('Variable Binding');
+    const variableSetterComponent = getSetter('VariableSetter')?.component as any;
+    return  (
+      <a
+        onClick={() => {
+          variableSetterComponent.show({ prop: field });
+        }}
+      >
+        {tipContent}
+      </a>
+    )
+
+  }
+  // 最后一个放resetsetter，如果有variableSetter，则放在第二个位置，其他的放在第一个位置。如果没有variableSetter则使用swtich切换操作
+  handleThreeSetters(field: SettingField) {
+    if (this.setters.some(setter => setter.name === 'VariableSetter') && this.setters.some(setter => setter.name === 'ResetSetter')) {
+      // 其他放第一个，VariableSetter放第二个，reset放到最后
+      const otherSetter = this.setters.find((item) => (item.name !== 'VariableSetter') && (item.name !== 'ResetSetter'))
+      const otherSetterContent = this.renderCurrentSetter(otherSetter, {
+        value: field.getMockOrValue(),
+      });
+      // VariableSetter
+      const variableSetterComponent = getSetter('VariableSetter')?.component as any;
+      const tipContent = field.isUseVariable()
+      ? intlNode('Binded: {expr}', { expr: field.getValue()?.value })
+      : intlNode('Variable Binding');
+      const variableSetterContent = (
+          <Title
+          className={field.isUseVariable() ? 'variable-binded' : ''}
+          title={{
+            icon: <IconVariable size={24} />,
+            tip: tipContent,
+          }}
+          onClick={() => {
+            variableSetterComponent.show({ prop: field });
+          }}
+        />
+      );
+      return {
+        setterContent: otherSetterContent,
+        actions: (<>{variableSetterContent}{this.handleResetSetterAction()}</>),
+      }
+    } else {
+      // switch+reset
       const currentSetter =
         !this.used && field.isUseVariable()
           ? this.setters.find((item) => item.name === 'VariableSetter')
           : this.getCurrentSetter();
+      return {
+        setterContent: this.renderCurrentSetter(currentSetter),
+        actions: (<>{this.renderSwitchAction(currentSetter)}{this.handleResetSetterAction()}</>)
+      }
+    }
+  }
+
+  handleSettersGreaterThanThree(field: SettingField) {
+    let setterContent: ReactNode;
+    const currentSetter =
+    !this.used && field.isUseVariable()
+      ? this.setters.find((item) => item.name === 'VariableSetter')
+      : this.getCurrentSetter();
       if (currentSetter?.name === 'VariableSetter') {
         const variableSetterComponent = getSetter('VariableSetter')?.component as any;
         setterContent = (
@@ -464,18 +527,11 @@ export default class MixedSetter extends Component<{
       } else {
         setterContent = this.renderCurrentSetter(currentSetter);
       }
-      actions = this.renderSwitchAction(currentSetter);
-      // 添加resetSetter
-      const resetAction = this.handleResetSetterAction();
-      actions = (<>{actions}{resetAction}</>)
-    }
-
-    return {
-      setterContent,
-      actions,
-    };
+      return {
+        setterContent,
+        actions: (<>{this.renderSwitchAction(currentSetter)}{this.handleResetSetterAction()}</>)
+      }
   }
-
 
   private getClassName() {
     const n = this.setters.length;
@@ -532,7 +588,7 @@ export default class MixedSetter extends Component<{
   resetClickHandler() {
     const { onChange, initialValue, field } = this.props;
     let newValue = initialValue;
-    if (this.used === 'VariableSetter') {
+    if (field.isUseVariable() || this.used === 'VariableSetter') {
       const fieldValue = field.getValue();
       const value =
         Object.prototype.toString.call(fieldValue) === '[object Object]'
@@ -548,6 +604,7 @@ export default class MixedSetter extends Component<{
     if (this.used === 'StringSetter') {
       newValue = newValue?? '';
     }
+    this.used = undefined;
     onChange(newValue)
   }
 
