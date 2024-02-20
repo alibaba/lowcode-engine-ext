@@ -134,7 +134,7 @@ export default class SlotSetter extends Component<{
           <Input
             className="lc-slot-params"
             addonTextBefore="入参"
-            placeholder="插槽入参，以逗号风格"
+            placeholder="插槽入参，以逗号分隔"
             value={value.params!.join(',')}
             onChange={(val) => {
               val = val.trim();
