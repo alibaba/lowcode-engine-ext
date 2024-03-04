@@ -5,10 +5,12 @@ import Number from '../../components/number';
 import ColorInput from '../../components/color-input';
 import { StyleData, onStyleChange } from '../../utils/types';
 import { Collapse, Input, NumberPicker, Range } from '@alifd/next';
-import backgroundConfig from './config.json';
 import { addUnit, isCssVarBind, isEmptyValue, parseValue, unifyStyle } from '../../utils';
+import { intlLocal } from './locale';
 import './index.less';
 import { backgroundSizeMap } from './constant';
+
+const backgroundConfig = intlLocal();
 
 const {Panel} = Collapse;
 interface fontProps {
@@ -208,7 +210,7 @@ export default (props: fontProps) => {
   };
   return (
     <Collapse defaultExpandedKeys={['0']}>
-      <Panel title="背景" className="font-style-container">
+      <Panel title={backgroundConfig.title} className="font-style-container">
         <Row
           title={backgroundType.title}
           dataList={backgroundType.dataList}
@@ -228,7 +230,7 @@ export default (props: fontProps) => {
           <Row title={' '} styleKey="" {...props}>
             <Input
               innerBefore={<Icon type="icon-suffix-url" style={{ margin: 4 }} />}
-              placeholder="输入图片url"
+              placeholder={backgroundConfig.inputPlaceholder}
               style={{ width: '100%' }}
               value={backToBgImgUrl(styleData.backgroundImage)}
               onChange={onBgImageChange}
@@ -247,7 +249,7 @@ export default (props: fontProps) => {
             {bgSizeType == backgroundSizeMap.default && (
               <div className="inner-row-contaienr-bgsize">
                 <div className="row-item">
-                  <span className="row-item-title">宽</span>
+                  <span className="row-item-title">{backgroundConfig.width}</span>
                   <Number
                     style={{ marginRight: '4px' }}
                     min={0}
@@ -262,7 +264,7 @@ export default (props: fontProps) => {
                   />
                 </div>
                 <div className="row-item">
-                  <span className="row-item-title">高</span>
+                  <span className="row-item-title">{backgroundConfig.height}</span>
                   <Number
                     styleKey="backgroundSize"
                     min={0}
@@ -302,7 +304,7 @@ export default (props: fontProps) => {
 
                 <div className="background-position-container-right">
                   <div className="background-position-left">
-                    <span>左</span>
+                    <span>{backgroundConfig.left}</span>
                     <Number
                     style={{ marginLeft: '10px' }}
                     styleKey="backgroundPosition"
@@ -316,7 +318,7 @@ export default (props: fontProps) => {
                   />
                   </div>
                   <div className="background-position-top">
-                    <span>顶</span>
+                    <span>{backgroundConfig.top}</span>
                     <Number
                     style={{ marginLeft: '10px' }}
                     min={-10}
@@ -345,7 +347,7 @@ export default (props: fontProps) => {
           </>
         )}
 
-        <Row title={'透明度'} styleKey="opacity" {...props}>
+        <Row title={backgroundConfig.opacity} styleKey="opacity" {...props}>
           <div className="opacity-container">
             <Range
               disabled={isCssVarBind(styleData.opacity)}

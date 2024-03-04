@@ -4,7 +4,7 @@ import { Collapse, NumberPicker, Select } from '@alifd/next';
 import { useEffect } from 'react';
 import PositionBox from '../position/positionBox';
 import { StyleData, onStyleChange } from '../../utils/types';
-import positionConfig from './config.json';
+import { intlLocal } from './locale';
 import { isCssVarBind } from '../../utils';
 
 const {Panel} = Collapse;
@@ -14,6 +14,8 @@ interface layoutProps {
   onStyleChange?: onStyleChange;
   positionPropsConfig?: any;
 }
+
+const positionConfig = intlLocal();
 
 export default (props: layoutProps) => {
   const { float, clear, position } = positionConfig;
@@ -34,7 +36,7 @@ export default (props: layoutProps) => {
 
   return (
     <Collapse defaultExpandedKeys={['0']}>
-      <Panel title="位置">
+      <Panel title={positionConfig.title}>
         <Row title={position.title} styleData={styleData} styleKey="position">
           <Select
             dataSource={position.dataList}

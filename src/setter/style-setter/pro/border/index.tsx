@@ -6,11 +6,13 @@ import Number from '../../components/number';
 import ColorInput from '../../components/color-input';
 import { StyleData, onStyleChange } from '../../utils/types';
 import { Collapse, Range, Select } from '@alifd/next';
-import fontConfig from './config.json';
+import { intlLocal } from './locale';
 import { addUnit, removeUnit, unifyStyle } from '../../utils';
 import './index.less';
 const Option = Select.Option;
 const Panel = Collapse.Panel;
+
+const borderConfig = intlLocal();
 
 const BORDER_MAX = 30;
 
@@ -42,7 +44,7 @@ interface fontProps {
 }
 export default (props: fontProps) => {
   const { styleData, onStyleChange, unit } = props;
-  const { borderType, borderStyle, shadowType} = fontConfig;
+  const { borderType, borderStyle, shadowType} = borderConfig;
   const [selBorderType, setSelBorderType] = useState(null);
   const [borderDirection, setBorderDirection] = useState(null);
   const [shadow, setShadow] = useState('')
@@ -189,7 +191,7 @@ export default (props: fontProps) => {
   const insetBoxShadowShift = shadow==='insetShadow' ? 1 : 0
   return (
     <Collapse defaultExpandedKeys={['0']}>
-      <Panel title="边框" className="border-style-container">
+      <Panel title={borderConfig.title} className="border-style-container">
         <Row
           title={borderType.title}
           dataList={borderType.dataList}
@@ -278,7 +280,7 @@ export default (props: fontProps) => {
           </>
         )}
 
-        <Row title={'边框'} styleKey="border" {...props}>
+        <Row title={borderConfig.title} styleKey="border" {...props}>
           <div className="border-container">
             <div className="border-icon-container">
               <div className="top-icon-container">
@@ -381,7 +383,7 @@ export default (props: fontProps) => {
         </Row>
         <div className="shadow-container">
             <div className="shadow-color-container">
-              <span className='shadow-color-title'>阴影颜色</span>
+              <span className='shadow-color-title'>{borderConfig.shadowColor}</span>
               <ColorInput
               {...props}
               color = {styleData['boxShadow']?.split(' ')?.[insetBoxShadowShift+4]}
@@ -419,7 +421,7 @@ export default (props: fontProps) => {
             </div>
             <div className="shadow-config-container">
               <div className="shadow-blur-container">
-                <div className="shadow-blur-container-title">模糊</div>
+                <div className="shadow-blur-container-title">{borderConfig.blur}</div>
                 <Number
                   style={{ marginRight: '4px' }}
                   min={2}
@@ -433,7 +435,7 @@ export default (props: fontProps) => {
                 />
               </div>
               <div className="shadow-extend-container">
-                <div className="shadow-extend-container-title">扩展</div>
+                <div className="shadow-extend-container-title">{borderConfig.spread}</div>
                 <Number
                   styleKey="boxShadow"
                   min={3}

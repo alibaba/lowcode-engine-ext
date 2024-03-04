@@ -1,0 +1,103 @@
+{
+  "title": "Position",
+  "position": {
+    "title": "position",
+    "dataList": [
+      {
+        "value": "static",
+        "tips": "static",
+        "icon": "icon-position"
+      },
+      {
+        "value": "relative",
+        "tips": "relative",
+        "icon": "icon-relative"
+      },
+      {
+        "value": "absolute",
+        "tips": "absolute",
+        "icon": "icon-absolute"
+      },
+      {
+        "value": "fixed",
+        "tips": "fixed",
+        "icon": "icon-fixed"
+      },
+      {
+        "value": "sticky",
+        "tips": "sticky",
+        "icon": "icon-Objectpositioninterface"
+      }
+    ]
+  },
+  "float": {
+    "title": "float",
+    "dataList": [
+      {
+        "value": "none",
+        "tips": "none",
+        "icon": "icon-close"
+      },
+      {
+        "value": "left",
+        "tips": "left",
+        "icon": "icon-formatfloatleft"
+      },
+      {
+        "value": "right",
+        "tips": "right",
+        "icon": "icon-formatfloatright"
+      }
+    ]
+  },
+  "clear": {
+    "title": "clear",
+    "dataList": [
+      {
+        "value": "none",
+        "tips": "none",
+        "icon": "icon-close"
+      },
+      {
+        "value": "left",
+        "tips": "left",
+        "icon": "icon-qingchuzuoce"
+      },
+      {
+        "value": "right",
+        "tips": "right",
+        "icon": "icon-qingchuyouce"
+      },
+      {
+        "value": "both",
+        "tips": "both",
+        "icon": "icon-qingchuliangce"
+      }
+    ]
+  },
+
+  "positionTemplete": {
+    "dataList": [
+      {
+        "value": "topLeft",
+        "tips": "topLeft",
+        "icon": "icon-zuoshangcopy"
+      },
+      {
+        "value": "topRight",
+        "tips": "topRight",
+        "icon": "icon-youshangcopy"
+      },
+      {
+        "value": "bottomLeft",
+        "tips": "bottomLeft",
+        "icon": "icon-zuoxiacopy"
+      },
+      {
+        "value": "bottomRight",
+        "tips": "bottomRight",
+        "icon": "icon-youxiacopy"
+      }
+    ]
+  }
+}

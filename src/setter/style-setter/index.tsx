@@ -7,7 +7,17 @@ import Background from './pro/background';
 import CssCode from './components/css-code';
 import { StyleData } from './utils/types';
 import { ConfigProvider } from '@alifd/next';
+import enUS from '@alifd/next/lib/locale/en-us';
+import zhCN from '@alifd/next/lib/locale/zh-cn';
+import { common } from '@alilc/lowcode-engine';
 import './index.less';
+
+const { getLocale } = common.utils.createIntl();
+const locale: string = getLocale() || 'zh-CN';
+const localeSource: any = {
+  'en-US': enUS,
+  'zh-CN': zhCN,
+};
 
 interface StyleSetterProps {
   value: StyleData;
@@ -114,7 +124,7 @@ export default class StyleSetterV2 extends React.PureComponent<StyleSetterProps>
     const { styleData, cssCodeVisiable, initFlag } = this.state;
 
     return (
-      <ConfigProvider>
+      <ConfigProvider locale={localeSource[locale]}>
         <div className="lowcode-setter-style-v2">
           {isShowCssCode && (
             <div className="top-bar">

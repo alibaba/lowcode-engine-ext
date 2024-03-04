@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Input } from '@alifd/next';
 import { StyleData, onStyleChange } from '../../utils/types';
-import positionConfig from './config.json';
+import { intlLocal } from './locale';
 import Row from '../../components/row';
 import { addUnit, removeUnit } from '../../utils';
 import './index.less';
@@ -13,6 +13,8 @@ interface positionBoxProps {
   onStyleChange: onStyleChange;
   unit?: 'px';
 }
+
+const positionConfig = intlLocal();
 
 export default (props: positionBoxProps) => {
   const { onStyleChange, styleData, unit } = props;

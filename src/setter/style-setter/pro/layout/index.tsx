@@ -4,7 +4,7 @@ import LayoutBox from './layoutBox';
 import { Collapse } from '@alifd/next';
 import Number from '../../components/number';
 import { StyleData, onStyleChange } from '../../utils/types';
-import layoutConfig from './config.json';
+import { intlLocal } from './locale';
 const Panel = Collapse.Panel;
 
 interface layoutProps {
@@ -13,6 +13,8 @@ interface layoutProps {
   layoutPropsConfig?: any;
   unit?: string
 }
+
+const layoutConfig = intlLocal();
 
 const defaultLayoutPropsConfig = {
   // display 展示列表
@@ -39,7 +41,7 @@ export default (props: layoutProps) => {
 
   return (
     <Collapse defaultExpandedKeys={['0']}>
-      <Panel title="布局" className="layout-style-container">
+      <Panel title={layoutConfig.title} className="layout-style-container">
         <Row title={display.title} dataList={displayDataList} styleKey="display" {...props} longTitle={true}></Row>
 
         {styleData['display'] === 'flex' && (
@@ -85,7 +87,7 @@ export default (props: layoutProps) => {
         {isShowWidthHeight && (
           <div className="inner-row-contaienr">
             <div className="row-item">
-              <span className="row-item-title">宽度</span>
+              <span className="row-item-title">{layoutConfig.width}</span>
               <Number
                 style={{ marginRight: '10px', width: '100%' }}
                 min={0}
@@ -96,7 +98,7 @@ export default (props: layoutProps) => {
               />
             </div>
             <div className="row-item">
-              <span className="row-item-title">高度</span>
+              <span className="row-item-title">{layoutConfig.height}</span>
               <Number
                 styleKey="height"
                 min={0}

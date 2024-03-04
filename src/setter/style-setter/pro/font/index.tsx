@@ -4,10 +4,12 @@ import Number from '../../components/number';
 import { StyleData, onStyleChange } from '../../utils/types';
 import { Collapse, NumberPicker, Select, Range } from '@alifd/next';
 import ColorInput from '../../components/color-input';
-import fontConfig from './config.json';
+import { intlLocal } from './locale';
 import { addUnit, isEmptyValue } from '../../utils';
 import './index.less';
 const Panel = Collapse.Panel;
+
+const fontConfig = intlLocal();
 
 interface fontProps {
   styleData: StyleData | any;
@@ -42,10 +44,10 @@ export default (props: fontProps) => {
 
   return (
     <Collapse defaultExpandedKeys={['0']}>
-      <Panel title="文字" className="font-style-container">
+      <Panel title={fontConfig.title} className="font-style-container">
         <div className="inner-row-contaienr">
           <div className="row-item">
-            <span className="row-item-title">字号</span>
+            <span className="row-item-title">{fontConfig.fontSize}</span>
             <Number
               max={100}
               min={0}
@@ -56,7 +58,7 @@ export default (props: fontProps) => {
             />
           </div>
           <div className="row-item">
-            <span className="row-item-title">行高</span>
+            <span className="row-item-title">{fontConfig.lineHeight}</span>
             <Number
               min={0}
               styleKey="lineHeight"
@@ -67,7 +69,7 @@ export default (props: fontProps) => {
           </div>
         </div>
 
-        <Row title={'字重'} styleData={styleData} styleKey="">
+        <Row title={fontConfig.fontWeight.title} styleData={styleData} styleKey="">
           <Select
             dataSource={fontWeight.dataList}
             style={{ width: '100%' }}
@@ -76,7 +78,7 @@ export default (props: fontProps) => {
             onChange={(val) => onStyleChange([{ styleKey: 'fontWeight', value: val }])}
           />
         </Row>
-        <Row title={'字体'} styleData={styleData} styleKey="">
+        <Row title={fontConfig.fontFamily} styleData={styleData} styleKey="">
           <Select
             dataSource={propsConfig.fontFamilyList}
             style={{ width: '100%' }}
@@ -86,7 +88,7 @@ export default (props: fontProps) => {
           />
         </Row>
 
-        <Row title={'文字颜色'} styleKey="" {...props}>
+        <Row title={fontConfig.color} styleKey="" {...props}>
           <ColorInput styleKey={'color'} {...props} inputWidth="100%"></ColorInput>
         </Row>
 
@@ -97,7 +99,7 @@ export default (props: fontProps) => {
           {...props}
         />
 
-        <Row title={'透明度'} styleKey="opacity" {...props}>
+        <Row title={fontConfig.opacity} styleKey="opacity" {...props}>
           <div className="opacity-container">
             <Range
               style={{ marginRight: '7px' }}
