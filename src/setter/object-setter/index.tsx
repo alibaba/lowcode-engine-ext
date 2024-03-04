@@ -38,6 +38,7 @@ export default class ObjectSetter extends Component<{
 interface ObjectSetterConfig {
   items?: IPublicTypeFieldConfig[];
   extraSetter?: IPublicTypeSetterType;
+  canCloseByOutSideClick: boolean;
 }
 
 interface RowSetterProps {
@@ -144,7 +145,10 @@ class RowSetter extends Component<RowSetterProps, RowSetterState> {
     const { field, config } = this.props;
 
     if (!this.pipe) {
-      this.pipe = (this.context as PopupPipe).create({ width: 320 });
+      this.pipe = (this.context as PopupPipe).create({
+        width: 320,
+        canCloseByOutSideClick: config.canCloseByOutSideClick
+      });
     }
 
     const title = (
