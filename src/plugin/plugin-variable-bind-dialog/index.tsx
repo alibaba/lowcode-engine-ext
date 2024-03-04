@@ -496,7 +496,7 @@ export default class VariableBindDialog extends Component<PluginProps> {
       const pathList = this.treeFindPath(childrenVariableList, (data) => data.key == key, 'label');
       selectLabel = `this.state.${pathList.join('.')}`;
     } else if (selParentVariable == 'methods') {
-      selectLabel = `${label}()`;
+      selectLabel = `this.${label}()`;
     } else if (selParentVariable == 'dataSource') {
       selectLabel = `this.state.${label}`;
     } else {
