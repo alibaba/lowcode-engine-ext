@@ -358,6 +358,7 @@ export default class VariableBindDialog extends Component<PluginProps> {
   };
 
   onOk = (autoSave) => {
+    event.emit('variableSetter.selectVariableSetter')
     const { field, jsCode } = this.state;
     const fieldValue = field.getValue();
     field.setValue({

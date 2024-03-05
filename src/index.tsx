@@ -23,6 +23,7 @@ import TextAreaSetter from './setter/textarea-setter';
 import ArraySetter from './setter/array-setter';
 import ObjectSetter from './setter/object-setter';
 import VariableSetter from './setter/variable-setter';
+import ResetSetter from './setter/reset-setter';
 import TitleSetter from './setter/title-setter';
 import EventBindDialog from './plugin/plugin-event-bind-dialog';
 import VariableBindDialog from './plugin/plugin-variable-bind-dialog';
@@ -100,6 +101,11 @@ const DataVariableSetter = {
   recommend: true,
 };
 
+const ResetSetterWrapper = {
+  component: ResetSetter,
+  title: '重置属性',
+}
+
 const FunctionBindSetter = {
   component: FunctionSetter,
   title: '函数绑定',
@@ -172,6 +178,7 @@ const engineExt = {
     BoolSetter,
     SelectSetter,
     VariableSetter: DataVariableSetter,
+    ResetSetter: ResetSetterWrapper,
     ExpressionSetter: DataExpressionSetter,
     RadioGroupSetter,
     TextAreaSetter,
@@ -201,6 +208,7 @@ const engineExt = {
     BoolSetter,
     SelectSetter,
     VariableSetter: DataVariableSetter,
+    ResetSetter: ResetSetterWrapper,
     ExpressionSetter: DataExpressionSetter,
     RadioGroupSetter,
     TextAreaSetter,
