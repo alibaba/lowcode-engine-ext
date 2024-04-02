@@ -20,7 +20,7 @@ const SETTER_NAME = 'event-setter';
 export default class EventsSetter extends Component<{
   value: any;
   definition: any;
-  onChange: (eventList: any[]) => void;
+  onChange: (eventData:{eventDataList:any[], eventList:any[]}) => void;
 }> {
   state = {
     eventBtns: [],
@@ -203,19 +203,21 @@ export default class EventsSetter extends Component<{
   };
 
   deleteEvent = (eventName: string) => {
-    const { eventDataList } = this.state;
-    eventDataList.map((item, index) => {
+    let { eventDataList } = this.state;
+    const eventList:any[] = [];
+    eventDataList = eventDataList.filter((item, index) => {
       if (item.name === eventName) {
-        eventDataList.splice(index, 1);
+        eventList.push(item);
+        return false;
       }
 
-      return item;
+      return true;
     });
 
     this.setState({
       eventDataList,
     });
-    this.props.onChange({ eventDataList });
+    this.props.onChange({ eventDataList, eventList });
     this.updateEventListStatus(eventName, true);
   };
 
@@ -278,7 +280,7 @@ export default class EventsSetter extends Component<{
       eventDataList,
     });
 
-    this.props.onChange({ eventDataList });
+    this.props.onChange({ eventDataList, eventList: [] });
 
     // this.closeDialog();
   };
