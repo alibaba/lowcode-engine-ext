@@ -1,4 +1,4 @@
-import React, { Component, ComponentClass, ReactNode } from 'react';
+import React, { Component, ComponentClass } from 'react';
 import classNames from 'classnames';
 import { Dropdown, Menu } from '@alifd/next';
 import { common, setters, SettingField } from '@alilc/lowcode-engine';
@@ -13,6 +13,7 @@ import {
 } from '@alilc/lowcode-types';
 import { IconConvert } from './icons/convert';
 import { intlNode } from './locale';
+import { MixedSetterController } from './config'
 
 import './index.less';
 import { IconVariable } from './icons/variable';
@@ -148,7 +149,7 @@ interface VariableSetter extends ComponentClass {
 }
 
 @observer
-export default class MixedSetter extends Component<{
+class MixedSetter extends Component<{
   field: SettingField;
   setters?: Array<string | SetterConfig | CustomView | DynamicSetter>;
   onSetterChange?: (field: SettingField, name: string) => void;
@@ -436,7 +437,7 @@ export default class MixedSetter extends Component<{
   }
 
   render() {
-    const { className } = this.props;
+    const { className, field } = this.props;
     let contents:
       | {
           setterContent: ReactNode;
@@ -468,7 +469,20 @@ export default class MixedSetter extends Component<{
       >
         {contents.setterContent}
         <div className="lc-setter-actions">{contents.actions}</div>
+        {!!MixedSetterController.config.renderSlot &&
+          <div className="lc-action-slot">
+            {MixedSetterController.config.renderSlot?.({
+              field,
+              bindCode: field.getValue()?.value,
+            })}
+          </div>
+        }
       </div>
     );
   }
 }
+interface MixedSetterType extends ComponentClass {
+  controller: typeof MixedSetterController;
+}
+export default MixedSetter as unknown as MixedSetterType
+(MixedSetter as unknown as MixedSetterType).controller = MixedSetterController;
