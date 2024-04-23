@@ -103,12 +103,12 @@ export default (props: fontProps) => {
           <div className="opacity-container">
             <Range
               style={{ marginRight: '7px' }}
-              value={!isEmptyValue(styleData.opacity) ? styleData.opacity * 100 : 0}
+              value={!isEmptyValue(styleData.opacity) ? Math.round(styleData.opacity * 100) : 0}
               onChange={(val) => onNumberChange('opacity', parseInt(val) / 100)}
             />
             <NumberPicker
               value={
-                !isEmptyValue(styleData.opacity) ? Math.floor(styleData.opacity * 100) : undefined
+                !isEmptyValue(styleData.opacity) ? Math.round(styleData.opacity * 100) : undefined
               }
               max={100}
               min={0}
