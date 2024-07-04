@@ -12,8 +12,8 @@ import zhCN from '@alifd/next/lib/locale/zh-cn';
 import { common } from '@alilc/lowcode-engine';
 import './index.less';
 
-const { getLocale } = common.utils.createIntl();
-const locale: string = getLocale() || 'zh-CN';
+const { getLocale } = common.utils.createIntl?.() || {};
+const locale: string = getLocale?.() || 'zh-CN';
 const localeSource: any = {
   'en-US': enUS,
   'zh-CN': zhCN,

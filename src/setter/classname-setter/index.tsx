@@ -74,6 +74,15 @@ export default class ClassNameView extends PureComponent<PluginProps> {
       selectValue = value.split(' ');
     }
 
+    selectValue.forEach(current => {
+      if(!classnameList.some(cls => cls === current)) {
+        dataSource.push({
+          value: current,
+          label: current,
+        });
+      }
+    })
+
     this.setState({
       dataSource,
       selectValue,
