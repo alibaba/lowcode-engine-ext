@@ -26,6 +26,7 @@ import VariableSetter from './setter/variable-setter';
 import TitleSetter from './setter/title-setter';
 import EventBindDialog from './plugin/plugin-event-bind-dialog';
 import VariableBindDialog from './plugin/plugin-variable-bind-dialog';
+import SimpleVariableBindPopup from './plugin/plugin-simple-bind-popup'
 import './index.less';
 import packagesInfo from '../package.json';
 // suggest: 做成 StringSetter 的一个参数，
@@ -227,6 +228,7 @@ const engineExt = {
   pluginMap: {
     EventBindDialog,
     VariableBindDialog,
+    SimpleVariableBindPopup,
   },
 };
 engineExt.version = packagesInfo.version;

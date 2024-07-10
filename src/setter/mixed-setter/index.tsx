@@ -206,7 +206,7 @@ class MixedSetter extends Component<{
     if (name === 'VariableSetter') {
       const setterComponent = getSetter('VariableSetter')?.component as any;
       if (setterComponent && setterComponent.isPopup) {
-        setterComponent.show({ prop: field });
+        setterComponent.show({ prop: field, node: this.triggerNodeRef });
         this.syncSelectSetter(name);
         return;
       }
@@ -266,6 +266,7 @@ class MixedSetter extends Component<{
   }
 
   private shell: HTMLDivElement | null = null;
+  private triggerNodeRef: HTMLDivElement | null = null;
 
   private checkIsBlockField() {
     if (this.shell) {
@@ -346,8 +347,8 @@ class MixedSetter extends Component<{
         // =1: 原地展示<当前绑定的值，点击调用 VariableSetter.show>，icon 高亮是否->isUseVaiable，点击 VariableSetter.show
         setterContent = (
           <a
-            onClick={() => {
-              setterComponent.show({ prop: field });
+            onClick={(e) => {
+              setterComponent.show({ prop: field, node: e.target });
             }}
           >
             {tipContent}
@@ -369,8 +370,8 @@ class MixedSetter extends Component<{
             icon: <IconVariable size={24} />,
             tip: tipContent,
           }}
-          onClick={() => {
-            setterComponent.show({ prop: field });
+          onClick={(e: any) => {
+            setterComponent.show({ prop: field, node: e.target.parentNode });
           }}
         />
       );
@@ -383,8 +384,8 @@ class MixedSetter extends Component<{
       if (currentSetter?.name === 'VariableSetter') {
         setterContent = (
           <a
-            onClick={() => {
-              setterComponent.show({ prop: field });
+            onClick={(e) => {
+              setterComponent.show({ prop: field, node: e.target });
             }}
           >
             {intlNode('Binded: {expr}', { expr: field.getValue()?.value ?? '-' })}
@@ -405,14 +406,16 @@ class MixedSetter extends Component<{
   private renderSwitchAction(currentSetter?: SetterItem) {
     const usedName = currentSetter?.name || this.used;
     const triggerNode = (
-      <Title
-        title={{
-          tip: intlNode('Switch Setter'),
-          // FIXME: got a beautiful icon
-          icon: <IconConvert size={24} />,
-        }}
-        className="lc-switch-trigger"
-      />
+      <div ref={ref => this.triggerNodeRef = ref}>
+        <Title
+          title={{
+            tip: intlNode('Switch Setter'),
+            // FIXME: got a beautiful icon
+            icon: <IconConvert size={24} />,
+          }}
+          className="lc-switch-trigger"
+        />
+      </div>
     );
     return (
       <Dropdown trigger={triggerNode} triggerType="click" align="tr br">
