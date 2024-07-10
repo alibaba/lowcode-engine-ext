@@ -6,8 +6,9 @@ export default class SetterVariable extends PureComponent {
   static displayName = 'SetterVariable';
   static isPopup = true;
 
-  static show({ prop: field }) {
-    event.emit('variableBindDialog.openDialog', { field });
+  static show(params: any) {
+    const { prop: field, ...res } = params;
+    event.emit('variableBindDialog.openDialog', { field, ...res });
   }
 
   render() {
