@@ -352,12 +352,12 @@ export default (props: fontProps) => {
             <Range
               disabled={isCssVarBind(styleData.opacity)}
               style={{ marginLeft: '10px', marginRight: '10px', width: '104px' }}
-              value={!isEmptyValue(styleData.opacity) ? styleData.opacity * 100 : 0}
+              value={!isEmptyValue(styleData.opacity) ? Math.round(styleData.opacity * 100) : 0}
               onChange={(val) => onOpacityChange('opacity', parseInt(val) / 100)}
             />
             <NumberPicker
               value={
-                !isEmptyValue(styleData.opacity) && !isCssVarBind(styleData.opacity) ? Math.floor(styleData.opacity * 100) : undefined
+                !isEmptyValue(styleData.opacity) && !isCssVarBind(styleData.opacity) ? Math.round(styleData.opacity * 100) : undefined
               }
               disabled={isCssVarBind(styleData.opacity)}
               max={100}
