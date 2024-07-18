@@ -132,10 +132,15 @@ function nomalizeSetters(
     }
     return config;
   });
+  const uniqSetters = formattedSetters.reduce((map, s) => {
+    map.set(s.name, s);
+    return map;
+  }, new Map<string, any>())
+
   const hasComplexSetter = formattedSetters.filter((item) =>
     ['ArraySetter', 'ObjectSetter'].includes(item.setter),
   ).length;
-  return formattedSetters.map((item) => {
+  return [...uniqSetters.values()].map((item) => {
     if (item.setter === 'VariableSetter' && hasComplexSetter) {
       item.setter = 'ExpressionSetter';
       item.name = 'ExpressionSetter';
@@ -334,7 +339,6 @@ class MixedSetter extends Component<{
 
   private contentsFromPolyfill(setterComponent: VariableSetter) {
     const { field } = this.props;
-
     const n = this.setters.length;
 
     let setterContent: any;
