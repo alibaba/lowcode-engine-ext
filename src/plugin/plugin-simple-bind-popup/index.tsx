@@ -49,10 +49,11 @@ export default class SimpleVariableBindPopup extends Component<PluginProps> {
   };
 
   private editorJsRef = React.createRef();
+  private nodeRef: HTMLDivElement | null = null;
 
   componentDidMount() {
     event.on('common:variableBindDialog.openDialog', ({ field, node }) => {
-      this.setState({ field, node }, () => {
+      this.setState({ field, node: node || this.nodeRef }, () => {
         this.initCode();
         this.openDialog();
       });
@@ -220,6 +221,7 @@ export default class SimpleVariableBindPopup extends Component<PluginProps> {
         ) : (
           ''
         )}
+        <div style={{ position: 'absolute', top: 0, right: 100 }} ref={ref => this.nodeRef = ref} />
         {this.state.node &&
           <Overlay
             v2
