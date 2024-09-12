@@ -15,6 +15,7 @@ export default class BoolSetter extends React.PureComponent<BoolSetterProps, Boo
   static displayName = 'BoolSetter';
 
   render() {
+    // 获取onChange属性
     const { onChange, value } = this.props;
     return (
       <Switch
