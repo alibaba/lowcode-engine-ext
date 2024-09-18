@@ -4,11 +4,12 @@ import { PluginProps } from '@alilc/lowcode-types';
 import { event } from '@alilc/lowcode-engine';
 import MonacoEditor from '@alilc/lowcode-plugin-base-monaco-editor';
 import './index.less';
+import { adjustOverlayPosition } from './utils';
 
 
 const defaultEditorProps = {
   width: '100%',
-  height: '200px',
+  height: '150px',
 };
 
 const defaultEditorOption = {
@@ -50,6 +51,7 @@ export default class SimpleVariableBindPopup extends Component<PluginProps> {
 
   private editorJsRef = React.createRef();
   private nodeRef: HTMLDivElement | null = null;
+  private overlayRef = React.createRef<HTMLDivElement>();
 
   componentDidMount() {
     event.on('common:variableBindDialog.openDialog', ({ field, node }) => {
@@ -230,9 +232,12 @@ export default class SimpleVariableBindPopup extends Component<PluginProps> {
             onRequestClose={this.closeDialog}
             safeNode={[document.querySelector('.lc-left-area'), document.querySelector('.lc-left-fixed-pane')]}
             target={() => this.state.node}
-            offset={[-380, 10]}
+            offset={[-380, 0]}
+            onPosition={() => {
+              adjustOverlayPosition(this.overlayRef.current!, [20])
+            }}
           >
-            <div className="simple-dialog-body">
+            <div className="simple-dialog-body" ref={this.overlayRef}>
               <div className="dialog-right-container">
                 <div className="dialog-small-title">绑定 {this.renderErrorMessage()}</div>
                 <div id="jsEditorDom" className={isOverFlowMaxSize?"editor-context editor-context-error":"editor-context"} ref={this.editorJsRef}>
