@@ -74,15 +74,17 @@ export default (props: numberProps) => {
   }, []);
 
   let value = unit ? removeUnit(styleData[styleKey]) : styleData[styleKey];
-  let curUnit = unit ? getUnit(styleData[styleKey]) || 'px' : '';
+  // 处理unit为：vw、vh等自定义单位时，且styleData[styleKey]没有值，默认为px的问题
+  const defaultUnit = (Array.isArray(unit) ? unit[0] : unit) || 'px';
+  let curUnit = unit ? getUnit(styleData[styleKey]) || defaultUnit : '';
   // 不加multiprop一样，加了单独处理
   if (typeof multiProp === 'number') {
     value = unifyStyle(styleData[styleKey])?.split(' ')?.[multiProp];
     if (value === null || value === undefined || value === 'auto') {
       value = null;
-      curUnit = 'px';
+      curUnit = defaultUnit;
     } else {
-      curUnit = unit ? getUnit(value) || 'px' : '';
+      curUnit = unit ? getUnit(value) || defaultUnit : '';
       value = unit ? removeUnit(value) : value;
     }
   }
@@ -103,27 +105,29 @@ export default (props: numberProps) => {
       };
     });
     return (
-        <Select
-          defaultValue="px"
-          style={{ width: '24px' }}
-          value={curUnit || 'px'}
-          autoWidth={false}
-          hasBorder={false}
-          hasArrow={false}
-          onChange={(val) =>
-            onChangeFunction
-              ? onChangeFunction(styleKey, value, val)
-              : onNumberChange(styleKey, value, val)
-          }
-          dataSource={options}
-        />
+      <Select
+        defaultValue="px"
+        style={{ width: '24px' }}
+        value={curUnit || 'px'}
+        autoWidth={false}
+        hasBorder={false}
+        hasArrow={false}
+        onChange={(val) =>
+          onChangeFunction
+            ? onChangeFunction(styleKey, value, val)
+            : onNumberChange(styleKey, value, val)
+        }
+        dataSource={options}
+      />
     );
   }, [unit]);
-  const originValue = styleData[styleKey]
+  const originValue = styleData[styleKey];
   if (isCssVarBind(originValue)) {
-    return <div className='ext-css-variable-ghost' title={originValue}>
-      {originValue}
-    </div>;
+    return (
+      <div className="ext-css-variable-ghost" title={originValue}>
+        {originValue}
+      </div>
+    );
   }
   return (
     <NumberPicker
@@ -139,6 +143,6 @@ export default (props: numberProps) => {
       }
       innerAfter={getInnerAfter}
       placeholder={placeholder}
-     />
+    />
   );
 };

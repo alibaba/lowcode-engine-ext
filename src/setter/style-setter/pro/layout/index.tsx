@@ -11,7 +11,7 @@ interface layoutProps {
   styleData: StyleData | any;
   onStyleChange?: onStyleChange;
   layoutPropsConfig?: any;
-  unit?: string
+  unit?: string;
 }
 
 const layoutConfig = intlLocal();
@@ -42,7 +42,13 @@ export default (props: layoutProps) => {
   return (
     <Collapse defaultExpandedKeys={['0']}>
       <Panel title={layoutConfig.title} className="layout-style-container">
-        <Row title={display.title} dataList={displayDataList} styleKey="display" {...props} longTitle={true}></Row>
+        <Row
+          title={display.title}
+          dataList={displayDataList}
+          styleKey="display"
+          {...props}
+          longTitle={true}
+        ></Row>
 
         {styleData['display'] === 'flex' && (
           <>
@@ -93,7 +99,7 @@ export default (props: layoutProps) => {
                 min={0}
                 styleKey="width"
                 {...props}
-                unit = {['px','%']}
+                unit={[unit || '', 'px', '%'].filter((i) => !!i)}
                 useComputedStyle={true}
               />
             </div>
@@ -104,7 +110,7 @@ export default (props: layoutProps) => {
                 min={0}
                 {...props}
                 style={{ width: '100%' }}
-                unit = {['px','%']}
+                unit={[unit || '', 'px', '%'].filter((i) => !!i)}
                 useComputedStyle={true}
               />
             </div>
