@@ -53,6 +53,7 @@ interface ArraySetterProps {
   field: IPublicModelSettingField;
   itemSetter?: IPublicTypeSetterType;
   itemMaxLength?: number;
+  variableBind?: boolean;
   columns?: IPublicTypeFieldConfig[];
   multiValue?: boolean;
   hideDescription?: boolean;
@@ -255,6 +256,7 @@ export default class ArraySetter extends Component<{
   field: IPublicModelSettingField;
   itemSetter?: IPublicTypeSetterType;
   itemMaxLength?: number;
+  variableBind?: boolean;
   mode?: 'popup' | 'list';
   forceInline?: boolean;
   multiValue?: boolean;
