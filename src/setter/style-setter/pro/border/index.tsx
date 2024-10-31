@@ -17,8 +17,8 @@ const borderConfig = intlLocal();
 const BORDER_MAX = 30;
 
 enum BorderRadiusType {
-  fixedBorder = "fixedBorder",
-  partBorder = "partBorder",
+  fixedBorder = 'fixedBorder',
+  partBorder = 'partBorder',
 }
 
 const BorderDirectionMap = {
@@ -30,12 +30,12 @@ const BorderDirectionMap = {
 };
 
 const borderRadiusMap = {
-  borderRadius:'borderRadius',
-  borderTopLeftRadius:'borderTopLeftRadius',
-  borderTopRightRadius:'borderTopRightRadius',
-  borderBottomLeftRadius:'borderBottomLeftRadius',
-  borderBottomRightRadius:'borderBottomRightRadius',
-}
+  borderRadius: 'borderRadius',
+  borderTopLeftRadius: 'borderTopLeftRadius',
+  borderTopRightRadius: 'borderTopRightRadius',
+  borderBottomLeftRadius: 'borderBottomLeftRadius',
+  borderBottomRightRadius: 'borderBottomRightRadius',
+};
 
 interface fontProps {
   styleData: StyleData | any;
@@ -43,11 +43,11 @@ interface fontProps {
   unit?: string;
 }
 export default (props: fontProps) => {
-  const { styleData, onStyleChange, unit } = props;
-  const { borderType, borderStyle, shadowType} = borderConfig;
+  const { styleData, onStyleChange, unit, borderPropsConfig } = props;
+  const { borderType, borderStyle, shadowType } = borderConfig;
   const [selBorderType, setSelBorderType] = useState(null);
   const [borderDirection, setBorderDirection] = useState(null);
-  const [shadow, setShadow] = useState('')
+  const [shadow, setShadow] = useState('');
   useEffect(() => {
     if (!borderDirection) {
       for (let key in styleData) {
@@ -56,7 +56,7 @@ export default (props: fontProps) => {
             setBorderDirection(borderDirectionKey);
             break;
           }
-          if (styleData['border']){
+          if (styleData['border']) {
             setBorderDirection('border');
             break;
           }
@@ -65,21 +65,26 @@ export default (props: fontProps) => {
     }
 
     // 判断圆角类型
-    if (styleData[borderRadiusMap.borderRadius]){
+    if (styleData[borderRadiusMap.borderRadius]) {
       setSelBorderType(BorderRadiusType.fixedBorder);
-    }else if (styleData[borderRadiusMap.borderBottomLeftRadius] || styleData[borderRadiusMap.borderBottomRightRadius] || styleData[borderRadiusMap.borderTopLeftRadius] || styleData[borderRadiusMap.borderTopRightRadius]){
+    } else if (
+      styleData[borderRadiusMap.borderBottomLeftRadius] ||
+      styleData[borderRadiusMap.borderBottomRightRadius] ||
+      styleData[borderRadiusMap.borderTopLeftRadius] ||
+      styleData[borderRadiusMap.borderTopRightRadius]
+    ) {
       setSelBorderType(BorderRadiusType.partBorder);
     }
     // 初始绑定样式
-    if(styleData['boxShadow']){
-      const bgSizeArray = unifyStyle(styleData['boxShadow'])?.split(' ')
-      if(bgSizeArray?.[0]==='inset'){
-        setShadow('insetShadow')
-      }else{
-        setShadow('outerShadow')
+    if (styleData['boxShadow']) {
+      const bgSizeArray = unifyStyle(styleData['boxShadow'])?.split(' ');
+      if (bgSizeArray?.[0] === 'inset') {
+        setShadow('insetShadow');
+      } else {
+        setShadow('outerShadow');
       }
-    }else{
-      setShadow('')
+    } else {
+      setShadow('');
     }
   }, [styleData]);
 
@@ -91,7 +96,6 @@ export default (props: fontProps) => {
   };
 
   const onRangeChange = (styleKey: string, value: string, unit?: string) => {
-
     // 需要清除partBorder的圆角设置，不然会冲突，容易遗漏
 
     onStyleChange([
@@ -100,20 +104,20 @@ export default (props: fontProps) => {
         value: unit ? addUnit(value, unit) : value,
       },
       {
-        styleKey:borderRadiusMap.borderBottomLeftRadius,
-        value: null
+        styleKey: borderRadiusMap.borderBottomLeftRadius,
+        value: null,
       },
       {
-        styleKey:borderRadiusMap.borderBottomRightRadius,
-        value: null
+        styleKey: borderRadiusMap.borderBottomRightRadius,
+        value: null,
       },
       {
-        styleKey:borderRadiusMap.borderTopLeftRadius,
-        value: null
+        styleKey: borderRadiusMap.borderTopLeftRadius,
+        value: null,
       },
       {
-        styleKey:borderRadiusMap.borderTopRightRadius,
-        value: null
+        styleKey: borderRadiusMap.borderTopRightRadius,
+        value: null,
       },
     ]);
   };
@@ -122,22 +126,26 @@ export default (props: fontProps) => {
     setBorderDirection(styleKey);
   };
 
-  const onPartBorderRadiusChange = (styleKey: string, value: number, unit: string,styleData:any) => {
+  const onPartBorderRadiusChange = (
+    styleKey: string,
+    value: number,
+    unit: string,
+    styleData: any,
+  ) => {
     let styleDataList = [
       {
         styleKey,
         value: unit ? addUnit(value, unit) : value,
       },
     ];
-    if (styleData['borderRadius']){
+    if (styleData['borderRadius']) {
       styleDataList.push({
-        styleKey:'borderRadius',
-        value:null
-      })
+        styleKey: 'borderRadius',
+        value: null,
+      });
     }
     onStyleChange(styleDataList);
-  }
-
+  };
 
   const onBorderTypeChange = (styleKey: string, value: string) => {
     onStyleChange([
@@ -147,48 +155,55 @@ export default (props: fontProps) => {
       },
     ]);
   };
-  const onBoxShadowChange = (styleKey: string, value: any, index?:number, unit?:string,shadowPosition?:string,isColor?:boolean) => {
+  const onBoxShadowChange = (
+    styleKey: string,
+    value: any,
+    index?: number,
+    unit?: string,
+    shadowPosition?: string,
+    isColor?: boolean,
+  ) => {
     const bgSizeArray = styleData[styleKey]
       ? unifyStyle(styleData[styleKey])?.split(' ')
       : ['0', '0', '0', '0', '#000'];
-      if(shadowPosition==='outerShadow'){
-        if(bgSizeArray?.[0]==='inset'){
-          bgSizeArray.shift()
-        }
-      }else if(shadowPosition==='insetShadow'){
-        if(bgSizeArray?.[0]!=='inset'){
-          bgSizeArray?.unshift('inset')
-        }
+    if (shadowPosition === 'outerShadow') {
+      if (bgSizeArray?.[0] === 'inset') {
+        bgSizeArray.shift();
       }
-      if(bgSizeArray?.[0]==='inset'){
-        setShadow('insetShadow')
-      }else{
-        setShadow('outerShadow')
+    } else if (shadowPosition === 'insetShadow') {
+      if (bgSizeArray?.[0] !== 'inset') {
+        bgSizeArray?.unshift('inset');
       }
-      let unifiedValue = value
-      if(!value&&isColor){
-        unifiedValue = '#000'
-      }
-      if(unifiedValue===null||unifiedValue===undefined||!bgSizeArray) return
-      unifiedValue = unit? addUnit(unifiedValue,unit):  String(unifiedValue)
-      if(index!==undefined&&index!==null){
-        bgSizeArray[index] = unifiedValue
-      }
-      let curValue: String =''
-      bgSizeArray.forEach((item)=>{
-        curValue = curValue+item+' '
-      })
-      curValue=curValue.substring(0,curValue.length-1)
-      const styleDataList = [
-        {
-          styleKey,
-          value:curValue
-        },
-      ];
-      onStyleChange(styleDataList);
-  }
+    }
+    if (bgSizeArray?.[0] === 'inset') {
+      setShadow('insetShadow');
+    } else {
+      setShadow('outerShadow');
+    }
+    let unifiedValue = value;
+    if (!value && isColor) {
+      unifiedValue = '#000';
+    }
+    if (unifiedValue === null || unifiedValue === undefined || !bgSizeArray) return;
+    unifiedValue = unit ? addUnit(unifiedValue, unit) : String(unifiedValue);
+    if (index !== undefined && index !== null) {
+      bgSizeArray[index] = unifiedValue;
+    }
+    let curValue: String = '';
+    bgSizeArray.forEach((item) => {
+      curValue = curValue + item + ' ';
+    });
+    curValue = curValue.substring(0, curValue.length - 1);
+    const styleDataList = [
+      {
+        styleKey,
+        value: curValue,
+      },
+    ];
+    onStyleChange(styleDataList);
+  };
   //insetShadow会在第一位插入inset字符串，使所有阴影样式的序号+1
-  const insetBoxShadowShift = shadow==='insetShadow' ? 1 : 0
+  const insetBoxShadowShift = shadow === 'insetShadow' ? 1 : 0;
   return (
     <Collapse defaultExpandedKeys={['0']}>
       <Panel title={borderConfig.title} className="border-style-container">
@@ -236,7 +251,9 @@ export default (props: fontProps) => {
                   styleKey={borderRadiusMap.borderTopLeftRadius}
                   {...props}
                   style={{ width: '68px' }}
-                  onChangeFunction = {(styleKey, val, unit)=>onPartBorderRadiusChange(styleKey, val, unit,styleData)}
+                  onChangeFunction={(styleKey, val, unit) =>
+                    onPartBorderRadiusChange(styleKey, val, unit, styleData)
+                  }
                 />
               </div>
               <div className="row-item">
@@ -246,7 +263,9 @@ export default (props: fontProps) => {
                   styleKey={borderRadiusMap.borderTopRightRadius}
                   {...props}
                   style={{ width: '68px' }}
-                  onChangeFunction = {(styleKey, val, unit)=>onPartBorderRadiusChange(styleKey, val, unit,styleData)}
+                  onChangeFunction={(styleKey, val, unit) =>
+                    onPartBorderRadiusChange(styleKey, val, unit, styleData)
+                  }
                 />
               </div>
             </Row>
@@ -263,7 +282,9 @@ export default (props: fontProps) => {
                   styleKey={borderRadiusMap.borderBottomLeftRadius}
                   {...props}
                   style={{ width: '68px' }}
-                  onChangeFunction = {(styleKey, val, unit)=>onPartBorderRadiusChange(styleKey, val, unit,styleData)}
+                  onChangeFunction={(styleKey, val, unit) =>
+                    onPartBorderRadiusChange(styleKey, val, unit, styleData)
+                  }
                 />
               </div>
               <div className="row-item">
@@ -272,7 +293,9 @@ export default (props: fontProps) => {
                   max={BORDER_MAX}
                   styleKey={borderRadiusMap.borderBottomRightRadius}
                   {...props}
-                  onChangeFunction = {(styleKey:string, val:number, unit:string)=>onPartBorderRadiusChange(styleKey, val, unit,styleData)}
+                  onChangeFunction={(styleKey: string, val: number, unit: string) =>
+                    onPartBorderRadiusChange(styleKey, val, unit, styleData)
+                  }
                   style={{ width: '68px' }}
                 />
               </div>
@@ -309,9 +332,7 @@ export default (props: fontProps) => {
 
                 <div
                   className={
-                    borderDirection === 'border'
-                      ? 'sel-icon icon-container'
-                      : 'icon-container'
+                    borderDirection === 'border' ? 'sel-icon icon-container' : 'icon-container'
                   }
                   onClick={() => onIconClick('border')}
                 >
@@ -375,80 +396,91 @@ export default (props: fontProps) => {
           dataList={shadowType.dataList}
           styleKey={'shadowType'}
           {...props}
-          onStyleChange={(type)=>{
-            onBoxShadowChange('boxShadow', type?.[0].value, undefined, undefined ,type?.[0].value  )
+          onStyleChange={(type) => {
+            onBoxShadowChange('boxShadow', type?.[0].value, undefined, undefined, type?.[0].value);
           }}
           value={shadow}
-        >
-        </Row>
+        ></Row>
         <div className="shadow-container">
-            <div className="shadow-color-container">
-              <span className='shadow-color-title'>{borderConfig.shadowColor}</span>
-              <ColorInput
+          <div className="shadow-color-container">
+            <span className="shadow-color-title">{borderConfig.shadowColor}</span>
+            <ColorInput
               {...props}
-              color = {styleData['boxShadow']?.split(' ')?.[insetBoxShadowShift+4]}
-              onStyleChange = {(color)=>{
-                onBoxShadowChange('boxShadow', color?.[0].value, insetBoxShadowShift+4,undefined,undefined,true )
+              {...(borderPropsConfig?.boxShadow?.shadowColor || {})}
+              color={styleData['boxShadow']?.split(' ')?.[insetBoxShadowShift + 4]}
+              onStyleChange={(color) => {
+                onBoxShadowChange(
+                  'boxShadow',
+                  color?.[0].value,
+                  insetBoxShadowShift + 4,
+                  undefined,
+                  undefined,
+                  true,
+                );
               }}
+            />
+          </div>
+          <div className="shadow-size-container">
+            <div className="shadow-size-x">
+              <span className="shadow-size-x-title">x</span>
+              <Number
+                style={{ marginRight: '4px' }}
+                styleKey="boxShadow"
+                {...props}
+                multiProp={insetBoxShadowShift + 0}
+                defaultPlaceholder={'0'}
+                {...(borderPropsConfig?.boxShadow?.x || {})}
+                onChangeFunction={(styleKey: string, val: number, unit: string) =>
+                  onBoxShadowChange(styleKey, val, insetBoxShadowShift + 0, unit)
+                }
               />
             </div>
-            <div className="shadow-size-container">
-              <div className="shadow-size-x">
-                <span className="shadow-size-x-title">x</span>
-                <Number
-                  style={{ marginRight: '4px' }}
-                  styleKey="boxShadow"
-                  {...props}
-                  onChangeFunction={(styleKey: string, val: number, unit: string) =>
-                    onBoxShadowChange(styleKey, val, insetBoxShadowShift+0, unit )
-                  }
-                  multiProp={insetBoxShadowShift+0}
-                  defaultPlaceholder={'0'}
-                />
-              </div>
-              <div className="shadow-size-y">
-                <span className="shadow-size-y-title">y</span>
-                <Number
-                  styleKey="boxShadow"
-                  {...props}
-                  onChangeFunction={(styleKey: string, val: number, unit: string) =>
-                    onBoxShadowChange(styleKey, val, insetBoxShadowShift+1, unit )
-                  }
-                  multiProp={insetBoxShadowShift+1}
-                  defaultPlaceholder={'0'}
-                />
-              </div>
-            </div>
-            <div className="shadow-config-container">
-              <div className="shadow-blur-container">
-                <div className="shadow-blur-container-title">{borderConfig.blur}</div>
-                <Number
-                  style={{ marginRight: '4px' }}
-                  min={2}
-                  styleKey="boxShadow"
-                  {...props}
-                  onChangeFunction={(styleKey: string, val: number, unit: string) =>
-                    onBoxShadowChange(styleKey, val, insetBoxShadowShift+2, unit )
-                  }
-                  multiProp={insetBoxShadowShift+2}
-                  defaultPlaceholder={'0'}
-                />
-              </div>
-              <div className="shadow-extend-container">
-                <div className="shadow-extend-container-title">{borderConfig.spread}</div>
-                <Number
-                  styleKey="boxShadow"
-                  min={3}
-                  {...props}
-                  onChangeFunction={(styleKey: string, val: number, unit: string) =>
-                    onBoxShadowChange(styleKey, val, insetBoxShadowShift+3, unit )
-                  }
-                  multiProp={insetBoxShadowShift+3}
-                  defaultPlaceholder={'0'}
-                />
-              </div>
+            <div className="shadow-size-y">
+              <span className="shadow-size-y-title">y</span>
+              <Number
+                styleKey="boxShadow"
+                {...props}
+                multiProp={insetBoxShadowShift + 1}
+                defaultPlaceholder={'0'}
+                {...(borderPropsConfig?.boxShadow?.y || {})}
+                onChangeFunction={(styleKey: string, val: number, unit: string) =>
+                  onBoxShadowChange(styleKey, val, insetBoxShadowShift + 1, unit)
+                }
+              />
             </div>
           </div>
+          <div className="shadow-config-container">
+            <div className="shadow-blur-container">
+              <div className="shadow-blur-container-title">{borderConfig.blur}</div>
+              <Number
+                style={{ marginRight: '4px' }}
+                min={2}
+                styleKey="boxShadow"
+                {...props}
+                multiProp={insetBoxShadowShift + 2}
+                defaultPlaceholder={'0'}
+                {...(borderPropsConfig?.boxShadow?.blur || {})}
+                onChangeFunction={(styleKey: string, val: number, unit: string) =>
+                  onBoxShadowChange(styleKey, val, insetBoxShadowShift + 2, unit)
+                }
+              />
+            </div>
+            <div className="shadow-extend-container">
+              <div className="shadow-extend-container-title">{borderConfig.spread}</div>
+              <Number
+                styleKey="boxShadow"
+                min={3}
+                {...props}
+                multiProp={insetBoxShadowShift + 3}
+                defaultPlaceholder={'0'}
+                {...(borderPropsConfig?.boxShadow?.spread || {})}
+                onChangeFunction={(styleKey: string, val: number, unit: string) =>
+                  onBoxShadowChange(styleKey, val, insetBoxShadowShift + 3, unit)
+                }
+              />
+            </div>
+          </div>
+        </div>
       </Panel>
     </Collapse>
   );
