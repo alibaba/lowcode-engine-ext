@@ -79,16 +79,16 @@ export default class ExpressionView extends PureComponent {
     };
   }
 
-  static getDerivedStateFromProps(props: { value: any }, state: { preValue: any }) {
-    const curValue = ExpressionView.getInitValue(props.value);
-    if (curValue !== state.preValue) {
-      return {
-        preValue: curValue,
-        value: curValue,
-      };
-    }
-    return null;
-  }
+  // static getDerivedStateFromProps(props: { value: any }, state: { preValue: any }) {
+  //   const curValue = ExpressionView.getInitValue(props.value);
+  //   if (curValue !== state.preValue) {
+  //     return {
+  //       preValue: curValue,
+  //       value: curValue,
+  //     };
+  //   }
+  //   return null;
+  // }
 
   onChange(value: string) {
     const realInputValue = value;
@@ -225,6 +225,7 @@ export default class ExpressionView extends PureComponent {
    */
   filterOption(inputValue: string, item: { value: string | any[] }) {
     const cursorIndex = this.getInputCursorPosition();
+    if (typeof(inputValue)!='string') return false;
     const preStr = inputValue.substr(0, cursorIndex);
     const lastKey: string[] = preStr.split('.').slice(-1);
     if (!lastKey) return true;

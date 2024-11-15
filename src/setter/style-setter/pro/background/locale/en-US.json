@@ -1,41 +1,48 @@
 {
+  "title": "Background",
+  "inputPlaceholder": "input image url",
+  "width": "width",
+  "height": "height",
+  "left": "left",
+  "top": "top",
+  "opacity": "opacity",
   "backgroundType": {
-    "title": "背景",
+    "title": "back ground",
     "dataList": [
       {
         "value": "color",
-        "tips": "颜色填充",
+        "tips": "background color",
         "icon": "icon-beijingse"
       },
       {
         "value": "bgImg",
-        "tips": "背景图片",
+        "tips": "background image",
         "icon": "icon-beijingtupian"
       }
     ]
   },
   "backgroundSize": {
-    "title": "尺寸",
+    "title": "size",
     "dataList": [
       {
         "value": "default",
-        "tips": "默认",
-        "title": "默认"
+        "tips": "default",
+        "title": "default"
       },
       {
         "value": "contain",
-        "tips": "等比填充contain",
-        "title": "等比填充"
+        "tips": "contain",
+        "title": "contain"
       },
       {
         "value": "cover",
-        "tips": "等比覆盖cover",
-        "title": "等比覆盖"
+        "tips": "cover",
+        "title": "cover"
       }
     ]
   },
   "backgroundPosition": {
-    "title": "定位",
+    "title": "position",
     "dataList": [
       { "title": "leftTop", "position": "0 0", "icon": "icon-zuoshangjiao" },
       { "title": "midTop", "position": "50% 0", "icon": "icon-dingbu" },
@@ -49,26 +56,26 @@
     ]
   },
   "backgroundRepeat": {
-    "title": "重复显示",
+    "title": "repeat",
     "dataList": [
       {
         "value": "repeat",
-        "tips": "垂直方向和水平方向重复 repeat",
+        "tips": "repeat",
         "icon": "icon-jiugongge"
       },
       {
         "value": "repeat-x",
-        "tips": "水平方向重复 reapeat-x",
+        "tips": "reapeat-x",
         "icon": "icon-hengxiangpingfen"
       },
       {
         "value": "repeat-y",
-        "tips": "垂直方向重复 repeat-y",
+        "tips": "repeat-y",
         "icon": "icon-zongxiangpingfen"
       },
       {
         "value": "no-repeat",
-        "tips": "不重复 no-repeat",
+        "tips": "no-repeat",
         "icon": "icon-shanchu2"
       }
     ]

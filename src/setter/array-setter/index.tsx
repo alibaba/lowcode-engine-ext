@@ -21,7 +21,7 @@ interface ArraySetterState {
  * @param target
  * @param value
  */
-function onItemChange (target: IPublicModelSettingField, items: IPublicModelSettingField[], props: ArraySetterProps) {
+function onItemChange (target: IPublicModelSettingField, index: number, item: IPublicModelSettingField, props: ArraySetterProps) {
   const targetPath: Array<string | number> = target?.path;
   if (!targetPath || targetPath.length < 2) {
     console.warn(
@@ -31,8 +31,7 @@ function onItemChange (target: IPublicModelSettingField, items: IPublicModelSett
     );
     return;
   }
-  const { field, value: fieldValue } = props;
-  // const { items } = this.state;
+  const { field } = props;
   const { path } = field;
   if (path[0] !== targetPath[0]) {
     console.warn(
@@ -41,11 +40,9 @@ function onItemChange (target: IPublicModelSettingField, items: IPublicModelSett
     return;
   }
   try {
-    const index = +targetPath[targetPath.length - 2];
-    if (typeof index === 'number' && !isNaN(index)) {
-      fieldValue[index] = items[index].getValue();
-      field?.extraProps?.setValue?.call(field, field, fieldValue);
-    }
+    const fieldValue = field.getValue();
+    fieldValue[index] = item.getValue();
+    field?.setValue(fieldValue);
   } catch (e) {
     console.warn('[ArraySetter] extraProps.setValue failed :', e);
   }
@@ -55,6 +52,8 @@ interface ArraySetterProps {
   value: any[];
   field: IPublicModelSettingField;
   itemSetter?: IPublicTypeSetterType;
+  itemMaxLength?: number;
+  variableBind?: boolean;
   columns?: IPublicTypeFieldConfig[];
   multiValue?: boolean;
   hideDescription?: boolean;
@@ -89,10 +88,11 @@ export class ListSetter extends Component<ArraySetterProps, ArraySetterState> {
           extraProps: {
             defaultValue: value[i],
             setValue: (target: IPublicModelSettingField) => {
-              onItemChange(target, items, props);
+              onItemChange(target, i, item, props);
             },
           },
         });
+        item.setValue(value[i]);
       }
       items.push(item);
     }
@@ -108,10 +108,9 @@ export class ListSetter extends Component<ArraySetterProps, ArraySetterState> {
     const values: any[] = [];
     const newItems: IPublicModelSettingField[] = [];
     sortedIds.map((id, index) => {
-      const item = items[+id];
-      item.setKey(index);
-      values[index] = oldValues[id];
-      newItems[index] = item;
+      const itemIndex = items.findIndex(item => item.id === id);
+      values[index] = oldValues[itemIndex];
+      newItems[index] = items[itemIndex];
       return id;
     });
     onChange?.(values);
@@ -151,17 +150,11 @@ export class ListSetter extends Component<ArraySetterProps, ArraySetterState> {
   }
 
   render() {
-    const { hideDescription, extraProps = {} } = this.props;
+    const { hideDescription, extraProps = {}, itemMaxLength, columns } = this.props;
     const { renderFooter } = extraProps;
-    let columns: any = null;
     const { items } = this.state;
     const { scrollToLast } = this;
     this.scrollToLast = false;
-    if (this.props.columns) {
-      columns = this.props.columns.map((column) => (
-        <Title key={column.name} title={column.title || (column.name as string)} />
-      ));
-    }
 
     const lastIndex = items.length - 1;
 
@@ -171,7 +164,7 @@ export class ListSetter extends Component<ArraySetterProps, ArraySetterState> {
           <Sortable itemClassName="lc-setter-list-card" onSort={this.onSort.bind(this)}>
             {items.map((field, index) => (
               <ArrayItem
-                key={index}
+                key={field.id}
                 scrollIntoView={scrollToLast && index === lastIndex}
                 field={field}
                 onRemove={this.onRemove.bind(this, field)}
@@ -194,18 +187,26 @@ export class ListSetter extends Component<ArraySetterProps, ArraySetterState> {
     return (
       <div className="lc-setter-list lc-block-setter">
         {!hideDescription && columns && items.length > 0 ? (
-          <div className="lc-setter-list-columns">{columns}</div>
+          <div className="lc-setter-list-columns">{
+            columns.map((column) => (
+              <Title key={column.name} title={column.title || (column.name as string)} />
+            ))
+          }</div>
         ) : null}
         {content}
         <div className="lc-setter-list-add">
           {
-            !renderFooter ? (
-              <Button text type="primary" onClick={() => {
-                this.onAdd()
-              }}>
-                <span>添加一项 +</span>
-              </Button>
-            ) : renderFooter({...this.props, onAdd: this.onAdd.bind(this),})
+            !renderFooter 
+              ? (itemMaxLength && items.length >= Number(itemMaxLength)
+                ? null
+                :(
+                  <Button text type="primary" onClick={() => {
+                    this.onAdd()
+                  }}>
+                    <span>添加一项 +</span>
+                  </Button>
+              )) 
+              : renderFooter({...this.props, onAdd: this.onAdd.bind(this),})
           }
         </div>
       </div>
@@ -248,16 +249,14 @@ class ArrayItem extends Component<{
   }
 }
 
-class TableSetter extends ListSetter {
-  // todo:
-  // forceInline = 1
-  // has more actions
-}
+class TableSetter extends ListSetter {}
 
 export default class ArraySetter extends Component<{
   value: any[];
   field: IPublicModelSettingField;
   itemSetter?: IPublicTypeSetterType;
+  itemMaxLength?: number;
+  variableBind?: boolean;
   mode?: 'popup' | 'list';
   forceInline?: boolean;
   multiValue?: boolean;
@@ -275,10 +274,7 @@ export default class ArraySetter extends Component<{
       if (items && Array.isArray(items)) {
         columns = items.filter(
           (item) => item.isRequired || item.important || (item.setter as any)?.isRequired,
-        );
-        if (columns.length > 4) {
-          columns = columns.slice(0, 4);
-        }
+        )?.slice(0, 4);
       }
     }
 
@@ -314,7 +310,7 @@ export default class ArraySetter extends Component<{
         </Button>
       );
     } else {
-      return <ListSetter {...props} columns={columns?.slice(0, 4)} />;
+      return <ListSetter {...props} columns={columns} />;
     }
   }
 }

@@ -1,0 +1,95 @@
+.simple-dialog-body {
+  background-color: white;
+  padding: 12px;
+  box-shadow: 0 2px 5px rgba(0,0,0,.05);
+  border-radius: 4px;
+
+  .dialog-small-title {
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: var(--color-title, rgb(0, 0, 0));
+    display: flex;
+    justify-content: space-between;
+    .error-message{
+      color:var(--color-function-error, rgba(255,97,96));
+      font-weight: 400;
+    }
+  }
+
+  .dialog-right-container {
+    width: 400px;
+    position: relative;
+
+    .event-input-container {
+      margin-bottom: 20px;
+    }
+    textarea {
+      height: 100%;
+    }
+
+    .editor-type-tag {
+      width: 18px;
+      height: 18px;
+      background-color: var(--color-layer-mask-background, rgba(17, 105, 247, 0.18));
+      border-radius: 2px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: absolute;
+      top: 35px;
+      z-index: 100;
+      left: 6px;
+    }
+
+    .editor-context{
+      border: 1px solid var(--color-field-border, rgba(31, 56, 88, 0.3));
+      padding: 5px 5px 0px 15px;
+      border-top-right-radius: 3px;
+      border-top-left-radius: 3px;
+    }
+
+    .editor-context-error{
+      border-color:var(--color-function-error, rgba(255,97,96,0.7));
+    }
+  }
+}
+
+.simple-bind-dialog-bottom {
+  margin-top: 12px;
+  .bottom-left-container {
+    float: left;
+  }
+  .bottom-right-container {
+    float: right;
+  }
+}
+
+.vs-variable-minimize {
+  width: 120px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: absolute;
+  bottom: 10px;
+  right: 286px;
+  z-index: 100;
+  background: var(--color-block-background-normal, #fff);
+  padding: 8px 12px;
+  border-radius: 3px;
+  border: 1px solid var(--color-field-border, #ddd);
+  box-shadow: 0 0 8px #aaa;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  img {
+    width: 12px;
+  }
+}
+
+.lc-code-control:hover {
+  border-color: transparent;
+}
+
+.lc-code-control.ve-focused {
+  border-color: transparent;
+}

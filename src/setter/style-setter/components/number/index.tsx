@@ -9,13 +9,15 @@ import {
   getPlaceholderPropertyValue,
   unifyStyle,
   getUnit,
+  isCssVarBind,
 } from '../../utils';
 import './index.less';
+
 interface numberProps {
   styleKey: string;
   styleData: StyleData | any;
   onStyleChange?: onStyleChange;
-  unit?: string | Array<string>;
+  unit?: string | string[];
   min?: number;
   max?: number;
   style?: any;
@@ -70,6 +72,7 @@ export default (props: numberProps) => {
   useEffect(() => {
     initData(props);
   }, []);
+
   let value = unit ? removeUnit(styleData[styleKey]) : styleData[styleKey];
   let curUnit = unit ? getUnit(styleData[styleKey]) || 'px' : '';
   // 不加multiprop一样，加了单独处理
@@ -116,6 +119,12 @@ export default (props: numberProps) => {
         />
     );
   }, [unit]);
+  const originValue = styleData[styleKey]
+  if (isCssVarBind(originValue)) {
+    return <div className='ext-css-variable-ghost' title={originValue}>
+      {originValue}
+    </div>;
+  }
   return (
     <NumberPicker
       style={style}

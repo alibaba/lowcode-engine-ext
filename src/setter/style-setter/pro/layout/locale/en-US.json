@@ -1,136 +1,139 @@
 {
+  "title": "Layout",
+  "width": "width",
+  "height": "height",
   "display": {
-    "title": "布局模式",
+    "title": "display",
     "dataList": [
       {
         "value": "inline",
-        "tips": "内联布局 inline",
+        "tips": "inline",
         "icon": "icon-a-Displayinline"
       },
       {
         "value": "flex",
-        "tips": "弹性布局 flex",
+        "tips": "flex",
         "icon": "icon-a-Displayflex"
       },
       {
         "value": "block",
-        "tips": "块级布局 block",
+        "tips": "block",
         "icon": "icon-a-Displayblock"
       },
       {
         "value": "inline-block",
-        "tips": "内联块布局 inline-block",
+        "tips": "inline-block",
         "icon": "icon-a-Displayinline-block"
       },
       {
         "value": "none",
-        "tips": "隐藏 none",
+        "tips": "none",
         "icon": "icon-yincang"
       }
     ]
   },
   "flexDirection": {
-    "title": "主轴方向",
+    "title": "flex direction",
     "dataList": [
       {
         "value": "row",
-        "tips": "水平方向，起点在左侧 row",
+        "tips": "row",
         "icon": "icon-a-Directionrow"
       },
       {
         "value": "row-reverse",
-        "tips": "水平方向，起点在右侧 row-reverse",
+        "tips": "row-reverse",
         "icon": "icon-a-Directionrow-reverse"
       },
       {
         "value": "column",
-        "tips": "垂直方向，起点在上沿 column",
+        "tips": "column",
         "icon": "icon-a-Directioncolumn"
       },
       {
         "value": "column-reverse",
-        "tips": "垂直方向，起点在下沿 column-reverse",
+        "tips": "column-reverse",
         "icon": "icon-a-Directioncolumn-reverse"
       }
     ]
   },
   "justifyContent": {
-    "title": "主轴对齐",
+    "title": "justify content",
     "dataList": [
       {
         "value": "flex-start",
-        "tips": "左对齐 flex-start",
+        "tips": "flex-start",
         "icon": "icon-a-Justifyflex-startrow"
       },
       {
         "value": "flex-end",
-        "tips": "右对齐 flex-end",
+        "tips": "flex-end",
         "icon": "icon-a-Justifyflex-endrow"
       },
       {
         "value": "center",
-        "tips": "水平居中 center",
+        "tips": "center",
         "icon": "icon-a-Justifycenterrow"
       },
       {
         "value": "space-between",
-        "tips": "两端对齐 space-between",
+        "tips": "space-between",
         "icon": "icon-a-Justifyspace-betweenrow"
       },
       {
         "value": "space-around",
-        "tips": "横向平分 space-around",
+        "tips": "space-around",
         "icon": "icon-a-Justifyspace-aroundrow"
       }
     ]
   },
   "alignItems": {
-    "title": "辅轴对齐",
+    "title": "align items",
     "dataList": [
       {
         "value": "flex-start",
-        "tips": "起点对齐 flex-start",
+        "tips": "flex-start",
         "icon": "icon-a-Alignflex-startrow"
       },
       {
         "value": "flex-end",
-        "tips": "终点对齐 flex-end",
+        "tips": "flex-end",
         "icon": "icon-a-Alignflex-endrow"
       },
       {
         "value": "center",
-        "tips": "水平居中 center",
+        "tips": "center",
         "icon": "icon-a-Aligncenterrow"
       },
       {
         "value": "baseline",
-        "tips": "项目第一行文字的基线对齐 baseline",
+        "tips": "baselin",
         "icon": "icon-a-Alignbaselinerow"
       },
       {
         "value": "stretch",
-        "tips": "沾满整个容器的高度 stretch",
+        "tips": "stretch",
         "icon": "icon-a-Alignstretchrow"
       }
     ]
   },
   "flexWrap": {
-    "title": "换行",
+    "title": "flexWrap",
     "dataList": [
       {
         "value": "nowrap",
-        "tips": "不换行 nowrap",
-        "title": "不换行"
+        "tips": "nowrap",
+        "title": "nowrap"
       },
       {
         "value": "wrap",
-        "tips": "第一行在上方 wrap",
-        "title": "正换行"
+        "tips": "wrap",
+        "title": "wrap"
       },
       {
         "value": "wrap-reverse",
-        "tips": "第一行在下方 wrap-reverse",
-        "title": "逆换行"
+        "tips": "wrap-reverse",
+        "title": "wrap-reverse"
       }
     ]
   }

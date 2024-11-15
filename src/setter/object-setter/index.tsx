@@ -38,6 +38,7 @@ export default class ObjectSetter extends Component<{
 interface ObjectSetterConfig {
   items?: IPublicTypeFieldConfig[];
   extraSetter?: IPublicTypeSetterType;
+  canCloseByOutSideClick: boolean;
 }
 
 interface RowSetterProps {
@@ -60,7 +61,7 @@ function getItemsFromProps(props: RowSetterProps, state?: RowSetterState) {
   const items: IPublicModelSettingField[] = [];
   if (columns && config?.items) {
     const l = Math.min(config.items.length, columns);
-    for (let i = 0; i < l; i++) {
+    for (let i = 0; i < config.items.length; i++) {
       const conf = config.items[i];
       if (conf.isRequired || conf.important || (conf.setter as any)?.isRequired) {
         const item = state?.items?.filter(d => d.name === conf.name)?.[0] || field.createField({
@@ -76,6 +77,9 @@ function getItemsFromProps(props: RowSetterProps, state?: RowSetterState) {
           extraProps.setValue?.apply(null, args);
         };
         items.push(item);
+      }
+      if (items.length >= l) {
+        break;
       }
     }
   }
@@ -141,7 +145,10 @@ class RowSetter extends Component<RowSetterProps, RowSetterState> {
     const { field, config } = this.props;
 
     if (!this.pipe) {
-      this.pipe = (this.context as PopupPipe).create({ width: 320 });
+      this.pipe = (this.context as PopupPipe).create({
+        width: 320,
+        canCloseByOutSideClick: config.canCloseByOutSideClick
+      });
     }
 
     const title = (

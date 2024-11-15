@@ -1,30 +1,31 @@
 {
+  "title": "位置",
   "position": {
     "title": "定位",
     "dataList": [
       {
         "value": "static",
-        "tips": "无定位 static",
+        "tips": "无定位",
         "icon": "icon-position"
       },
       {
         "value": "relative",
-        "tips": "相对定位 relative",
+        "tips": "相对定位",
         "icon": "icon-relative"
       },
       {
         "value": "absolute",
-        "tips": "绝对定位 absolute",
+        "tips": "绝对定位",
         "icon": "icon-absolute"
       },
       {
         "value": "fixed",
-        "tips": "固定定位 fixed",
+        "tips": "固定定位",
         "icon": "icon-fixed"
       },
       {
         "value": "sticky",
-        "tips": "粘性定位 sticky",
+        "tips": "粘性定位",
         "icon": "icon-Objectpositioninterface"
       }
     ]
@@ -34,17 +35,17 @@
     "dataList": [
       {
         "value": "none",
-        "tips": "不浮动 none",
+        "tips": "不浮动",
         "icon": "icon-close"
       },
       {
         "value": "left",
-        "tips": "左浮动 left",
+        "tips": "左浮动",
         "icon": "icon-formatfloatleft"
       },
       {
         "value": "right",
-        "tips": "右浮动 right",
+        "tips": "右浮动",
         "icon": "icon-formatfloatright"
       }
     ]
@@ -54,22 +55,22 @@
     "dataList": [
       {
         "value": "none",
-        "tips": "不清除 none",
+        "tips": "不清除",
         "icon": "icon-close"
       },
       {
         "value": "left",
-        "tips": "左清除 left",
+        "tips": "左清除",
         "icon": "icon-qingchuzuoce"
       },
       {
         "value": "right",
-        "tips": "右清除 right",
+        "tips": "右清除",
         "icon": "icon-qingchuyouce"
       },
       {
         "value": "both",
-        "tips": "两边清除 both",
+        "tips": "两边清除",
         "icon": "icon-qingchuliangce"
       }
     ]

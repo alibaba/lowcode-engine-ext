@@ -1,9 +1,9 @@
 .lc-setter-mixed {
   min-width: 0;
-  margin-right: 26px;
+  margin-right: 40px;
   display: block;
   position: relative;
-  width: 100%;
+  width: calc(100% - 20px);
   > .lc-setter-actions {
     position: absolute;
     right: -4px;
@@ -33,6 +33,13 @@
       }
     }
   }
+  >.lc-action-slot {
+    position: absolute;
+    display: flex;
+    right: -24px;
+    top: 50%;
+    transform: translate(100%, -50%);
+  }
   .next-input,
   .next-date-picker,
   .next-month-picker {
@@ -55,6 +62,11 @@
     right: 12px;
     top: 0;
     height: 32px;
+    transform: none;
+  }
+  >.lc-action-slot {
+    right: 12px;
+    top: 44px;
     transform: none;
   }
 }

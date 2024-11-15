@@ -246,16 +246,8 @@ export default class EventBindDialog extends Component<PluginProps> {
   };
 
   formatEventName = (eventName: string) => {
-    // 支持绑定this.props.xxxx
-    if (propEventsReg.test(eventName)) {
-      return eventName.replace(/(this\.)|(\s+)/, '');
-    }
-    const newEventNameArr = eventName.split('');
-    const index = eventName.indexOf('.');
-    if (index >= 0) {
-      newEventNameArr[index + 1] = newEventNameArr[index + 1].toUpperCase();
-    }
-    return newEventNameArr.join('').replace(/\./, '');
+    // 去除this.
+    return eventName.replace(/(this\.)|(\s+)/, '');
   };
 
   onOk = () => {

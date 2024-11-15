@@ -1,4 +1,4 @@
-import React, { Component, ComponentClass, ReactNode } from 'react';
+import React, { Component, ComponentClass } from 'react';
 import classNames from 'classnames';
 import { Dropdown, Menu } from '@alifd/next';
 import { common, setters, SettingField } from '@alilc/lowcode-engine';
@@ -13,6 +13,7 @@ import {
 } from '@alilc/lowcode-types';
 import { IconConvert } from './icons/convert';
 import { intlNode } from './locale';
+import { MixedSetterController } from './config'
 
 import './index.less';
 import { IconVariable } from './icons/variable';
@@ -131,10 +132,18 @@ function nomalizeSetters(
     }
     return config;
   });
-  const hasComplexSetter = formattedSetters.filter((item) =>
-    ['ArraySetter', 'ObjectSetter'].includes(item.setter),
-  ).length;
-  return formattedSetters.map((item) => {
+  const uniqSetters = formattedSetters.reduce((map, s) => {
+    map.set(s.name, s);
+    return map;
+  }, new Map<string, any>());
+
+  const hasComplexSetter = formattedSetters.filter((item) => {
+    // 变量绑定，非切换设置器
+    if (item.props?.variableBind) return false;
+
+    return ['ArraySetter', 'ObjectSetter'].includes(item.setter);
+  })?.length;
+  return [...uniqSetters.values()].map((item) => {
     if (item.setter === 'VariableSetter' && hasComplexSetter) {
       item.setter = 'ExpressionSetter';
       item.name = 'ExpressionSetter';
@@ -148,7 +157,7 @@ interface VariableSetter extends ComponentClass {
 }
 
 @observer
-export default class MixedSetter extends Component<{
+class MixedSetter extends Component<{
   field: SettingField;
   setters?: Array<string | SetterConfig | CustomView | DynamicSetter>;
   onSetterChange?: (field: SettingField, name: string) => void;
@@ -201,14 +210,19 @@ export default class MixedSetter extends Component<{
   private useSetter = (name: string, usedName: string) => {
     this.fromMixedSetterSelect = true;
     const { field } = this.props;
-    // reset value
-    field.setValue(undefined);
+
     if (name === 'VariableSetter') {
       const setterComponent = getSetter('VariableSetter')?.component as any;
       if (setterComponent && setterComponent.isPopup) {
-        setterComponent.show({ prop: field });
+        setterComponent.show({ prop: field, node: this.triggerNodeRef });
         this.syncSelectSetter(name);
         return;
+      }
+    } else {
+      // 变量类型直接设undefined会引起初始值变化
+      if (name !== this.used ) {
+        // reset value
+        field.setValue(undefined);
       }
     }
     if (name === this.used) {
@@ -260,6 +274,7 @@ export default class MixedSetter extends Component<{
   }
 
   private shell: HTMLDivElement | null = null;
+  private triggerNodeRef: HTMLDivElement | null = null;
 
   private checkIsBlockField() {
     if (this.shell) {
@@ -327,7 +342,6 @@ export default class MixedSetter extends Component<{
 
   private contentsFromPolyfill(setterComponent: VariableSetter) {
     const { field } = this.props;
-
     const n = this.setters.length;
 
     let setterContent: any;
@@ -340,8 +354,8 @@ export default class MixedSetter extends Component<{
         // =1: 原地展示<当前绑定的值，点击调用 VariableSetter.show>，icon 高亮是否->isUseVaiable，点击 VariableSetter.show
         setterContent = (
           <a
-            onClick={() => {
-              setterComponent.show({ prop: field });
+            onClick={(e) => {
+              setterComponent.show({ prop: field, node: e.target });
             }}
           >
             {tipContent}
@@ -363,8 +377,8 @@ export default class MixedSetter extends Component<{
             icon: <IconVariable size={24} />,
             tip: tipContent,
           }}
-          onClick={() => {
-            setterComponent.show({ prop: field });
+          onClick={(e: any) => {
+            setterComponent.show({ prop: field, node: e.target.parentNode });
           }}
         />
       );
@@ -377,8 +391,8 @@ export default class MixedSetter extends Component<{
       if (currentSetter?.name === 'VariableSetter') {
         setterContent = (
           <a
-            onClick={() => {
-              setterComponent.show({ prop: field });
+            onClick={(e) => {
+              setterComponent.show({ prop: field, node: e.target });
             }}
           >
             {intlNode('Binded: {expr}', { expr: field.getValue()?.value ?? '-' })}
@@ -399,14 +413,16 @@ export default class MixedSetter extends Component<{
   private renderSwitchAction(currentSetter?: SetterItem) {
     const usedName = currentSetter?.name || this.used;
     const triggerNode = (
-      <Title
-        title={{
-          tip: intlNode('Switch Setter'),
-          // FIXME: got a beautiful icon
-          icon: <IconConvert size={24} />,
-        }}
-        className="lc-switch-trigger"
-      />
+      <div ref={ref => this.triggerNodeRef = ref}>
+        <Title
+          title={{
+            tip: intlNode('Switch Setter'),
+            // FIXME: got a beautiful icon
+            icon: <IconConvert size={24} />,
+          }}
+          className="lc-switch-trigger"
+        />
+      </div>
     );
     return (
       <Dropdown trigger={triggerNode} triggerType="click" align="tr br">
@@ -431,7 +447,7 @@ export default class MixedSetter extends Component<{
   }
 
   render() {
-    const { className } = this.props;
+    const { className, field } = this.props;
     let contents:
       | {
           setterContent: ReactNode;
@@ -463,7 +479,20 @@ export default class MixedSetter extends Component<{
       >
         {contents.setterContent}
         <div className="lc-setter-actions">{contents.actions}</div>
+        {!!MixedSetterController.config.renderSlot &&
+          <div className="lc-action-slot">
+            {MixedSetterController.config.renderSlot?.({
+              field,
+              bindCode: field.getValue()?.value,
+            })}
+          </div>
+        }
       </div>
     );
   }
 }
+interface MixedSetterType extends ComponentClass {
+  controller: typeof MixedSetterController;
+}
+export default MixedSetter as unknown as MixedSetterType
+(MixedSetter as unknown as MixedSetterType).controller = MixedSetterController;
