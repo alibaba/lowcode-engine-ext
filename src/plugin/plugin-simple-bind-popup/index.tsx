@@ -54,8 +54,13 @@ export default class SimpleVariableBindPopup extends Component<PluginProps> {
   private overlayRef = React.createRef<HTMLDivElement>();
 
   componentDidMount() {
-    event.on('common:variableBindDialog.openDialog', ({ field, node }) => {
-      this.setState({ field, node: node || this.nodeRef }, () => {
+    event.on('common:variableBindDialog.openDialog', ({ field, node, maxTextSize }) => {
+      const finalMaxTextSize = maxTextSize && typeof maxTextSize === 'number' ? maxTextSize : this.props.config?.props?.maxTextSize,
+      this.setState({
+        field,
+        node: node || this.nodeRef,
+        maxTextSize: finalMaxTextSize,
+      }, () => {
         this.initCode();
         this.openDialog();
       });
@@ -67,15 +72,11 @@ export default class SimpleVariableBindPopup extends Component<PluginProps> {
     const fieldValue = field.getValue();
     const jsCode = fieldValue?.value;
 
-    const {maxTextSize} = this.props.config?.props || {}
-
     this.setState({
       jsCode,
       // fullScreenStatus: false,
       minimize: false, // 是否最小化
       isOverFlowMaxSize:false,
-      // 配置的最大文本长度，默认为0，不控制
-      maxTextSize:maxTextSize?maxTextSize:0
     });
   };
 
@@ -93,7 +94,7 @@ export default class SimpleVariableBindPopup extends Component<PluginProps> {
   updateCode = (newCode) => {
     let isOverFlowMaxSize = false;
     if (this.state.maxTextSize){
-      isOverFlowMaxSize = newCode?.length>this.state.maxTextSize
+      isOverFlowMaxSize = newCode?.length > this.state.maxTextSize
     }
 
     this.setState(
@@ -103,7 +104,6 @@ export default class SimpleVariableBindPopup extends Component<PluginProps> {
       },
       this.autoSave,
     );
-    console.log('size====',newCode?.length);
   };
 
   autoSave = () => {

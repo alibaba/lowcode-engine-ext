@@ -65,7 +65,7 @@ export default class VariableBindDialog extends Component<PluginProps> {
     minimize: false, // 是否最小化
     autoExpandParent: true,
     expandedKeys: [],
-    maxTextSize:0, // 绑定变量最大字符数
+    maxTextSize: this.props.config?.props?.maxTextSize || 0, // 绑定变量最大字符数
   };
 
   private editorJsRef = React.createRef();
@@ -79,15 +79,17 @@ export default class VariableBindDialog extends Component<PluginProps> {
   }
 
   componentDidMount() {
-    event.on('common:variableBindDialog.openDialog', ({ field }) => {
-      this.setState({ field }, () => {
+    event.on('common:variableBindDialog.openDialog', ({ field, maxTextSize }) => {
+      // 在触发事件时指定最大长度，根据传入的长度重置一下
+      const finalMaxTextSize = maxTextSize && typeof maxTextSize ? maxTextSize : this.props.config?.props?.maxTextSize || 0;
+      this.setState({
+        field,
+        maxTextSize: finalMaxTextSize,
+      }, () => {
         this.initCode();
         this.openDialog();
       });
     });
-
-    
-
   }
 
   exportSchema = () => {
@@ -100,8 +102,6 @@ export default class VariableBindDialog extends Component<PluginProps> {
     const fieldValue = field.getValue();
     const jsCode = fieldValue?.value;
 
-    const {maxTextSize} = this.props.config?.props || {}
-
     this.setState({
       jsCode,
       // fullScreenStatus: false,
@@ -112,8 +112,6 @@ export default class VariableBindDialog extends Component<PluginProps> {
       childrenVariableList: [], // 子级变量列表
       minimize: false, // 是否最小化
       isOverFlowMaxSize:false,
-      // 配置的最大文本长度，默认为0，不控制
-      maxTextSize:maxTextSize?maxTextSize:0
     });
   };
 
@@ -324,10 +322,9 @@ export default class VariableBindDialog extends Component<PluginProps> {
   updateCode = (newCode) => {
 
     let isOverFlowMaxSize = false;
-    if (this.state.maxTextSize){
-      isOverFlowMaxSize = newCode?.length>this.state.maxTextSize
+    if (this.state.maxTextSize) {
+      isOverFlowMaxSize = newCode?.length > this.state.maxTextSize
     }
-
 
     this.setState(
       {
@@ -336,10 +333,6 @@ export default class VariableBindDialog extends Component<PluginProps> {
       },
       this.autoSave,
     );
-
-
-
-    console.log('size====',newCode?.length);
   };
 
   autoSave = () => {
@@ -531,7 +524,7 @@ export default class VariableBindDialog extends Component<PluginProps> {
     const {isOverFlowMaxSize,maxTextSize} = this.state;
     return (
       isOverFlowMaxSize ? <span className='error-message'>表达式文本不能超过{maxTextSize}个字符，请换成函数调用</span> :null
-      
+
     )
   }
 

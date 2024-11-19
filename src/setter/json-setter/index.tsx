@@ -59,7 +59,7 @@ export default class JsonSetter extends PureComponent<JsonSetterProps> {
   };
 
   componentWillReceiveProps(nextProps) {
-    let nextValue = JSON.stringify(nextProps.value);
+    const nextValue = JSON.stringify(nextProps.value);
     if (nextValue !== this.state.value) {
       this.setState({
         value: nextValue,
@@ -106,7 +106,8 @@ export default class JsonSetter extends PureComponent<JsonSetterProps> {
         });
       }
     } else {
-      removeProp();
+      onChange(undefined);
+      // removeProp();
       this.closeDialog();
     }
   };

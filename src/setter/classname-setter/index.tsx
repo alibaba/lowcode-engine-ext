@@ -21,14 +21,14 @@ export default class ClassNameView extends PureComponent<PluginProps> {
   getClassNameList = () => {
     const schema = ClassNameView?.defaultProps?.getSchema?.() || project.exportSchema();
 
-    const css = schema.componentsTree[0].css;
-    return css?.match(/(?<=\.)\w+(?=\s*[{,])/g) || [];
+    const {css} = schema.componentsTree[0];
+    return css?.match(/(?<=((?<!([\d\w_-]+))\.))[\w-_\d]+(?=\s*([{,])?)/g) || [];
   };
 
   setClassNameSetterData = () => {
     const { value } = this.props;
     const classNameList = this.getClassNameList();
-    const dataSource: { label: string; value : string}[] = [];
+    const dataSource: Array<{ label: string; value : string}> = [];
     classNameList.map((item: string) => {
       dataSource.push({
         value: item,
@@ -70,6 +70,7 @@ export default class ClassNameView extends PureComponent<PluginProps> {
     const { dataSource, selectValue } = this.state;
     return (
       <Select
+        inputMode=''
         className='ClassNameSetter_Select'
         style={{ width: '100%' }}
         mode="multiple"
