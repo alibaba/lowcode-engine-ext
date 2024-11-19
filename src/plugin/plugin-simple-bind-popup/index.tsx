@@ -55,7 +55,7 @@ export default class SimpleVariableBindPopup extends Component<PluginProps> {
 
   componentDidMount() {
     event.on('common:variableBindDialog.openDialog', ({ field, node, maxTextSize }) => {
-      const finalMaxTextSize = maxTextSize && typeof maxTextSize === 'number' ? maxTextSize : this.props.config?.props?.maxTextSize,
+      const finalMaxTextSize = maxTextSize && typeof maxTextSize === 'number' ? maxTextSize : this.props.config?.props?.maxTextSize;
       this.setState({
         field,
         node: node || this.nodeRef,
