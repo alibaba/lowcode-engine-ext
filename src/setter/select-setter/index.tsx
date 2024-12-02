@@ -6,20 +6,23 @@ interface SelectSetterProps {
   value?: any;
   mode?: 'single' | 'multiple' | 'tag';
   defaultValue?: any;
-  options: any[];
+  options: any[] | Function;
   /**
    * 展开后是否能搜索
    */
   showSearch?: boolean;
   // 是否可以清除
-  hasClear?:boolean
+  hasClear?: boolean
 }
 
 interface SelectSetterState {
   setterValue: string | null;
 }
 
-const formateOptions = (options: any[]) => {
+const formateOptions = (options: any[] | Function) => {
+  if (typeof options === 'function') {
+    return options();
+  }
   return options.map((item: any) => {
     if (item.children) {
       const children = item.children.map((child: any) => {
