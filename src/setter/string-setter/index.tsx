@@ -3,6 +3,8 @@ import { Input } from '@alifd/next';
 import './index.less';
 
 interface StringSetterProps {
+  isPreview?: boolean;
+  hasBorder?: boolean;
   value: string;
   defaultValue: string;
   placeholder: string;
@@ -13,9 +15,11 @@ export default class StringSetter extends React.PureComponent<StringSetterProps,
   static displayName = 'StringSetter';
 
   render() {
-    const { onChange, placeholder, value } = this.props;
+    const { onChange, placeholder, value, isPreview = false, hasBorder = true } = this.props;
     return (
       <Input
+        isPreview={isPreview}
+        hasBorder={hasBorder}
         size="small"
         value={value}
         placeholder={placeholder || ''}
