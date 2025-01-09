@@ -135,11 +135,14 @@ function nomalizeSetters(
   const uniqSetters = formattedSetters.reduce((map, s) => {
     map.set(s.name, s);
     return map;
-  }, new Map<string, any>())
+  }, new Map<string, any>());
 
-  const hasComplexSetter = formattedSetters.filter((item) =>
-    ['ArraySetter', 'ObjectSetter'].includes(item.setter),
-  ).length;
+  const hasComplexSetter = formattedSetters.filter((item) => {
+    // 变量绑定，非切换设置器
+    if (item.props?.variableBind) return false;
+
+    return ['ArraySetter', 'ObjectSetter'].includes(item.setter);
+  })?.length;
   return [...uniqSetters.values()].map((item) => {
     if (item.setter === 'VariableSetter' && hasComplexSetter) {
       item.setter = 'ExpressionSetter';

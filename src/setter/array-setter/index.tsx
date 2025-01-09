@@ -52,6 +52,8 @@ interface ArraySetterProps {
   value: any[];
   field: IPublicModelSettingField;
   itemSetter?: IPublicTypeSetterType;
+  itemMaxLength?: number;
+  variableBind?: boolean;
   columns?: IPublicTypeFieldConfig[];
   multiValue?: boolean;
   hideDescription?: boolean;
@@ -148,17 +150,11 @@ export class ListSetter extends Component<ArraySetterProps, ArraySetterState> {
   }
 
   render() {
-    const { hideDescription, extraProps = {} } = this.props;
+    const { hideDescription, extraProps = {}, itemMaxLength, columns } = this.props;
     const { renderFooter } = extraProps;
-    let columns: any = null;
     const { items } = this.state;
     const { scrollToLast } = this;
     this.scrollToLast = false;
-    if (this.props.columns) {
-      columns = this.props.columns.map((column) => (
-        <Title key={column.name} title={column.title || (column.name as string)} />
-      ));
-    }
 
     const lastIndex = items.length - 1;
 
@@ -191,18 +187,26 @@ export class ListSetter extends Component<ArraySetterProps, ArraySetterState> {
     return (
       <div className="lc-setter-list lc-block-setter">
         {!hideDescription && columns && items.length > 0 ? (
-          <div className="lc-setter-list-columns">{columns}</div>
+          <div className="lc-setter-list-columns">{
+            columns.map((column) => (
+              <Title key={column.name} title={column.title || (column.name as string)} />
+            ))
+          }</div>
         ) : null}
         {content}
         <div className="lc-setter-list-add">
           {
-            !renderFooter ? (
-              <Button text type="primary" onClick={() => {
-                this.onAdd()
-              }}>
-                <span>添加一项 +</span>
-              </Button>
-            ) : renderFooter({...this.props, onAdd: this.onAdd.bind(this),})
+            !renderFooter 
+              ? (itemMaxLength && items.length >= Number(itemMaxLength)
+                ? null
+                :(
+                  <Button text type="primary" onClick={() => {
+                    this.onAdd()
+                  }}>
+                    <span>添加一项 +</span>
+                  </Button>
+              )) 
+              : renderFooter({...this.props, onAdd: this.onAdd.bind(this),})
           }
         </div>
       </div>
@@ -245,16 +249,14 @@ class ArrayItem extends Component<{
   }
 }
 
-class TableSetter extends ListSetter {
-  // todo:
-  // forceInline = 1
-  // has more actions
-}
+class TableSetter extends ListSetter {}
 
 export default class ArraySetter extends Component<{
   value: any[];
   field: IPublicModelSettingField;
   itemSetter?: IPublicTypeSetterType;
+  itemMaxLength?: number;
+  variableBind?: boolean;
   mode?: 'popup' | 'list';
   forceInline?: boolean;
   multiValue?: boolean;
@@ -272,10 +274,7 @@ export default class ArraySetter extends Component<{
       if (items && Array.isArray(items)) {
         columns = items.filter(
           (item) => item.isRequired || item.important || (item.setter as any)?.isRequired,
-        );
-        if (columns.length > 4) {
-          columns = columns.slice(0, 4);
-        }
+        )?.slice(0, 4);
       }
     }
 
@@ -311,7 +310,7 @@ export default class ArraySetter extends Component<{
         </Button>
       );
     } else {
-      return <ListSetter {...props} columns={columns?.slice(0, 4)} />;
+      return <ListSetter {...props} columns={columns} />;
     }
   }
 }
