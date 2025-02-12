@@ -158,10 +158,7 @@ export default class VariableBindDialog extends Component<PluginProps> {
           value = eval(`(${valueString})`);
         } catch (e) {}
 
-        // 属性为false 或者 为"" 也显示到dialog中
-        if (value || value === false || value === '') {
-          dataSourceMap[key] = value;
-        }
+        dataSourceMap[key] = value;
       }
     }
     const treeList = [];
