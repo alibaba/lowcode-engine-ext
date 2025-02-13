@@ -14,12 +14,19 @@ export default [
       { name: 'onScroll' },
       { name: 'onLoad' },
       { name: 'onError' },
+      { name: 'onCopy' },
+      { name: 'onPaste' },
+      { name: 'onCut' },
     ],
   },
   {
     category: 'keybordEvent',
     name: '键盘事件',
-    eventList: [{ name: 'onKeyDown' }, { name: 'onKeyPress' }, { name: 'onKeyUp' }],
+    eventList: [
+      { name: 'onKeyDown' },
+      { name: 'onKeyPress' },
+      { name: 'onKeyUp' },
+    ],
   },
   {
     category: 'mouseEvent',
