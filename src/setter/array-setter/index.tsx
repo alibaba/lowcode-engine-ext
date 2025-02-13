@@ -164,7 +164,7 @@ export class ListSetter extends Component<ArraySetterProps, ArraySetterState> {
           <Sortable itemClassName="lc-setter-list-card" onSort={this.onSort.bind(this)}>
             {items.map((field, index) => (
               <ArrayItem
-                key={field.id}
+                key={Math.random()}
                 scrollIntoView={scrollToLast && index === lastIndex}
                 field={field}
                 onRemove={this.onRemove.bind(this, field)}

@@ -197,7 +197,7 @@ class Sortable extends Component<{
     const { className, itemClassName, children } = this.props;
     const items: Array<string | number> = [];
     const cards = Children.map(children, (child) => {
-      const id = child.key!;
+      const id = child.props.field.id!;
       items.push(id);
       return (
         <div key={id} data-id={id} className={classNames('lc-sortable-card', itemClassName)}>
